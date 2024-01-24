@@ -28,3 +28,16 @@ input:-webkit-autofill:hover {
     -webkit-background-color: rgb(17, 24, 39);
     background-color: rgb(17, 24, 39) !important;
 }
+
+.neon{
+    display: inline-block;
+    text-shadow:
+    0 0 42px rgb(0, 17, 255),
+    0 0 20px rgb(0, 17, 255),
+    0 0 20px rgb(0, 17, 255),
+    0 0 140px rgb(0, 17, 255),
+    0 0 59px rgb(0, 17, 255);
+    -webkit-text-stroke: 3px rgb(0, 119, 255);
+
+    color:transparent;
+}
