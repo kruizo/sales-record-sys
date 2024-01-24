@@ -1,3 +1,30 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+html,body{
+    margin: 0;
+    box-sizing: border-box;
+}
+
+html{
+    background-color: rgb(3 7 18);
+    color: rgb(209 213 219);
+}
+/* General styling for autofill */
+input:-webkit-autofill {
+    caret-color: rgb(243 244 246);
+    -webkit-box-shadow: 0 0 0 30px rgba(17, 24, 39) inset !important;
+    -webkit-text-fill-color: rgb(243 244 246) !important;
+    background-color: rgb(17, 24, 39) !important; /* Added background-color */
+}
+
+
+
+input:-webkit-autofill:active,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:hover {
+    -webkit-background-color: rgb(17, 24, 39);
+    background-color: rgb(17, 24, 39) !important;
+}
