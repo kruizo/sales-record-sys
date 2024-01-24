@@ -21,7 +21,7 @@
     <div id="app">
         <main>
             <div class="flex flex-col items-center px-10">
-                <a href="{{ route('/') }}" tabindex="-1">
+                <a href="{{ route('/home') }}" tabindex="-1">
                     <img src="{{ asset('assets/image/logo.png')}}" alt="logo" class="w-20 py-6" srcset="">
                 </a>
                 <div class="justify-content-center bg-gray-800 w-full md:w-1/2 lg:w-1/3">
