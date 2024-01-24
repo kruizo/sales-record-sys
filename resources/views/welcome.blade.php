@@ -89,11 +89,11 @@
 </section>
 <section class="bg-gray-950 dark:bg-gray-900" id="services">
     <div class="gap-8 items-center py-8 px-4 mx-auto max-w-screen-xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 lg:px-6">
-        <img class="w-full dark:hidden" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/cta/cta-dashboard-mockup.svg" alt="dashboard image">
-        <img class="w-full hidden dark:block" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/cta/cta-dashboard-mockup-dark.svg" alt="dashboard image">
+        <img class="w-full dark:hidden" src="{{asset('assets/image/service1.png')}}" alt="services1">
         <div class="mt-4 md:mt-0">
-            <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">Let's create more tools and ideas that brings us together.</h2>
-            <p class="mb-6 font-light text-gray-500 md:text-lg dark:text-gray-400">Flowbite helps you connect with friends and communities of people who share your interests. Connecting with your friends and family as well as discovering new ones is easy with features like Groups.</p>
+            <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-200 dark:text-white">Elevate Your Hydration Experience.</h2>
+            <p class="mb-6 font-light text-gray-300 md:text-lg dark:text-gray-300">Discover a new level of purity and convenience with our water refilling station containers. Our commitment goes beyond providing clean, refreshing water; it's about enhancing your lifestyle. Upgrade your hydration journey with us, where every drop is a step towards a healthier, more sustainable future. Join us in redefining the way you hydrate and live.</p>
+
             <a href="#" class="inline-flex items-center text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:focus:ring-primary-900">
                 Get started
                 <svg class="ml-2 -mr-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -103,11 +103,12 @@
         </div>
     </div>
 </section>
-<section class="bg-white dark:bg-gray-900">
+<section class="bg-gray-950 dark:bg-gray-900">
     <div class="gap-8 items-center py-8 px-4 mx-auto max-w-screen-xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 lg:px-6">
         <div class="mt-4 md:mt-0">
-            <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">Let's create more tools and ideas that brings us together.</h2>
-            <p class="mb-6 font-light text-gray-500 md:text-lg dark:text-gray-400">Flowbite helps you connect with friends and communities of people who share your interests. Connecting with your friends and family as well as discovering new ones is easy with features like Groups.</p>
+            <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-200 dark:text-white">Quenching Thirst, Connecting Lives.</h2>
+            <p class="mb-6 font-light text-gray-300 md:text-lg dark:text-gray-300">Discover the essence of hydration with our water refilling station containers. We bring people together through the shared commitment to a sustainable and healthy lifestyle. Join our community and experience the refreshing difference of clean, purified water, fostering connections and well-being for you and your loved ones.</p>
+
             <a href="#" class="inline-flex items-center text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:focus:ring-primary-900">
                 Get started
                 <svg class="ml-2 -mr-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -115,18 +116,17 @@
                 </svg>
             </a>
         </div>
-        <img class="w-full dark:hidden" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/cta/cta-dashboard-mockup.svg" alt="dashboard image">
+        <img class="w-full dark:hidden" src="{{asset('assets/image/service2.png')}}" alt="dashboard image">
 
-        <img class="w-full hidden dark:block" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/cta/cta-dashboard-mockup-dark.svg" alt="dashboard image">
 
     </div>
 </section>
 
-<section class="bg-white-950 dark:bg-gray-900">
+<section class="bg-white dark:bg-gray-900">
     <div class="py-8 px-4 mx-auto max-w-screen-xl sm:py-16 lg:px-6">
         <div class="mx-auto max-w-screen-sm text-center">
-            <h2 class="mb-4 text-4xl tracking-tight font-extrabold leading-tight text-gray-900 dark:text-white">Start your free trial today</h2>
-            <p class="mb-6 font-light text-gray-500 dark:text-gray-400 md:text-lg">Try Flowbite Platform for 30 days. No credit card required.</p>
+            <h2 class="mb-4 text-4xl tracking-tight font-extrabold leading-tight text-gray-900 dark:text-white">Enjoy your quality water today</h2>
+            <p class="mb-6 font-light text-gray-500 dark:text-gray-400 md:text-lg">We give exciting discounts for our beloved customers.</p>
             <a href="#" class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">Free trial for 30 days</a>
         </div>
     </div>
@@ -134,12 +134,12 @@
 <section class="bg-gray-950 dark:bg-gray-900" id="about">
     <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6 ">
         <div class="mx-auto max-w-screen-sm text-center mb-8 lg:mb-16">
-            <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">Our Team</h2>
-            <p class="font-light text-gray-500 lg:mb-16 sm:text-xl dark:text-gray-400">Explore the whole collection of open-source web components and elements built with the utility classes from Tailwind</p>
+            <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-200 dark:text-white">Our Services</h2>
+            <p class="font-light text-gray-300 lg:mb-16 sm:text-xl dark:text-gray-400">Explore the whole collection of open-source web components and elements built with the utility classes from Tailwind</p>
         </div>
         <div class="grid gap-8 mb-6 lg:mb-16 md:grid-cols-2">
             <div class="items-center bg-gray-50 rounded-lg shadow sm:flex dark:bg-gray-800 dark:border-gray-700">
-                <a href="#">
+                <!-- <a href="#">
                     <img class="w-full rounded-lg sm:rounded-none sm:rounded-l-lg" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/bonnie-green.png" alt="Bonnie Avatar">
                 </a>
                 <div class="p-5">
@@ -178,10 +178,10 @@
                             </a>
                         </li>
                     </ul>
-                </div>
+                </div> -->
             </div>
             <div class="items-center bg-gray-50 rounded-lg shadow sm:flex dark:bg-gray-800 dark:border-gray-700">
-                <a href="#">
+                <!-- <a href="#">
                     <img class="w-full rounded-lg sm:rounded-none sm:rounded-l-lg" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/jese-leos.png" alt="Jese Avatar">
                 </a>
                 <div class="p-5">
@@ -220,7 +220,7 @@
                             </a>
                         </li>
                     </ul>
-                </div>
+                </div> -->
             </div>
             <div class="items-center bg-gray-50 rounded-lg shadow sm:flex dark:bg-gray-800 dark:border-gray-700">
                 <a href="#">
@@ -309,7 +309,7 @@
         </div>
     </div>
 </section>
-<section class="bg-white dark:bg-gray-900" id="contact">
+<section class="bg-gray-950 dark:bg-gray-900" id="contact">
     <div class="py-8 lg:py-16 mx-auto max-w-screen-xl px-4">
         <h2 class="mb-8 lg:mb-16 text-3xl font-extrabold tracking-tight leading-tight text-center text-gray-900 dark:text-white md:text-4xl">You’ll be in good company</h2>
         <div class="grid grid-cols-2 gap-8 text-gray-500 sm:gap-12 md:grid-cols-3 lg:grid-cols-6 dark:text-gray-400">
