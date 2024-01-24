@@ -21,7 +21,7 @@
         </video>
     </div>
 
-    <section class="-z-20 dark:bg-gray-950 min-h-screen pt-24" id="hero">
+    <section class="-z-20 dark:bg-gray-950 min-h-screen sm:py-24" id="hero">
         <div class="py-8 px-4 h-full mx-auto max-w-screen-xl text-center lg:py-16 lg:px-12">
             <!-- <a href="#" class="inline-flex justify-between items-center py-1 px-1 pr-4 mb-7 text-sm text-gray-700 bg-gray-100 rounded-full dark:bg-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700" role="alert">
             <span class="text-xs bg-primary-600 rounded-full text-white px-4 py-1.5 mr-3">New</span> <span class="text-sm font-medium">Flowbite is out! See what's new</span>
@@ -54,7 +54,7 @@
                     Reach Us
                 </a>
             </div>
-            <div class="flex flex-wrap justify-around gap-y-4 items-center px-12 py-12 mt-8 sm:justify-between">
+            <div class="block  sm:block justify-around gap-y-4 items-center px-12 py-12 mt-8 sm:justify-between md:flex md:flex-wrap">
                 <div class="flex flex-col flex-wrap">
                     <h1 class="text-xl text-gray-500">Open</h1>
                     <di class="flex flex-wrap align-top items-center justify-center gap-2 text-2xl sm:text=3xl text-gray-400">
@@ -106,7 +106,7 @@
     </div>
 </section>
 <section class="bg-gray-950 dark:bg-gray-900">
-    <div class="gap-8 items-center py-8 px-4 mx-auto max-w-screen-xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 lg:px-6">
+    <div class="gap-8 items-center py-8 px-4 mx-auto max-w-screen-xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 lg:px-6 flex lg:flex-row flex-col-reverse">
         <div class="mt-4 md:mt-0">
             <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-200 dark:text-white">Quenching Thirst, Connecting Lives.</h2>
             <p class="mb-6 font-light text-gray-300 md:text-lg dark:text-gray-300">Discover the essence of hydration with our water refilling station containers. We bring people together through the shared commitment to a sustainable and healthy lifestyle. Join our community and experience the refreshing difference of clean, purified water, fostering connections and well-being for you and your loved ones.</p>
@@ -129,7 +129,7 @@
         <div class="mx-auto max-w-screen-sm text-center">
             <h2 class="mb-4 text-4xl tracking-tight font-extrabold leading-tight text-gray-900 dark:text-white">Enjoy your quality water today</h2>
             <p class="mb-6 font-light text-gray-500 dark:text-gray-400 md:text-lg">We give exciting discounts for our beloved customers.</p>
-            <a href="#" class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">Free trial for 30 days</a>
+            <a href="#" class="text-white bg-blue-600 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">Order now</a>
         </div>
     </div>
 </section>
@@ -141,8 +141,8 @@
         </div>
         <div class="grid gap-8 mb-6 lg:mb-16 md:grid-cols-2">
             <div class="items-center bg-gray-50 rounded-lg shadow sm:flex dark:bg-gray-800 dark:border-gray-700">
-                <!-- <a href="#">
-                    <img class="w-full rounded-lg sm:rounded-none sm:rounded-l-lg" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/bonnie-green.png" alt="Bonnie Avatar">
+                <a href="#">
+                    <img class="w-full rounded-lg sm:rounded-none sm:rounded-l-lg" src="https://legazpi.gov.ph/wp-content/uploads/2022/08/placeholder-4.png" alt="Bonnie Avatar">
                 </a>
                 <div class="p-5">
                     <h3 class="text-xl font-bold tracking-tight text-gray-900 dark:text-white">
@@ -180,11 +180,11 @@
                             </a>
                         </li>
                     </ul>
-                </div> -->
+                </div>
             </div>
             <div class="items-center bg-gray-50 rounded-lg shadow sm:flex dark:bg-gray-800 dark:border-gray-700">
-                <!-- <a href="#">
-                    <img class="w-full rounded-lg sm:rounded-none sm:rounded-l-lg" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/jese-leos.png" alt="Jese Avatar">
+                <a href="#">
+                    <img class="w-full rounded-lg sm:rounded-none sm:rounded-l-lg" src="https://legazpi.gov.ph/wp-content/uploads/2022/08/placeholder-4.png" alt="Jese Avatar">
                 </a>
                 <div class="p-5">
                     <h3 class="text-xl font-bold tracking-tight text-gray-900 dark:text-white">
@@ -222,11 +222,11 @@
                             </a>
                         </li>
                     </ul>
-                </div> -->
+                </div>
             </div>
             <div class="items-center bg-gray-50 rounded-lg shadow sm:flex dark:bg-gray-800 dark:border-gray-700">
                 <a href="#">
-                    <img class="w-full rounded-lg sm:rounded-none sm:rounded-l-lg" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/michael-gouch.png" alt="Michael Avatar">
+                    <img class="w-full rounded-lg sm:rounded-none sm:rounded-l-lg" src="https://legazpi.gov.ph/wp-content/uploads/2022/08/placeholder-4.png" alt="Michael Avatar">
                 </a>
                 <div class="p-5">
                     <h3 class="text-xl font-bold tracking-tight text-gray-900 dark:text-white">
@@ -268,7 +268,7 @@
             </div>
             <div class="items-center bg-gray-50 rounded-lg shadow sm:flex dark:bg-gray-800 dark:border-gray-700">
                 <a href="#">
-                    <img class="w-full rounded-lg sm:rounded-none sm:rounded-l-lg" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/sofia-mcguire.png" alt="Sofia Avatar">
+                    <img class="w-full rounded-lg sm:rounded-none sm:rounded-l-lg" src="https://legazpi.gov.ph/wp-content/uploads/2022/08/placeholder-4.png" alt="Sofia Avatar">
                 </a>
                 <div class="p-5">
                     <h3 class="text-xl font-bold tracking-tight text-gray-900 dark:text-white">

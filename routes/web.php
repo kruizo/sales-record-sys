@@ -29,8 +29,8 @@ Auth::routes(['verify' => true]);
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('/home'); //->middleware('verified')
 
-Route::middleware(['auth', 'is.admin'])->prefix('admin')->group(function () {
-    Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('admin.dashboard');
+Route::middleware(['auth', 'is_admin'])->prefix('admin')->group(function () {
+    // Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('admin.dashboard');
 
     Route::resource('dashboard', App\Http\Controllers\DashboardController::class);
 });
