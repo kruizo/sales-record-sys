@@ -24,11 +24,11 @@
     <section class="-z-20 dark:bg-gray-950 min-h-screen sm:py-24" id="hero">
         <div class="py-8 px-4 h-full mx-auto max-w-screen-xl text-center lg:py-16 lg:px-12">
             <!-- <a href="#" class="inline-flex justify-between items-center py-1 px-1 pr-4 mb-7 text-sm text-gray-700 bg-gray-100 rounded-full dark:bg-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700" role="alert">
-            <span class="text-xs bg-primary-600 rounded-full text-white px-4 py-1.5 mr-3">New</span> <span class="text-sm font-medium">Flowbite is out! See what's new</span>
-            <svg class="ml-2 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
-            </svg>
-        </a> -->
+                <span class="text-xs bg-primary-600 rounded-full text-white px-4 py-1.5 mr-3">New</span> <span class="text-sm font-medium">Flowbite is out! See what's new</span>
+                <svg class="ml-2 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                </svg>
+            </a> -->
             <h1 class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-white md:text-5xl lg:text-6xl dark:text-white">
                 We give
                 <span class="neon">
@@ -96,12 +96,7 @@
             <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-200 dark:text-white">Elevate Your Hydration Experience.</h2>
             <p class="mb-6 font-light text-gray-300 md:text-lg dark:text-gray-300">Discover a new level of purity and convenience with our water refilling station containers. Our commitment goes beyond providing clean, refreshing water; it's about enhancing your lifestyle. Upgrade your hydration journey with us, where every drop is a step towards a healthier, more sustainable future. Join us in redefining the way you hydrate and live.</p>
 
-            <a href="#" class="inline-flex items-center text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:focus:ring-primary-900">
-                Get started
-                <svg class="ml-2 -mr-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                    <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path>
-                </svg>
-            </a>
+
         </div>
     </div>
 </section>
@@ -111,12 +106,7 @@
             <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-200 dark:text-white">Quenching Thirst, Connecting Lives.</h2>
             <p class="mb-6 font-light text-gray-300 md:text-lg dark:text-gray-300">Discover the essence of hydration with our water refilling station containers. We bring people together through the shared commitment to a sustainable and healthy lifestyle. Join our community and experience the refreshing difference of clean, purified water, fostering connections and well-being for you and your loved ones.</p>
 
-            <a href="#" class="inline-flex items-center text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:focus:ring-primary-900">
-                Get started
-                <svg class="ml-2 -mr-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                    <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path>
-                </svg>
-            </a>
+
         </div>
         <img class="w-full dark:hidden" src="{{asset('assets/image/service2.png')}}" alt="dashboard image">
 
@@ -137,7 +127,7 @@
     <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6 ">
         <div class="mx-auto max-w-screen-sm text-center mb-8 lg:mb-16">
             <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-200 dark:text-white">Our Services</h2>
-            <p class="font-light text-gray-300 lg:mb-16 sm:text-xl dark:text-gray-400">Explore the whole collection of open-source web components and elements built with the utility classes from Tailwind</p>
+            <p class="font-light text-gray-300 lg:mb-16 sm:text-xl dark:text-gray-400">We offer vast choices of high quality services.</p>
         </div>
         <div class="grid gap-8 mb-6 lg:mb-16 md:grid-cols-2">
             <div class="items-center bg-gray-50 rounded-lg shadow sm:flex dark:bg-gray-800 dark:border-gray-700">
@@ -146,10 +136,10 @@
                 </a>
                 <div class="p-5">
                     <h3 class="text-xl font-bold tracking-tight text-gray-900 dark:text-white">
-                        <a href="#">Bonnie Green</a>
+                        <a href="#">Title</a>
                     </h3>
-                    <span class="text-gray-500 dark:text-gray-400">CEO & Web Developer</span>
-                    <p class="mt-3 mb-4 font-light text-gray-500 dark:text-gray-400">Bonnie drives the technical strategy of the flowbite platform and brand.</p>
+                    <span class="text-gray-500 dark:text-gray-400">Label</span>
+                    <p class="mt-3 mb-4 font-light text-gray-500 dark:text-gray-400">Desc</p>
                     <ul class="flex space-x-4 sm:mt-0">
                         <li>
                             <a href="#" class="text-gray-500 hover:text-gray-900 dark:hover:text-white">
@@ -188,10 +178,10 @@
                 </a>
                 <div class="p-5">
                     <h3 class="text-xl font-bold tracking-tight text-gray-900 dark:text-white">
-                        <a href="#">Jese Leos</a>
+                        <a href="#">Title</a>
                     </h3>
-                    <span class="text-gray-500 dark:text-gray-400">CTO</span>
-                    <p class="mt-3 mb-4 font-light text-gray-500 dark:text-gray-400">Jese drives the technical strategy of the flowbite platform and brand.</p>
+                    <span class="text-gray-500 dark:text-gray-400">Label</span>
+                    <p class="mt-3 mb-4 font-light text-gray-500 dark:text-gray-400">Desc</p>
                     <ul class="flex space-x-4 sm:mt-0">
                         <li>
                             <a href="#" class="text-gray-500 hover:text-gray-900 dark:hover:text-white">
@@ -230,10 +220,10 @@
                 </a>
                 <div class="p-5">
                     <h3 class="text-xl font-bold tracking-tight text-gray-900 dark:text-white">
-                        <a href="#">Michael Gough</a>
+                        <a href="#">Title</a>
                     </h3>
-                    <span class="text-gray-500 dark:text-gray-400">Senior Front-end Developer</span>
-                    <p class="mt-3 mb-4 font-light text-gray-500 dark:text-gray-400">Michael drives the technical strategy of the flowbite platform and brand.</p>
+                    <span class="text-gray-500 dark:text-gray-400">Label</span>
+                    <p class="mt-3 mb-4 font-light text-gray-500 dark:text-gray-400">Desc</p>
                     <ul class="flex space-x-4 sm:mt-0">
                         <li>
                             <a href="#" class="text-gray-500 hover:text-gray-900 dark:hover:text-white">
@@ -272,10 +262,10 @@
                 </a>
                 <div class="p-5">
                     <h3 class="text-xl font-bold tracking-tight text-gray-900 dark:text-white">
-                        <a href="#">Lana Byrd</a>
+                        <a href="#">Title</a>
                     </h3>
-                    <span class="text-gray-500 dark:text-gray-400">Marketing & Sale</span>
-                    <p class="mt-3 mb-4 font-light text-gray-500 dark:text-gray-400">Lana drives the technical strategy of the flowbite platform and brand.</p>
+                    <span class="text-gray-500 dark:text-gray-400">Label</span>
+                    <p class="mt-3 mb-4 font-light text-gray-500 dark:text-gray-400">Desc</p>
                     <ul class="flex space-x-4 sm:mt-0">
                         <li>
                             <a href="#" class="text-gray-500 hover:text-gray-900 dark:hover:text-white">
@@ -382,6 +372,6 @@
 </section>
 @endsection
 
-@section('modal')
+<!-- @section('modal')
 @include('modals.authentication')
-@endsection
+@endsection -->

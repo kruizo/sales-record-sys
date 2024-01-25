@@ -8,11 +8,5 @@ document.addEventListener("DOMContentLoaded", function() {
         navbar.style.background = gradientColor;
     });
 
-    $('.nav-link').on('click', function() {
-        // Remove the active class from all links
-        $('.nav-link').removeClass('bg-blue-700');
-        
-        // Add the active class to the clicked link
-        $(this).addClass('bg-blue-700');
-    });
+
 });

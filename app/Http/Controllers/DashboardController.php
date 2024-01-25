@@ -13,7 +13,17 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        return view('admin.dashboard');
+        return view('admin/dashboard');
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function show()
+    {
+        return view('admin/dashboard');
     }
 
     /**
@@ -33,17 +43,6 @@ class DashboardController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
     {
         //
     }

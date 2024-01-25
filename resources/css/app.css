@@ -20,6 +20,11 @@ input:-webkit-autofill {
     background-color: rgb(17, 24, 39) !important; /* Added background-color */
 }
 
+.sidebar-link:active {
+    background-color: blue;
+  }
+  
+
 
 
 input:-webkit-autofill:active,

@@ -13,11 +13,12 @@
     <link rel="dns-prefetch" href="//fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
     @yield('import')
-
+    <link rel="icon" href="{{asset('assets/image/logo.png')}}" type="image/x-icon">
     <!-- Scripts -->
     <script type="module" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite(['resources/css/app.css', 'resources/js/app.js'], ['version' => '1.0'])
+
 </head>
 
 <body class="antialiased">
@@ -30,7 +31,7 @@
             @yield('content')
         </main>
     </div>
-
+    <div id="modal-container"></div>
     <script type="text/javascript" src="{{ asset('assets/js/navbar.js') }}"></script>
 
 </body>
