@@ -15,8 +15,11 @@
                 <div class="flex justify-center items-center mt-3 gap-4">
                     <button type="button" class="bg-gray-900 p-4 rounded-lg" aria-label="Decrease quantity of Alkaline" onclick="decrementInput('{{ $id }}')"><i class="fa fa-minus" aria-hidden="true"></i></button>
                     <x-input-label for="{{$name}}" text="{{$productName}} Quantity" class='sr-only' />
-                    <input name="{{$name}}" id="{{$id}}" value="0" class="bg-transparent min-w-6 w-auto max-w-10 text-center word-wrap"></input>
-                    <button type="button" class="bg-gray-900 p-4 rounded-lg" aria-label="Increase quantity of Alkaline" onclick="incrementInput('{{ $id }}')"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                    <input name="{{$name}}" id="{{$id}}" value="0" class="bg-transparent min-w-6 w-auto max-w-10 text-center word-wrap" onchange="updateSubtotal('{{$id}}')"></input>
+                    <button type="button" class="bg-gray-900 p-4 rounded-lg" aria-label="Increase quantity of Alkaline" onclick="incrementInput('{{ $id }}')">
+                        <i class="fa fa-plus" aria-hidden="true"></i>
+                    </button>
+
                 </div>
             </div>
         </div>

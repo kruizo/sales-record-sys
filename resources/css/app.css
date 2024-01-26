@@ -46,3 +46,13 @@ input:-webkit-autofill:hover {
 
     color:transparent;
 }
+
+input[type="time"]::-webkit-clear-button,
+input[type="time"]::-webkit-inner-spin-button,
+input[type="time"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    appearance: none;
+    display: none;
+    color: white;
+    margin: 0;
+}

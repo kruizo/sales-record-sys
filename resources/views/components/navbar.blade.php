@@ -8,7 +8,7 @@
                 </svg>
             </button>
 
-            <a href="https://flowbite.com/" class="items-center space-x-3 rtl:space-x-reverse hidden sm:flex">
+            <a href="{{route('/')}}" class="items-center space-x-3 rtl:space-x-reverse hidden sm:flex">
                 <img src="{{ asset('assets/image/logo.png')}}" alt="logo" class="w-10 object-cover" srcset="">
                 <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white text-gray-300">adelflor.xyz</span>
             </a>
