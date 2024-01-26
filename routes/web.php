@@ -47,3 +47,10 @@ Route::middleware(['auth', 'is_admin'])->prefix('admin')->group(function () {
 
     Route::resource('dashboard', App\Http\Controllers\DashboardController::class);
 });
+
+Route::get('/view/map', function () {
+    return view('modals/map');
+})->name('modal.map');
+Route::get('/view/map', function () {
+    return view('map-view');
+})->name('map.show');

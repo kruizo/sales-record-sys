@@ -59,56 +59,155 @@
         </div>
         <div class="justify-center w-full gap-4 mt-8 md:flex md:space-y-0 space-y-7 bg-gray-900 p-2" id="user-form">
             <div class="shadow-2xl p-2 w-full md:w-3/4 ">
-                <x-form-header text="Billing information" />
-                <div class="w-full my-5">
-                    <x-input-label text="Street Address" for="email" />
-                    <x-input-text id="email" name="email" readonly />
+                <div class="flex justify-between w-full">
+                    <x-form-header text="Billing information" />
+                    <div class="flex items-center justify-center gap-2">
+                        <button class="hidden" onclick="setActive(this.id, 'openModal');" id="viewaddress" type="button"><i class="fa fa-edit" style="font-size:24px" arial-hidden="true"></i></button>
+                        <button class="bg-gray-700 rounded-lg text-lg text-blue-600 py-1 p-2" data-modal-target="mapmodal" data-modal-toggle="mapmodal" id="openModal" type="button"><i style="font-size: 25px;" class="fa fa-map-marker"></i></button>
+                    </div>
+                </div>
+                <div id="textaddress">
+
+                    <div class="w-full my-5">
+                        <x-input-label text="Street Address" for="email" />
+                        <x-input-text id="email" name="email" readonly />
+
+                    </div>
+                    <div class="flex gap-2">
+                        <div class="w-1/2">
+                            <x-input-label text="State" for="firstname" />
+                            <x-input-text id="firstname" name="firstname" readonly />
+
+                        </div>
+
+                        <div class="w-1/2">
+                            <x-input-label text="Province" for="lastname" />
+                            <x-input-text id="lastname" name="lastname" readonly />
+                        </div>
+
+                    </div>
+                    <div class="flex gap-2">
+                        <div class="w-1/2">
+                            <x-input-label text="City" for="firstname" />
+                            <x-input-text id="firstname" name="firstname" readonly />
+
+                        </div>
+
+                        <div class="w-1/2">
+                            <x-input-label text="Postal/Zip" for="lastname" />
+                            <x-input-text id="lastname" name="lastname" readonly />
+                        </div>
+
+                    </div>
+                    <x-button-primary text="Submit" type="button" class="max-w-fit float-right h-10 bg-green-400 hover:bg-green-600" id="submitButton" onclick="submit()" />
 
                 </div>
-                <div class="flex gap-2">
-                    <div class="w-1/2">
-                        <x-input-label text="State" for="firstname" />
-                        <x-input-text id="firstname" name="firstname" readonly />
-
+                <div class="w-full" id="mapaddress">
+                    <div class="newiframe" id="newframe" class="h-96" style="display: none">
+                        <iframe id="newmap" src="{{route('map.show')}}" class="w-full h-96"></iframe>
                     </div>
-
-                    <div class="w-1/2">
-                        <x-input-label text="Province" for="lastname" />
-                        <x-input-text id="lastname" name="lastname" readonly />
-                    </div>
-
                 </div>
-                <div class="flex gap-2">
-                    <div class="w-1/2">
-                        <x-input-label text="City" for="firstname" />
-                        <x-input-text id="firstname" name="firstname" readonly />
-
-                    </div>
-
-                    <div class="w-1/2">
-                        <x-input-label text="Postal/Zip" for="lastname" />
-                        <x-input-text id="lastname" name="lastname" readonly />
-                    </div>
-
-                </div>
-                <x-button-primary text="Submit" type="button" class="max-w-fit float-right h-10 bg-green-400 hover:bg-green-600" id="submitButton" onclick="submit()" />
-
-
 
             </div>
         </div>
     </form>
 
 </div>
+@include('modals/map')
 <script>
     var cardIds = ['alkaline', 'mineral', 'distilled'];
 
+
+
+    let currentMarker = false;
+    let latitude = 0;
+    let longitude = 0;
+    let activebtn = '';
+
+
+    window.addEventListener('message', handleLocationMessage);
+
+    function showAddress() {
+        document.getElementById('newframe').style.display = 'none';
+        document.getElementById('textaddress').style.display = 'block';
+        document.getElementById('viewaddress').style.display = 'none';
+        document.getElementById('viewaddress').style.style = 'bg-transparent';
+    }
+
+    function showMap() {
+        if (currentMarker) {
+            var newIframe = document.getElementById('newmap');
+            var mapframe = document.getElementById('newframe');
+            const lat = latitude;
+            const lng = longitude;
+            resetmarker('newmap');
+
+            newIframe.contentWindow.postMessage({
+                lat,
+                lng,
+                action: 'view'
+            }, '*');
+            setActive('openModal', 'viewaddress');
+            hideAddress();
+        } else {
+            alert('Please place a marker on the map before confirming.');
+        }
+    }
+
+
+    function handleLocationMessage(event) {
+        if (event.data && typeof event.data === 'object' && event.data.lat && event.data.lng) {
+            const lat = event.data.lat;
+            const lng = event.data.lng;
+            latitude = lat;
+            longitude = lng;
+            currentMarker = true;
+            document.getElementById('locationtxt').textContent = "Lat: " + latitude + " Lgn: " + longitude;
+        }
+    }
+
+    function hideAddress() {
+        document.getElementById('newframe').style.display = 'block';
+        document.getElementById('textaddress').style.display = "none";
+        document.getElementById('viewaddress').style.display = "flex";
+    }
+
+
+    function resetmarker(frame) {
+        document.getElementById(frame).contentWindow.postMessage({
+            action: 'resetMarker'
+        }, '*');
+        if (getActive() == 'openModal') {
+            setActive('viewaddress', 'openModal');
+        } else {
+            document.getElementById('viewaddress').classList.toggle('hidden');
+        }
+    }
+
+    function setActive(active, inactive) {
+        if (active == 'viewaddress') {
+            showAddress();
+        } else {
+            document.getElementById(active).style.backgroundColor = "rgb(0, 145, 255)";
+            document.getElementById(active).style.color = "white";
+        }
+
+        activebtn = active;
+    }
+
+    function getActive() {
+        return activebtn;
+    }
+
+
+
     document.addEventListener('DOMContentLoaded', function() {
+
+
         setInitialUIState();
+
+
     });
-
-
-
 
 
     function toggleCard(productId) {

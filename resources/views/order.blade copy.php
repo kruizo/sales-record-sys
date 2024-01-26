@@ -33,6 +33,7 @@
     </form>
 
 </div>
+
 <script>
     var cardIds = ['alkaline', 'mineral', 'distilled'];
 
