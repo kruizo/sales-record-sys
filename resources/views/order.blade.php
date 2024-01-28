@@ -111,7 +111,7 @@
                         <x-radio-bordered id="delivery" name="deliveryMethod" value="Delivery" />
                     </div>
                 </div>
-                <div class="py-2">
+                <div class="py-2 hidden" id="payment">
                     <p class="text-gray-100 text-md">Payment Method</p>
                     <div class="flex flex-col">
 
@@ -191,6 +191,13 @@
     deliveryMethodRadios.forEach(radio => {
         radio.addEventListener('change', function() {
             updateOrder();
+            console.log(radio.id);
+            if (radio.id == 'delivery') {
+                document.getElementById('payment').classList.remove('hidden');
+            } else {
+                document.getElementById('payment').classList.add('hidden');
+            }
+
         });
     });
 

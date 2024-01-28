@@ -19,7 +19,7 @@ class Admin
         if (!auth()->check() || !auth()->user()->is_admin === true) {
             abort(403);
         } else if (auth()->user()->is_admin === true) {
-            redirect('admin/index');
+            redirect('admin/dashboard');
         }
         return $next($request);
     }

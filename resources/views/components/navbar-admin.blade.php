@@ -11,7 +11,7 @@
                     </svg>
                 </button>
                 <a href="https://flowbite.com" class="flex ms-2 md:me-24">
-                    <span class="self-center text-xl text-white font-semibold sm:text-3xl whitespace-nowrap dark:text-white">
+                    <span class="self-center text-3xl text-white font-bold sm:text-4xl whitespace-nowrap dark:text-white">
                         {{$header}}
                     </span>
                 </a>

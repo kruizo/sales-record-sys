@@ -42,10 +42,17 @@ Route::group(['middleware' => 'web'], function () {
     Auth::routes();
 });
 
-Route::middleware(['auth', 'is_admin'])->prefix('admin')->group(function () {
-    // Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('admin.dashboard');
 
-    Route::resource('dashboard', App\Http\Controllers\DashboardController::class);
+
+Route::middleware(['auth', 'is_admin'])->prefix('admin')->group(function () {
+
+
+    Route::resource('dashboard', App\Http\Controllers\DashboardController::class)->names('admin.dashboard');
+    Route::resource('orders', App\Http\Controllers\OrderTableController::class)->names('admin.orders');
+    Route::resource('customers', App\Http\Controllers\CustomerTableController::class)->names('admin.customers');
+    Route::resource('delivery', App\Http\Controllers\DeliveryTableController::class)->names('admin.delivery');
+    Route::resource('reports', App\Http\Controllers\ReportsController::class)->names('admin.reports');
+    Route::resource('analytics', App\Http\Controllers\AnalyticsController::class)->names('admin.analytics');
 });
 
 Route::get('/view/map', function () {
