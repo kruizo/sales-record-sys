@@ -25,9 +25,8 @@
                         <h3 class="text-xl font-semibold text-gray-100 ">
                             Sign in to our platform
                         </h3>
-
                     </div>
-                    <div class="md:p-5">
+                    <div class="p-5">
                         <form class="space-y-4" method="POST" action="{{ route('login') }}">
                             @csrf
                             <div>

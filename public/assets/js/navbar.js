@@ -1,6 +1,5 @@
 document.addEventListener("DOMContentLoaded", function() {
     var navbar = document.getElementById("navbar");
-
     window.addEventListener("scroll", function() {
         var scrollPercentage = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
 

@@ -31,11 +31,9 @@ Route::get('verification', function () {
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('/home'); //->middleware('verified')
 
 Route::middleware(['auth'])->group(function () {
-
-
     Route::prefix('profile')->group(function () {
         Route::get('/', [App\Http\Controllers\ProfileController::class, 'showProfile'])->name('profile');
-        Route::get('/orders', [App\Http\Controllers\ProfileController::class, 'userOrders'])->name('profile/orders');
+        Route::get('/myorders', [App\Http\Controllers\ProfileController::class, 'userOrders'])->name('profile/myorders');
     });
 });
 Route::group(['middleware' => 'web'], function () {
@@ -46,7 +44,7 @@ Route::group(['middleware' => 'web'], function () {
 
 Route::middleware(['auth', 'is_admin'])->prefix('admin')->group(function () {
 
-
+    Route::resource('datatable', App\Http\Controllers\DataTablesController::class)->names('admin.datatable');
     Route::resource('dashboard', App\Http\Controllers\DashboardController::class)->names('admin.dashboard');
     Route::resource('orders', App\Http\Controllers\OrderTableController::class)->names('admin.orders');
     Route::resource('customers', App\Http\Controllers\CustomerTableController::class)->names('admin.customers');

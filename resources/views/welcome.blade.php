@@ -49,6 +49,10 @@
                     <i class="fa fa-phone" aria-hidden="true"></i>
                     Call us
                 </a>
+                <!-- <a href="#" class="inline-flex justify-center gap-2 bg-gray-100 items-center py-3 px-5 text-base font-medium text-center text-gray-900 rounded-lg border border-gray-300 hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800">
+                    Order now
+                    <i class="fas fa-shopping-cart"></i>
+                </a> -->
             </div>
             <div class="block  sm:block justify-around gap-y-4 items-center px-12 py-12 mt-8 sm:justify-between md:flex md:flex-wrap">
                 <div class="flex flex-col flex-wrap">

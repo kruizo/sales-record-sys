@@ -104,18 +104,17 @@
 
     function setInitialUIState() {
         var urlParams = new URLSearchParams(window.location.hash.substring(1));
-        if ()
-            cardIds.forEach(function(cardId) {
-                var input = document.getElementById(cardId);
-                if (urlParams.has(cardId)) {
-                    var card = document.getElementById(cardId + '-card');
-                    document.getElementById(cardId + '-hidden').classList.remove('hidden');
-                    document.getElementById('nextButton').classList.toggle('hidden');
-                    card.classList.add('shadow-blue-700');
-                    card.classList.add('shadow-2xl');
-                    input.value = urlParams.get(cardId);
-                }
-            });
+        cardIds.forEach(function(cardId) {
+            var input = document.getElementById(cardId);
+            if (urlParams.has(cardId)) {
+                var card = document.getElementById(cardId + '-card');
+                document.getElementById(cardId + '-hidden').classList.remove('hidden');
+                document.getElementById('nextButton').classList.toggle('hidden');
+                card.classList.add('shadow-blue-700');
+                card.classList.add('shadow-2xl');
+                input.value = urlParams.get(cardId);
+            }
+        });
     }
 
     function next() {

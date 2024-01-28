@@ -45,7 +45,7 @@
             }
         });
 
-        let map = L.map('map').setView([7.06805668232607, 125.59504224069889], 18); // Default view at (0, 0) with zoom level 13
+        let map = L.map('map').setView([7.06805668232607, 125.59504224069889], 18);
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
