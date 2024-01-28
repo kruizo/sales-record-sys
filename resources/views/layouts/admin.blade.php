@@ -38,12 +38,14 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const sidebarLinks = document.querySelectorAll('.sidebar-link');
-            loadContent("delivery");
-
+            loadContent('dashboard');
             sidebarLinks.forEach(link => {
                 link.addEventListener('click', function(event) {
                     event.preventDefault();
-
+                    sidebarLinks.forEach(function(innerLink) {
+                        innerLink.classList.remove('active');
+                    });
+                    link.classList.add('active');
                     const section = this.dataset.section;
                     loadContent(section);
                 });

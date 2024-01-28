@@ -13,7 +13,7 @@ class DataTablesController extends Controller
      */
     public function index()
     {
-        return view('admin/index');
+        return view('admin/home');
     }
 
     /**
@@ -23,7 +23,7 @@ class DataTablesController extends Controller
      */
     public function show()
     {
-        return view('admin/index');
+        return view('admin/home');
     }
 
     /**

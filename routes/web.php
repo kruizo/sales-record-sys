@@ -28,6 +28,7 @@ Auth::routes(['verify' => true]);
 Route::get('verification', function () {
     return view('auth.verify');
 })->name('verification');
+
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('/home'); //->middleware('verified')
 
 Route::middleware(['auth'])->group(function () {
@@ -40,11 +41,9 @@ Route::group(['middleware' => 'web'], function () {
     Auth::routes();
 });
 
-
-
 Route::middleware(['auth', 'is_admin'])->prefix('admin')->group(function () {
-
-    Route::resource('datatable', App\Http\Controllers\DataTablesController::class)->names('admin.datatable');
+    Route::get('home', [App\Http\Controllers\DataTablesController::class, 'index'])->name('admin.home');
+    Route::get('/', [App\Http\Controllers\DataTablesController::class, 'show'])->name('admin');
     Route::resource('dashboard', App\Http\Controllers\DashboardController::class)->names('admin.dashboard');
     Route::resource('orders', App\Http\Controllers\OrderTableController::class)->names('admin.orders');
     Route::resource('customers', App\Http\Controllers\CustomerTableController::class)->names('admin.customers');

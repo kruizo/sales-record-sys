@@ -20,9 +20,6 @@ input:-webkit-autofill {
     background-color: rgb(17, 24, 39) !important; /* Added background-color */
 }
 
-.sidebar-link:active {
-    background-color: blue;
-  }
   
 
 
@@ -55,4 +52,9 @@ input[type="time"]::-webkit-outer-spin-button {
     display: none;
     color: white;
     margin: 0;
+}
+
+.sidebar-link.active {
+    background-color: #4a90e2; 
+    color: #ffffff; 
 }
