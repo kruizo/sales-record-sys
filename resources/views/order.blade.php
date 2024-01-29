@@ -287,7 +287,6 @@
 
     function updateSubtotal(id) {
         try {
-            console.log('executed');
             const quantityInput = document.getElementById(id);
             order.products[id].quantity = parseInt(quantityInput.value, 10);
 
@@ -417,6 +416,11 @@
     function decrementInput(productId) {
         var inputElement = document.getElementById(productId);
         var currentValue = parseInt(inputElement.value);
+        if (currentValue == 1) {
+            console.log('executed')
+            toggleCard(productId);
+
+        }
         if (currentValue > 0) {
             inputElement.value = currentValue - 1;
         }

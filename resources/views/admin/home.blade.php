@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 @section('title')
-<title>THIS IS HOME</title>
+<title>Adelflor | Dashboard</title>
 @endsection
 @section('content')
 

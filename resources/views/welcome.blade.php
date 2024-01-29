@@ -5,6 +5,8 @@
 @endsection
 
 @section('import')
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
 @endsection
@@ -21,15 +23,15 @@
         </video>
     </div>
 
-    <section class="-z-20 dark:bg-gray-950 min-h-screen sm:py-24" id="hero">
-        <div class="py-8 px-4 h-full mx-auto max-w-screen-xl text-center lg:py-16 lg:px-12">
+    <section class="-z-20 dark:bg-gray-950 min-h-screen sm:pt-24" id="hero">
+        <div class="py-8 px-4 h-full mx-auto max-w-screen-xl text-center lg:pt-16 lg:px-12">
             <!-- <a href="#" class="inline-flex justify-between items-center py-1 px-1 pr-4 mb-7 text-sm text-gray-700 bg-gray-100 rounded-full dark:bg-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700" role="alert">
                 <span class="text-xs bg-primary-600 rounded-full text-white px-4 py-1.5 mr-3">New</span> <span class="text-sm font-medium">Flowbite is out! See what's new</span>
                 <svg class="ml-2 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                     <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
                 </svg>
             </a> -->
-            <h1 class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-white md:text-5xl lg:text-6xl dark:text-white">
+            <h1 class="mb-4 text-5xl font-extrabold tracking-tight leading-none text-white md:text-5xl lg:text-6xl dark:text-white">
                 We give
                 <span class="neon">
                     <h1>100%</h1>
@@ -39,8 +41,8 @@
             </h1>
 
 
-            <p class="mb-8 text-lg font-normal text-gray-400 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400">Optimize your hydration with our premium water refilling service. Enjoy pure and refreshing water that satisfies and revitalizes. Choose excellence in every drop..</p>
-            <div class="flex flex-col mb-8 lg:mb-16 space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
+            <p class="mb-8 text-lg font-normal text-gray-400 lg:text-lg sm:px-16 xl:px-48 dark:text-gray-400">Optimize your hydration with our premium water refilling service. Enjoy pure and refreshing water that satisfies and revitalizes. Choose excellence in every drop..</p>
+            <div class="flex mb-8 lg:mb-16 gap-2 justify-center sm:flex-row">
                 <a href="{{ route('order') }}" class=" inline-flex justify-center gap-2 items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-blue-600 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900">
                     Order now
                     <i class="fas fa-shopping-cart"></i>
@@ -54,24 +56,24 @@
                     <i class="fas fa-shopping-cart"></i>
                 </a> -->
             </div>
-            <div class="block  sm:block justify-around gap-y-4 items-center px-12 py-12 mt-8 sm:justify-between md:flex md:flex-wrap">
+            <div class="grid grid-cols-2 lg:flex justify-around gap-y-4 items-center px-12 py-12 mt-8 lg:flex-wrap">
                 <div class="flex flex-col flex-wrap">
                     <h1 class="text-xl text-gray-500">Open</h1>
-                    <di class="flex flex-wrap align-top items-center justify-center gap-2 text-2xl sm:text=3xl text-gray-400">
+                    <di class="flex flex-wrap align-top items-center justify-center gap-2 text-xl md:text-2xl text-gray-400">
                         <i class="fa fa-clock-o " aria-hidden="true"></i>
                         <h2><strong>12 hrs</strong></h2>
                     </di>
                 </div>
                 <div class="flex flex-col flex-wrap">
                     <h1 class="text-xl text-gray-500">Guaranteed</h1>
-                    <di class="flex flex-wrap align-top items-center justify-center gap-2 text-2xl sm:text=3xl text-gray-400">
+                    <di class="flex flex-wrap align-top items-center justify-center gap-2 text-xl md:text-2xl text-gray-400">
                         <i class='fas fa-shipping-fast' aria-hidden="true"></i>
                         <h2><strong>Fast Delivery</strong></h2>
                     </di>
                 </div>
                 <div class="flex flex-col flex-wrap">
                     <h1 class="text-xl text-gray-500">Water</h1>
-                    <di class="flex flex-wrap align-top items-center justify-center gap-2 text-2xl sm:text=3xl text-gray-400">
+                    <di class="flex flex-wrap align-top items-center justify-center gap-2 text-xl md:text-2xl text-gray-400">
                         <i class='fas fa-medal'></i>
                         <h2><strong>High Quality</strong></h2>
                     </di>
@@ -79,7 +81,7 @@
 
                 <div class="flex flex-col flex-wrap">
                     <h1 class="text-xl text-gray-500">Weekly Order</h1>
-                    <di class="flex flex-wrap align-top items-center justify-center gap-2 text-2xl sm:text=3xl text-gray-400">
+                    <di class="flex flex-wrap align-top items-center justify-center gap-2 text-xl md:text-2xl text-gray-400">
                         <i class="fas fa-shopping-cart"></i>
                         <h2><strong>121 Orders</strong></h2>
                     </di>
@@ -93,7 +95,7 @@
     <div class="gap-8 items-center py-8 px-4 mx-auto max-w-screen-xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 lg:px-6">
         <img class="w-full dark:hidden" src="{{asset('assets/image/service1.png')}}" alt="services1">
         <div class="mt-4 md:mt-0">
-            <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-200 dark:text-white">Elevate Your Hydration Experience.</h2>
+            <h2 class="mb-4 text-3xl tracking-tight font-extrabold text-gray-200 dark:text-white">Elevate Your Hydration Experience.</h2>
             <p class="mb-6 font-light text-gray-300 md:text-lg dark:text-gray-300">Discover a new level of purity and convenience with our water refilling station containers. Our commitment goes beyond providing clean, refreshing water; it's about enhancing your lifestyle. Upgrade your hydration journey with us, where every drop is a step towards a healthier, more sustainable future. Join us in redefining the way you hydrate and live.</p>
 
 
