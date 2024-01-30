@@ -10,9 +10,13 @@
 
     @yield('title')
     <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200&display=swap" rel="stylesheet">
+
     <link rel="dns-prefetch" href="//fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
     @yield('import')
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@200&display=swap" rel="stylesheet">
+
     <link rel="icon" href="{{asset('assets/image/logo.png')}}" type="image/x-icon">
     <!-- Scripts -->
     <script type="module" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

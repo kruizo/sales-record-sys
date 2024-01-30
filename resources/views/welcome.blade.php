@@ -31,7 +31,7 @@
                     <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
                 </svg>
             </a> -->
-            <h1 class="mb-4 text-5xl font-extrabold tracking-tight leading-none text-white md:text-5xl lg:text-6xl dark:text-white">
+            <h1 class="mb-4 text-5xl font-extrabold tracking-tight leading-none text-white md:text-5xl lg:text-6xl dark:text-white font-poppins">
                 We give
                 <span class="neon">
                     <h1>100%</h1>
@@ -41,7 +41,7 @@
             </h1>
 
 
-            <p class="mb-8 text-lg font-normal text-gray-400 lg:text-lg sm:px-16 xl:px-48 dark:text-gray-400">Optimize your hydration with our premium water refilling service. Enjoy pure and refreshing water that satisfies and revitalizes. Choose excellence in every drop..</p>
+            <p class="mb-8 text-lg font-light font-poppins text-gray-400 lg:text-lg sm:px-16 xl:px-48 dark:text-gray-400">Optimize your hydration with our premium water refilling service. Enjoy pure and refreshing water that satisfies and revitalizes. Choose excellence in every drop..</p>
             <div class="flex mb-8 lg:mb-16 gap-2 justify-center sm:flex-row">
                 <a href="{{ route('order') }}" class=" inline-flex justify-center gap-2 items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-blue-600 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900">
                     Order now
@@ -59,31 +59,31 @@
             <div class="grid grid-cols-2 lg:flex justify-around gap-y-4 items-center px-12 py-12 mt-8 lg:flex-wrap">
                 <div class="flex flex-col flex-wrap">
                     <h1 class="text-xl text-gray-500">Open</h1>
-                    <di class="flex flex-wrap align-top items-center justify-center gap-2 text-xl md:text-2xl text-gray-400">
+                    <di class="flex flex-wrap align-top items-center justify-center gap-2 text-xl md:text-xl text-gray-400">
                         <i class="fa fa-clock-o " aria-hidden="true"></i>
-                        <h2><strong>12 hrs</strong></h2>
+                        <h2 class="font-raleway"><strong>12 hrs</strong></h2>
                     </di>
                 </div>
                 <div class="flex flex-col flex-wrap">
                     <h1 class="text-xl text-gray-500">Guaranteed</h1>
-                    <di class="flex flex-wrap align-top items-center justify-center gap-2 text-xl md:text-2xl text-gray-400">
+                    <di class="flex flex-wrap align-top items-center justify-center gap-2 text-xl md:text-xl text-gray-400">
                         <i class='fas fa-shipping-fast' aria-hidden="true"></i>
-                        <h2><strong>Fast Delivery</strong></h2>
+                        <h2 class="font-raleway"><strong>Fast Delivery</strong></h2>
                     </di>
                 </div>
                 <div class="flex flex-col flex-wrap">
                     <h1 class="text-xl text-gray-500">Water</h1>
-                    <di class="flex flex-wrap align-top items-center justify-center gap-2 text-xl md:text-2xl text-gray-400">
+                    <di class="flex flex-wrap align-top items-center justify-center gap-2 text-xl md:text-xl text-gray-400">
                         <i class='fas fa-medal'></i>
-                        <h2><strong>High Quality</strong></h2>
+                        <h2 class="font-raleway"><strong>High Quality</strong></h2>
                     </di>
                 </div>
 
                 <div class="flex flex-col flex-wrap">
                     <h1 class="text-xl text-gray-500">Weekly Order</h1>
-                    <di class="flex flex-wrap align-top items-center justify-center gap-2 text-xl md:text-2xl text-gray-400">
+                    <di class="flex flex-wrap align-top items-center justify-center gap-2 text-xl md:text-xl text-gray-400">
                         <i class="fas fa-shopping-cart"></i>
-                        <h2><strong>121 Orders</strong></h2>
+                        <h2 class="font-raleway"><strong>121 Orders</strong></h2>
                     </di>
                 </div>
             </div>
@@ -91,21 +91,22 @@
     </section>
 
 </section>
-<section class="bg-gray-950 dark:bg-gray-900" id="services">
-    <div class="gap-8 items-center py-8 px-4 mx-auto max-w-screen-xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 lg:px-6">
-        <img class="w-full dark:hidden" src="{{asset('assets/image/service1.png')}}" alt="services1">
-        <div class="mt-4 md:mt-0">
-            <h2 class="mb-4 text-3xl tracking-tight font-extrabold text-gray-200 dark:text-white">Elevate Your Hydration Experience.</h2>
-            <p class="mb-6 font-light text-gray-300 md:text-lg dark:text-gray-300">Discover a new level of purity and convenience with our water refilling station containers. Our commitment goes beyond providing clean, refreshing water; it's about enhancing your lifestyle. Upgrade your hydration journey with us, where every drop is a step towards a healthier, more sustainable future. Join us in redefining the way you hydrate and live.</p>
-
-
+<div class="relative w-full h-full">
+    <section class="bg-gray-950 dark:bg-gray-900" id="services">
+        <div class="gap-8 items-center py-8 px-4 mx-auto max-w-screen-xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 lg:px-6">
+            <img class="w-full dark:hidden" src="{{asset('assets/image/service1.png')}}" alt="services1">
+            <div class="mt-4 md:mt-0">
+                <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-200 font-poppins dark:text-white">Elevate Your Hydration Experience.</h2>
+                <p class="mb-6 font-light text-gray-300 md:text-lg dark:text-gray-300">Discover a new level of purity and convenience with our water refilling station containers. Our commitment goes beyond providing clean, refreshing water; it's about enhancing your lifestyle. Upgrade your hydration journey with us, where every drop is a step towards a healthier, more sustainable future. Join us in redefining the way you hydrate and live.</p>
+            </div>
         </div>
-    </div>
-</section>
+    </section>
+</div>
+
 <section class="bg-gray-950 dark:bg-gray-900">
     <div class="gap-8 items-center py-8 px-4 mx-auto max-w-screen-xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 lg:px-6 flex lg:flex-row flex-col-reverse">
         <div class="mt-4 md:mt-0">
-            <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-200 dark:text-white">Quenching Thirst, Connecting Lives.</h2>
+            <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-200 font-poppins dark:text-white">Quenching Thirst, Connecting Lives.</h2>
             <p class="mb-6 font-light text-gray-300 md:text-lg dark:text-gray-300">Discover the essence of hydration with our water refilling station containers. We bring people together through the shared commitment to a sustainable and healthy lifestyle. Join our community and experience the refreshing difference of clean, purified water, fostering connections and well-being for you and your loved ones.</p>
 
 
@@ -305,7 +306,7 @@
 </section>
 <section class="bg-gray-950 dark:bg-gray-900" id="contact">
     <div class="py-8 lg:py-16 mx-auto max-w-screen-xl px-4">
-        <h2 class="mb-8 lg:mb-16 text-3xl font-extrabold tracking-tight leading-tight text-center text-gray-900 dark:text-white md:text-4xl">You’ll be in good company</h2>
+        <h2 class="mb-8 lg:mb-16 text-3xl font-extrabold tracking-tight leading-tight text-center text-gray-400 dark:text-white md:text-4xl">Contact Us</h2>
         <div class="grid grid-cols-2 gap-8 text-gray-500 sm:gap-12 md:grid-cols-3 lg:grid-cols-6 dark:text-gray-400">
             <a href="#" class="flex justify-center items-center">
                 <svg class="h-9 hover:text-gray-900 dark:hover:text-white" viewBox="0 0 125 35" fill="currentColor" xmlns="http://www.w3.org/2000/svg">

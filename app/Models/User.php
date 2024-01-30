@@ -19,9 +19,9 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
         'email',
         'password',
+        'customer_id',
     ];
 
     /**
@@ -43,4 +43,9 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
         'is_admin' => 'boolean',
     ];
+
+    public function isVerified()
+    {
+        return $this->email_verified_at !== null;
+    }
 }

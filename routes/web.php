@@ -25,21 +25,35 @@ Route::get('/order', function () {
 
 Auth::routes(['verify' => true]);
 
-Route::get('verification', function () {
-    return view('auth.verify');
-})->name('verification');
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('/home'); //->middleware('verified')
 
+Route::get('/verification', function () {
+    return view('auth.verify');
+})->name('verification');
+
+
 Route::middleware(['auth'])->group(function () {
     Route::prefix('profile')->group(function () {
+        // Route::get('/verification', function () {
+        //     return view('auth.verify');
+        // })->name('verification');
+
         Route::get('/', [App\Http\Controllers\ProfileController::class, 'showProfile'])->name('profile');
+        Route::post('/verify', [App\Http\Controllers\ProfileController::class, 'verifyUser'])->name('profile.verify');
+
         Route::get('/myorders', [App\Http\Controllers\ProfileController::class, 'userOrders'])->name('profile/myorders');
     });
 });
+
+
 Route::group(['middleware' => 'web'], function () {
     Auth::routes();
 });
+
+
+Route::post('/initiate-registration', [App\Http\Controllers\Auth\RegisterController::class, 'initiateRegistration'])->name('initiate.registration');
+
 
 Route::middleware(['auth', 'is_admin'])->prefix('admin')->group(function () {
     Route::get('home', [App\Http\Controllers\DataTablesController::class, 'index'])->name('admin.home');

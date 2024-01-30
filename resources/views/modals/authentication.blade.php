@@ -14,7 +14,7 @@
                         <button class="inline-block p-4 border-b-2 rounded-t-lg  border-gray-900 hover:text-gray-600 hover:border-gray-500" id="signin-tab" data-tabs-target="#signin" type="button" role="tab" aria-controls="signin" aria-selected="true">Sign in</button>
                     </li>
                     <li class="me-2" role="presentation">
-                        <button class="inline-block p-4 border-b-2 rounded-t-lg border-gray-900 hover:text-gray-600 hover:border-gray-500  id=" register-tab" data-tabs-target="#register" type="button" role="tab" aria-controls="register" aria-selected="false">Register</button>
+                        <button class="inline-block p-4 border-b-2 rounded-t-lg border-gray-900 hover:text-gray-600 hover:border-gray-500" id="register-tab" data-tabs-target="#register" type="button" role="tab" aria-controls="register" aria-selected="false">Register</button>
                     </li>
                 </ul>
             </div>
@@ -74,12 +74,12 @@
 
                     </div>
                     <div class="p-4 md:p-5">
-                        <form method="POST" action="{{ route('register') }}">
+                        <form method="POST" action="{{ route('initiate.registration') }}">
                             @csrf
-                            <div>
+                            <!-- <div>
                                 <x-input-label for="name" text="Your name" />
                                 <x-input-text type="text" name="name" id="name" required />
-                            </div>
+                            </div> -->
 
                             <div>
                                 <x-input-label for="email" text="Your email" />

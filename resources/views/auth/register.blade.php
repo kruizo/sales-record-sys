@@ -7,10 +7,10 @@
         <x-form-header text="Register" />
     </div>
     <div class="p-4 md:p5" id="form-body">
-        <form method="POST" action="{{ route('register') }}">
+        <form method="POST" action="{{ route('initiate.registration') }}">
             @csrf
 
-            <div class="py-2">
+            <!-- <div class="py-2">
                 <x-input-label for="email" text="Name" />
 
                 <x-input-text id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus />
@@ -19,7 +19,7 @@
                     <strong>{{ $message }}</strong>
                 </span>
                 @enderror
-            </div>
+            </div> -->
 
             <div class="py-2">
                 <x-input-label for="email" text="Email Address" />

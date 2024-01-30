@@ -2,32 +2,28 @@
     <img src="{{ asset('assets/image/container1.png') }}" alt="" class="object-contain h-36 pt-3" draggable="false">
 
     <div class="flex justify-between w-full">
-        <div class="flex flex-col justify-start h-full w-1/3 ml-4">
-
+        <div class="flex flex-col justify-start h-full w-full md:w-1/4 ml-4">
             <strong>
                 <h1 class="text-3xl">Alkaline</h1>
             </strong>
             <h1 class="text-blue-600 text-2xl">₱ 40</h1>
-            <h1 class="text-xl">In progress</h1>
+            <h1 class="text-xl w-full">In progress</h1>
         </div>
-        <div class="space-y-4 text-center">
-            <strong>
-                <h1 class="text-xl">Quantity</h1>
-            </strong>
-            <h1 class="text-xl">2</h1>
+        <div class="justify-between hidden md:flex h-full space-x-4 w-1/2 ">
+            <div class="space-y-4 text-center">
+                <h1 class="text-lg">Quantity</h1>
+                <h1 class="text-xl">2</h1>
+            </div>
+            <div class="space-y-4 text-center">
+                <h1 class="text-lg">Price</h1>
+                <h1 class="text-xl">₱ 20</h1>
+            </div>
+            <div class="space-y-4 text-center">
+                <h1 class="text-lg">Total</h1>
+                <h1 class="text-xl">₱ 40</h1>
+            </div>
         </div>
-        <div class="space-y-4 text-center">
-            <strong>
-                <h1 class="text-xl">Price</h1>
-            </strong>
-            <h1 class="text-xl">₱ 20</h1>
-        </div>
-        <div class="space-y-4 text-center">
-            <strong>
-                <h1 class="text-xl">Total</h1>
-            </strong>
-            <h1 class="text-xl">₱ 40</h1>
-        </div>
+
     </div>
 
 </div>

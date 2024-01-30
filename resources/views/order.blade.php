@@ -13,7 +13,7 @@
 @section('content')
 <div class="-z-20 dark:bg-gray-950 min-h-full sm:pt-28 sm:px-24">
     <div class="flex justify-between items-center">
-        <x-section-header text="Choose a product" />
+        <x-section-header class="" text="Choose a product" />
     </div>
     <form action="POST" action="{{route('/')}}">
         @csrf
@@ -22,7 +22,7 @@
             <x-product-card name="mineral" id="mineral" price="30" productName="Mineral" size="5gal." />
             <x-product-card name="distilled" id="distilled" price="20" productName="Distilled" size="5gal." />
         </div>
-        <div class="justify-center w-full gap-4 mt-8 md:flex md:space-y-0 space-y-7 bg-gray-900 p-2" id="user-form">
+        <div class="justify-center w-full gap-4 mt-5 md:flex md:space-y-0 space-y-7 bg-gray-900 p-2" id="user-form">
             <div class="shadow-2xl p-2  w-full md:w-3/4 ">
                 <x-form-header text="Your information" />
                 <div class="flex gap-2 my-5">
@@ -54,7 +54,7 @@
                 </div>
             </div>
         </div>
-        <div class="justify-center w-full gap-4 mt-8 md:flex md:space-y-0 space-y-7 bg-gray-900 p-2" id="user-form">
+        <div class="justify-center w-full gap-4 mt-5 md:flex md:space-y-0 space-y-7 bg-gray-900 p-2" id="user-form">
             <div class="shadow-2xl p-2 w-full md:w-3/4 ">
                 <div class="flex justify-between w-full">
                     <x-form-header text="Billing information" />
@@ -143,7 +143,7 @@
                 </div>
             </div>
         </div>
-        <div class="justify-center w-full gap-4 mt-8 md:flex md:space-y-0 space-y-7 bg-gray-900 p-2" id="user-form">
+        <div class="justify-center w-full gap-4 mt-5 md:flex md:space-y-0 space-y-7 bg-gray-900 p-2" id="user-form">
             <div class="shadow-2xl p-2 w-full md:w-3/4 ">
                 <x-form-header text="Order information" />
 

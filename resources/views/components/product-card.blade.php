@@ -1,12 +1,12 @@
 @props(['name' => '', 'id' => '', 'productName' => '', 'price' => '' , 'size' => ''])
 
-<div class="card hover:cursor-pointer hover: w-full" id="{{ $id }}-card" onclick="toggleCard('{{ $id }}')">
+<div class="card transition-all hover:cursor-pointer hover: w-full" id="{{ $id }}-card" onclick="toggleCard('{{ $id }}')">
     <div class="bg-gray-800 flex p-4 rounded-lg w-full">
         <div class="p-2 flex flex-col relative shadow-2xl w-full">
             <div class="relative">
                 <h1 class="absolute text-2xl right-0 flex"><span class="">{{$size}}</span></h1>
                 <h1 class="absolute text-2xl font-bold">₱{{$price}}</h1>
-                <h1 class="absolute bottom-0 left-0 right-0 text-center text-3xl font-bold font-sans">{{$productName}}</h1>
+                <h1 class="absolute bottom-0 left-0 right-0 text-center text-3xl font-bold font-poppins">{{$productName}}</h1>
 
                 <img src="{{ asset('assets/image/container1.png') }}" alt="" srcset="" class="object-contain justify-center items-center self-center w-full h-64 py-2" draggable="false">
             </div>

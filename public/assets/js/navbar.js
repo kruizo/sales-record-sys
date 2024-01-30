@@ -1,5 +1,12 @@
 document.addEventListener("DOMContentLoaded", function() {
     var navbar = document.getElementById("navbar");
+    if(window.scrollY > 0){
+        navbar.style.background ="rgba(3, 7, 18, 0.95)"
+
+    }
+
+    console.log(window.scrollY);
+
     window.addEventListener("scroll", function() {
         var scrollPercentage = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
 
