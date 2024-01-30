@@ -95,14 +95,14 @@
                                 <x-input-label for="password-confirm" text="Confirm Passsword" />
                                 <x-input-text id="password-confirm" type="password" placeholder="" class="form-control" name="password_confirmation" required autocomplete="new-password"></x-input-text>
                             </div>
-                            <div class="flex items-start mb-5">
+                            <!-- <div class="flex items-start mb-5">
                                 <div class="flex items-center h-5">
                                     <input id="terms" type="checkbox" value="" class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 " required>
                                 </div>
                                 <label for="terms" class="ms-2 text-sm font-medium text-gray-300 ">I agree with the <a href="#" class="text-blue-600 hover:underline ">terms and conditions</a></label>
-                            </div>
+                            </div> -->
 
-                            <x-button-primary text="Register" type="submit"></x-button-primary>
+                            <x-button-primary text="Register" type="submit" class="mt-5"></x-button-primary>
                         </form>
                     </div>
                 </div>

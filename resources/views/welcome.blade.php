@@ -24,7 +24,7 @@
     </div>
 
     <section class="-z-20 dark:bg-gray-950 min-h-screen sm:pt-24" id="hero">
-        <div class="py-8 px-4 h-full mx-auto max-w-screen-xl text-center lg:pt-16 lg:px-12">
+        <div class="py-8 px-4 flex-col flex h-full justify-center  mx-auto  max-w-screen-xl text-center lg:pt-16 lg:px-12">
             <!-- <a href="#" class="inline-flex justify-between items-center py-1 px-1 pr-4 mb-7 text-sm text-gray-700 bg-gray-100 rounded-full dark:bg-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700" role="alert">
                 <span class="text-xs bg-primary-600 rounded-full text-white px-4 py-1.5 mr-3">New</span> <span class="text-sm font-medium">Flowbite is out! See what's new</span>
                 <svg class="ml-2 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -59,32 +59,32 @@
             <div class="grid grid-cols-2 lg:flex justify-around gap-y-4 items-center px-12 py-12 mt-8 lg:flex-wrap">
                 <div class="flex flex-col flex-wrap">
                     <h1 class="text-xl text-gray-500">Open</h1>
-                    <di class="flex flex-wrap align-top items-center justify-center gap-2 text-xl md:text-xl text-gray-400">
+                    <div class="flex flex-wrap align-top items-center justify-center gap-2 text-xl md:text-xl text-gray-400">
                         <i class="fa fa-clock-o " aria-hidden="true"></i>
                         <h2 class="font-raleway"><strong>12 hrs</strong></h2>
-                    </di>
+                    </div>
                 </div>
                 <div class="flex flex-col flex-wrap">
                     <h1 class="text-xl text-gray-500">Guaranteed</h1>
-                    <di class="flex flex-wrap align-top items-center justify-center gap-2 text-xl md:text-xl text-gray-400">
+                    <div class="flex flex-wrap align-top items-center justify-center gap-2 text-xl md:text-xl text-gray-400">
                         <i class='fas fa-shipping-fast' aria-hidden="true"></i>
                         <h2 class="font-raleway"><strong>Fast Delivery</strong></h2>
-                    </di>
+                    </div>
                 </div>
                 <div class="flex flex-col flex-wrap">
                     <h1 class="text-xl text-gray-500">Water</h1>
-                    <di class="flex flex-wrap align-top items-center justify-center gap-2 text-xl md:text-xl text-gray-400">
+                    <div class="flex flex-wrap align-top items-center justify-center gap-2 text-xl md:text-xl text-gray-400">
                         <i class='fas fa-medal'></i>
                         <h2 class="font-raleway"><strong>High Quality</strong></h2>
-                    </di>
+                    </div>
                 </div>
 
                 <div class="flex flex-col flex-wrap">
                     <h1 class="text-xl text-gray-500">Weekly Order</h1>
-                    <di class="flex flex-wrap align-top items-center justify-center gap-2 text-xl md:text-xl text-gray-400">
+                    <div class="flex flex-wrap align-top items-center justify-center gap-2 text-xl md:text-xl text-gray-400">
                         <i class="fas fa-shopping-cart"></i>
                         <h2 class="font-raleway"><strong>121 Orders</strong></h2>
-                    </di>
+                    </div>
                 </div>
             </div>
         </div>

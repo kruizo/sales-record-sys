@@ -7,10 +7,10 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Customer;
 use App\Models\Address;
-use App\Models\UnverifiedUser;
 
 class RegisterController extends Controller
 {
@@ -118,9 +118,7 @@ class RegisterController extends Controller
         ]);
 
         $tempUser->sendEmailVerificationNotification();
-
-
-
+        Auth::login($tempUser);
         return redirect()->route('verification', ['token' => $tempUser->verification_token]);
     }
 }

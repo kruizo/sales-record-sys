@@ -32,6 +32,8 @@ Route::get('/verification', function () {
     return view('auth.verify');
 })->name('verification');
 
+Route::get('/verified/setup', 'App\Http\Controllers\Auth\VerificationController@setupProfile')->name('verified.setup');
+
 
 Route::middleware(['auth'])->group(function () {
     Route::prefix('profile')->group(function () {

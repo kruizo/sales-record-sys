@@ -12,7 +12,7 @@
                 <h2 class="pl-3 mb-4 text-2xl font-semibold">Settings</h2>
                 <li role="presentation">
                     <button id="signin-tab" data-tab-name="public-profile" data-tabs-target="#profilesetting" type="button" role="tab" aria-controls="profilesetting" aria-selected="false" class="flex items-center px-3 py-2.5 font-bold rounded-full">
-                        Public Profile
+                        Personal Information
                     </button>
                 </li>
                 <li role="presentation">
@@ -44,7 +44,7 @@
 
                     <div class="mb-2 sm:mb-6">
                         <x-input-label for="email" text="Email" class="text-gray-300" />
-                        <x-input-text id="email" class="border-none hover:cursor-default" readonly />
+                        <x-input-text id="email" class="border-none hover:cursor-default" value="{{Auth::user()->email}}" readonly />
                     </div>
                     <div class="mb-2 sm:mb-6">
                         <x-input-label for="contactnumber" text="Contact Number" class="text-gray-300" />
@@ -79,7 +79,7 @@
 
                     </div>
                     <div class="flex justify-end">
-                        <button type="submit" class="text-white bg-indigo-700  hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800">Save</button>
+                        <button type="submit" class="text-white bg-blue-700  hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800">Save</button>
                     </div>
 
                 </div>

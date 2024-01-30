@@ -21,7 +21,6 @@ return new class extends Migration
             $table->string('contactnum');
             $table->string('email');
             $table->foreignId('address_id')->constrained('addresses');
-
             $table->timestamps();
         });
     }
