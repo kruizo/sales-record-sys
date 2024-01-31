@@ -27,7 +27,7 @@
         @endif
         @if (Auth::user()->hasVerifiedEmail())
         <a href="{{ route('profile') }}">
-            <x-button-primary text="Go to profile" />
+            <x-button-primary text="Go to profile" class="w-full" />
         </a>
         @else
         {{ __('Before proceeding, please check your email for a verification link.') }}

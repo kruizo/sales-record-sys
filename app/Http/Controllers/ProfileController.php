@@ -5,12 +5,17 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Customer;
 
 class ProfileController extends Controller
 {
     public function showProfile()
     {
-        return view('profiles.setup');
+        $user = auth()->user();
+        $customer = Customer::where('user_id', $user->id)->first();
+        $address = $customer ? $customer->address : null;
+
+        return view('profiles.setup', compact('customer', 'address'));
     }
 
     public function userOrders()
@@ -22,15 +27,10 @@ class ProfileController extends Controller
         $req->validate([
             'email' => ['required', 'string', 'email', 'max:255'],
         ]);
-
         $user = User::where('email', $req->email)->first();
 
-        if ($user) {
-            $user->sendEmailVerificationNotification();
+        $user->sendEmailVerificationNotification();
 
-            return redirect()->back()->with('success', 'Verification link sent successfully!');
-        }
-
-        return redirect()->back()->with('error', 'User not found with the provided email.');
+        return redirect()->route('verification', ['token' => $user->verification_token]);
     }
 }

@@ -23,61 +23,65 @@
 
             </ul>
         </aside>
-        <!-- <div class="default-tab-content">
-
-        </div> -->
         <div class="w-full min-h-screen py-1 md:w-2/3 lg:w-3/4 default-tab-content">
             <div class="w-full px-8 py-5 sm:max-w-xl sm:rounded-lg">
-                <div class="items-center mt-8 sm:mt-14 text-gray-400" id="profilesetting" role="tabpanel" aria-labelledby="profilesetting-tab">
-                    <div class="flex flex-col items-center w-full mb-2 space-x-0 space-y-2 sm:flex-row sm:space-x-4 sm:space-y-0 sm:mb-6">
-                        <div class="w-full">
-                            <x-input-label for="firstname" text="First Name" class="text-gray-300" />
-                            <x-input-text id="firstname" class="border-none hover:cursor-default" readonly />
+                <div class="items-center mt-8 sm:mt-14 text-gray-400 space-y-4" id="profilesetting" role="tabpanel" aria-labelledby="profilesetting-tab">
+                  
+                    <div class="w-full flex items-center">
+                        <x-input-label for="name" text="Name" class="text-gray-300 w-1/3" />
+                        <div class="w-full h-fit items-center flex relative">
+                            <x-input-text id="name" name="name" class="border-none hover:cursor-default" readonly value="{{$customer->firstname ?? ''}} {{$customer->lastname ?? ''}}" />
                         </div>
-
-                        <div class="w-full">
-                            <x-input-label for="lastname" text="Last  Name" class="text-gray-300" />
-                            <x-input-text id="lastname" class="border-none hover:cursor-default" readonly />
+                    </div>
+                    <div class="w-full flex items-center">
+                        <x-input-label for="contact" text="Contact Number" class="text-gray-300 w-1/3" />
+                        <div class="w-full h-fit items-center flex relative">
+                            <x-input-text id="contact" name="contact" class="border-none hover:cursor-default" readonly value="{{$customer->contactnum ?? ''}}" />
                         </div>
-
                     </div>
-
-                    <div class="mb-2 sm:mb-6">
-                        <x-input-label for="email" text="Email" class="text-gray-300" />
-                        <x-input-text id="email" class="border-none hover:cursor-default" value="{{Auth::user()->email}}" readonly />
-                    </div>
-                    <div class="mb-2 sm:mb-6">
-                        <x-input-label for="contactnumber" text="Contact Number" class="text-gray-300" />
-                        <x-input-text id="contactnumber" class="border-none hover:cursor-default" readonly />
-                    </div>
-                    <div class="mb-2 sm:mb-6">
-                        <x-input-label for="streetaddress" text="Street Address" class="text-gray-300" />
-                        <x-input-text id="streetaddress" class="border-none hover:cursor-default" readonly />
-                    </div>
-                    <div class="flex flex-col items-center w-full mb-2 space-x-0 space-y-2 sm:flex-row sm:space-x-4 sm:space-y-0 sm:mb-6">
-                        <div class="w-full">
-                            <x-input-label for="province" text="Province" class="text-gray-300" />
-                            <x-input-text id="province" class="border-none hover:cursor-default" readonly />
+                  
+                    <div class="w-full flex items-center">
+                        <x-input-label for="emailaccount" text="Email" class="text-gray-300 w-1/3" />
+                        <div class="w-full h-fit items-center flex relative">
+                            <x-input-text id="emailaccount" name="email" class="border-none hover:cursor-default" readonly value="{{Auth::user()->email}}" />
+                            @if (!Auth::user()->isVerified())
+                            <x-button-primary type="submit" text="Verify" class="w-24 bg-transparent absolute right-0 hover:bg-transparent text-blue-500" />
+                            @else
+                            <x-input-label text="Verified" class="absolute right-5 mt-1 text-green-500" />
+                            @endif
                         </div>
-
-                        <div class="w-full">
-                            <x-input-label for="barangay" text="Barangay" class="text-gray-300" />
-                            <x-input-text id="barangay" class="border-none hover:cursor-default" readonly />
-                        </div>
-
                     </div>
-                    <div class="flex flex-col items-center w-full mb-2 space-x-0 space-y-2 sm:flex-row sm:space-x-4 sm:space-y-0 sm:mb-6">
-                        <div class="w-full">
-                            <x-input-label for="city" text="City" class="text-gray-300" />
-                            <x-input-text id="city" class="border-none hover:cursor-default" readonly />
+                    <div class="w-full flex items-center">
+                        <x-input-label for="streetaddress" text="Street address" class="text-gray-300 w-1/3" />
+                        <div class="w-full h-fit items-center flex relative">
+                            <x-input-text id="streetaddress" name="street_address" class="border-none hover:cursor-default" readonly value="{{$address->streetaddress ?? ''}}" />
                         </div>
-
-                        <div class="w-full">
-                            <x-input-label for="zip" text="Postal/Zip" class="text-gray-300" />
-                            <x-input-text id="zip" type="number" class="border-none hover:cursor-default" readonly />
-                        </div>
-
                     </div>
+                    <div class="w-full flex items-center">
+                        <x-input-label for="province" text="Province" class="text-gray-300 w-1/3" />
+                        <div class="w-full h-fit items-center flex relative">
+                            <x-input-text id="province" name="province" class="border-none hover:cursor-default" readonly value="{{$address->province ?? ''}}" />
+                        </div>
+                    </div>
+                    <div class="w-full flex items-center">
+                        <x-input-label for="barangay" text="Barangay" class="text-gray-300 w-1/3" />
+                        <div class="w-full h-fit items-center flex relative">
+                            <x-input-text id="barangay" name="barangay" class="border-none hover:cursor-default" readonly value="{{$address->barangay ?? ''}}" />
+                        </div>
+                    </div>
+                    <div class="w-full flex items-center">
+                        <x-input-label for="city" text="City" class="text-gray-300 w-1/3" />
+                        <div class="w-full h-fit items-center flex relative">
+                            <x-input-text id="city" name="city" class="border-none hover:cursor-default" readonly value="{{$address->city ?? ''}}" />
+                        </div>
+                    </div>
+                    <div class="w-full flex items-center">
+                        <x-input-label for="zip" text="Postal / Zip" class="text-gray-300 w-1/3" />
+                        <div class="w-full h-fit items-center flex relative">
+                            <x-input-text id="zip" name="zip" class="border-none hover:cursor-default" readonly value="{{$address->zip ?? ''}}" />
+                        </div>
+                    </div>
+                    
                     <div class="flex justify-end">
                         <button type="submit" class="text-white bg-blue-700  hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800">Save</button>
                     </div>
@@ -85,51 +89,30 @@
                 </div>
                 <div class="items-center mt-8 sm:mt-14 text-gray-400" id="accountsetting" role="tabpanel" aria-labelledby="accountsetting-tab">
                     <div class=" w-full mb-2 space-y-7 sm:mb-6">
-                        @if(session('success'))
-                        <div class="alert alert-success">
-                            {{ session('success') }}
-                        </div>
-                        @endif
-
-                        @if(session('error'))
-                        <div class="alert alert-danger">
-                            {{ session('error') }}
-                        </div>
-                        @endif
                         <form action="{{route('profile.verify')}}" method="POST">
                             @csrf
-                            <div class="w-full flex">
+                            <x-error-container />
+
+                            <div class="w-full flex items-center">
                                 <x-input-label for="emailaccount" text="Email" class="text-gray-300 w-1/3" />
                                 <div class="w-full h-fit items-center flex relative">
+                                    <x-input-text id="emailaccount" name="email" class="border-none hover:cursor-default" readonly value="{{Auth::user()->email}}" />
                                     @if (!Auth::user()->isVerified())
-
                                     <x-button-primary type="submit" text="Verify" class="w-24 bg-transparent absolute right-0 hover:bg-transparent text-blue-500" />
-
                                     @else
-                                    <x-button-primary type="button" text="Verified" class="w-24 bg-transparent absolute right-0 hover:bg-transparent text-green-500" />
+                                    <x-input-label text="Verified" class="absolute right-5 mt-1 text-green-500" />
                                     @endif
-                                    <x-input-text id="emailaccount" class="border-none hover:cursor-default" value="{{Auth::user()->email}}" readonly />
                                 </div>
-
-
                             </div>
+                            
                         </form>
-                        <div class="w-full flex">
-                            <x-input-label for="password" text="Password" class="text-gray-300 w-1/3" />
-                            <div class="w-full space-y-5">
-                                <x-input-text id="password" class="border-none hover:cursor-default mb-5" readonly />
-                                <a href="{{ route('password.request') }}">
-                                    <x-button-primary text="Change Password" class="w-52" />
+                        <div class="w-full my-5 flex justify-end ">
+                            <a href="{{ route('password.request') }}">
+                                <x-button-primary text="Change Password" class="w-52 text-white" />
 
-                                </a>
-                            </div>
+                            </a>
                         </div>
-
-
                     </div>
-
-
-
                 </div>
             </div>
         </div>

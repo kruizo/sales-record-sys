@@ -10,7 +10,7 @@ class Customer extends Model
     use HasFactory;
 
     protected $fillable = [
-        'firstname', 'lastname', 'contactnum', 'email', 'address_id',
+        'firstname', 'lastname', 'contactnum', 'email', 'address_id', 'user_id',
     ];
 
     public function address()
@@ -20,6 +20,6 @@ class Customer extends Model
 
     public function user()
     {
-        return $this->hasOne(User::class);
+        return $this->belongsTo(User::class);
     }
 }

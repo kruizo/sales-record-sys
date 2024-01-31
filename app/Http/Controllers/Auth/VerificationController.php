@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\VerifiesEmails;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Models\Customer;
 
 class VerificationController extends Controller
 {
@@ -46,6 +47,12 @@ class VerificationController extends Controller
         $user = User::find(Auth::user()->id);
         if (!$user) {
             abort(404);
+        }
+
+        $hasProfile = Customer::where('user_id', $user->id)->exists();
+
+        if ($hasProfile) {
+            return redirect()->route('verification');
         }
 
         return view('auth.profile-form', compact('user'));

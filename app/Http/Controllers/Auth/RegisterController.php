@@ -14,111 +14,67 @@ use App\Models\Address;
 
 class RegisterController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Register Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles the registration of new users as well as their
-    | validation and creation. By default this controller uses a trait to
-    | provide this functionality without requiring any additional code.
-    |
-    */
+
 
     use RegistersUsers;
 
-    /**
-     * Where to redirect users after registration.
-     *
-     * @var string
-     */
-    protected $redirectTo = 'verification';
 
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
+    protected $redirectTo = "verification";
+
     public function __construct()
     {
-        $this->middleware('guest');
     }
 
-    /**
-     * Get a validator for an incoming registration request.
-     *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
-     */
     protected function validator(array $data)
     {
-        $validator = Validator::make($data, [
-            'firstname' => ['required', 'string', 'max:255'],
-            'lastname' => ['required', 'string', 'max:255'],
-            'middleinitial' => ['nullable', 'string', 'max:1'],
-            'contactnumber' => ['required', 'string', 'max:20'],
-            'streetaddress' => ['required', 'string', 'max:255'],
-            'city' => ['required', 'string', 'max:255'],
-            'zip' => ['required', 'string', 'max:10'],
-            'barangay' => ['required', 'string', 'max:255'],
+        return Validator::make($data, [
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
-
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
-        } else {
-            return $validator;
-        }
     }
-
-    /**
-     * Create a new user instance after a valid registration.
-     *
-     * @param  array  $data
-     * @return \App\Models\User
-     */
 
     protected function create(array $data)
     {
-
-        $address = Address::create([
-            'streetaddress' => $data['streetaddress'],
-            'province' => $data['province'],
-            'city' => $data['city'],
-            'zip' => $data['zip'],
-            'barangay' => $data['barangay'],
-        ]);
-        $customer = Customer::create([
-            'firstname' => $data['firstname'],
-            'lastname' => $data['lastname'],
-            'contactnum' => $data['contactnum'],
-            'email' => $data['email'],
-            'address_id' => $address->id,
-        ]);
-
         return User::create([
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'customer_id' => $customer->id,
+            'email_verified_at' => null,
         ]);
     }
 
-    public function initiateRegistration(Request $request)
+
+    public function profileRegistration(Request $request)
     {
         $request->validate([
             'email' => ['required', 'string', 'email', 'max:255'],
-            'password' => ['required', 'string', 'min:8', 'confirmed']
+            'first_name' => ['required', 'string', 'max:255'],
+            'last_name' => ['required', 'string', 'max:255'],
+            'middle_initial' => ['nullable', 'string', 'max:1'],
+            'contact_number' => ['required', 'string', 'max:20'],
+            'street_address' => ['required', 'string', 'max:255'],
+            'city' => ['required', 'string', 'max:255'],
+            'province' => ['required', 'string', 'max:255'],
+            'zip' => ['required', 'string', 'max:10'],
+            'barangay' => ['required', 'string', 'max:255'],
         ]);
 
-        $tempUser = User::create([
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'email_verified_at' => null,
+        $address = Address::create([
+            'streetaddress' => $request->street_address,
+            'province' => $request->province,
+            'city' => $request->city,
+            'zip' => $request->zip,
+            'barangay' => $request->barangay,
         ]);
 
-        $tempUser->sendEmailVerificationNotification();
-        Auth::login($tempUser);
-        return redirect()->route('verification', ['token' => $tempUser->verification_token]);
+        $customer = Customer::create([
+            'address_id' => $address->id,
+            'user_id' => Auth::id(),
+            'firstname' => $request->first_name,
+            'lastname' => $request->last_name,
+            'contactnum' => $request->contact_number,
+            'email' => Auth::user()->email,
+        ]);
+
+        return redirect()->route('/home');
     }
 }
