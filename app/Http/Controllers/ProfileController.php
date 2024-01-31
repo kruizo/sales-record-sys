@@ -11,17 +11,27 @@ class ProfileController extends Controller
 {
     public function showProfile()
     {
-        $user = auth()->user();
-        $customer = Customer::where('user_id', $user->id)->first();
-        $address = $customer ? $customer->address : null;
+        list($customer, $address) = $this->getCustomerAndAddress();
 
         return view('profiles.setup', compact('customer', 'address'));
     }
 
     public function userOrders()
     {
-        return view('profiles.order');
+        list($customer, $address) = $this->getCustomerAndAddress();
+
+        return view('profiles.order', compact('customer', 'address'));
     }
+
+    private function getCustomerAndAddress()
+    {
+        $user = auth()->user();
+        $customer = Customer::where('user_id', $user->id)->first();
+        $address = $customer ? $customer->address : null;
+
+        return [$customer, $address];
+    }
+
     public function verifyUser(Request $req)
     {
         $req->validate([

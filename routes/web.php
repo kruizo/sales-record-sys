@@ -8,9 +8,7 @@ Route::get('/', function () {
     return view('welcome');
 })->name('/');
 
-Route::get('/order', function () {
-    return view('order');
-})->name('order');
+Route::get('/order', [App\Http\Controllers\OrderController::class, 'showOrder'])->name('order');
 
 
 

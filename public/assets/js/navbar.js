@@ -5,7 +5,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
     }
 
-    console.log(window.scrollY);
 
     window.addEventListener("scroll", function() {
         var scrollPercentage = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;

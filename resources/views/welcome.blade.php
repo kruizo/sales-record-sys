@@ -369,7 +369,9 @@
     </div>
 </section>
 @endsection
-
-<!-- @section('modal')
-@include('modals.authentication')
-@endsection -->
+@if (Route::has('login'))
+    @section('modal')
+    @include('modals.authentication')
+    @endsection 
+@endif
+    

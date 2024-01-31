@@ -18,9 +18,11 @@
     <form action="POST" action="{{route('/')}}">
         @csrf
         <div class="justify-between w-full gap-4 mt-8 md:flex md:space-y-0 space-y-7" id="product-form">
-            <x-product-card name="alkaline" id="alkaline" price="40" productName="Alkaline" size="5gal." />
-            <x-product-card name="mineral" id="mineral" price="30" productName="Mineral" size="5gal." />
-            <x-product-card name="distilled" id="distilled" price="20" productName="Distilled" size="5gal." />
+            @foreach ($waters as $water)
+            <x-product-card name="{{$water->type}}" id="{{$water->type}}" price="{{$water->cost}}" productName="{{$water->name}}" size="5gal." />
+                
+            @endforeach
+
         </div>
         <div class="justify-center w-full gap-4 mt-5 md:flex md:space-y-0 space-y-7 bg-gray-900 p-2" id="user-form">
             <div class="shadow-2xl p-2  w-full md:w-3/4 ">
@@ -28,30 +30,25 @@
                 <div class="flex gap-2 my-5">
                     <div class="w-full">
                         <x-input-label text="First Name" for="firstname" />
-                        <x-input-text id="firstname" name="firstname" readonly />
+                        <x-input-text id="firstname" name="first_name" value="{{$customer->firstname}}" readonly />
 
                     </div>
 
-                    <div class="w-1/2">
-                        <x-input-label text="Last Name" for="lastname" />
-                        <x-input-text id="lastname" name="lastname" readonly />
-                    </div>
-                    <div>
-                        <x-input-label text="Middle Initial" for="middleinitial" />
-                        <x-input-text id="middleinitial" name="middleinitial" readonly />
-                    </div>
-                </div>
-
-                <div class="flex gap-2">
                     <div class="w-full">
-                        <x-input-label text="Email" for="email" />
-                        <x-input-text id="email" name="email" readonly />
+                        <x-input-label text="Last Name" for="lastname" />
+                        <x-input-text id="lastname" name="last_name" value="{{$customer->lastname}}" readonly />
                     </div>
+                  
                 </div>
-                <div>
-                    <x-input-label text="Contact Number" for="contact" />
-                    <x-input-text id="contact" name="contact" readonly />
-                </div>
+
+                    <div class="w-full my-5">
+                        <x-input-label text="Email" for="email" />
+                        <x-input-text id="email" name="email" value="{{$customer->email}}" readonly />
+                    </div>
+                    <div class="w-full my-5">
+                        <x-input-label text="Contact Number" for="contactnumber" />
+                        <x-input-text id="contactnumber" name="contact_number" value="{{$customer->contactnum}}" readonly />
+                    </div>
             </div>
         </div>
         <div class="justify-center w-full gap-4 mt-5 md:flex md:space-y-0 space-y-7 bg-gray-900 p-2" id="user-form">
@@ -64,40 +61,36 @@
                     </div>
                 </div>
                 <div id="textaddress">
-
                     <div class="w-full my-5">
-                        <x-input-label text="Street Address" for="street" />
-                        <x-input-text id="street" name="street" readonly />
+                        <x-input-label text="Street Address" for="streetaddress" />
+                        <x-input-text id="streetaddress" name="street_address" value="{{$address->streetaddress}}" readonly />
 
                     </div>
                     <div class="flex gap-2">
                         <div class="w-1/2">
-                            <x-input-label text="State" for="state" />
-                            <x-input-text id="state" name="state" readonly />
+                            <x-input-label text="Province" for="province" />
+                            <x-input-text id="province" name="province" value="{{$address->province}}" readonly />
 
                         </div>
 
                         <div class="w-1/2">
-                            <x-input-label text="Province" for="province" />
-                            <x-input-text id="province" name="province" readonly />
+                            <x-input-label text="Baranngay" for="barangay" />
+                            <x-input-text id="barangay" name="barangay" value="{{$address->barangay}}" readonly />
                         </div>
 
                     </div>
                     <div class="flex gap-2">
                         <div class="w-1/2">
                             <x-input-label text="City" for="city" />
-                            <x-input-text id="city" name="city" readonly />
+                            <x-input-text id="city" name="city" value="{{$address->city}}" readonly />
 
                         </div>
 
                         <div class="w-1/2">
-                            <x-input-label text="Postal/Zip" for="postal" />
-                            <x-input-text type="number" id="postal" name="postal" readonly />
+                            <x-input-label text="Postal/Zip" for="zip" />
+                            <x-input-text type="number" id="zip" name="zip" value="{{$address->zip}}" readonly />
                         </div>
-
                     </div>
-
-
                 </div>
                 <div class="w-full" id="mapaddress">
                     <div class="newiframe" id="newframe" class="h-96" style="display: none">
@@ -107,17 +100,17 @@
                 <div class="py-2">
                     <p class="text-gray-100 text-md">Are you walk-in or delivery?</p>
                     <div class="flex flex-col">
-                        <x-radio-bordered id="walkin" name="deliveryMethod" value="Walk-in" />
-                        <x-radio-bordered id="delivery" name="deliveryMethod" value="Delivery" />
+                        <x-radio-bordered id="walkin" name="delivery_method" value="Walk-in" />
+                        <x-radio-bordered id="delivery" name="delivery_method" value="Delivery" />
                     </div>
                 </div>
                 <div class="py-2 hidden" id="payment">
                     <p class="text-gray-100 text-md">Payment Method</p>
                     <div class="flex flex-col">
 
-                        <x-radio-bordered id="codradio" name="paymentMethod" value="Cash on Delivery" />
-                        <x-radio-bordered id="gcashradio" name="paymentMethod" value="Credit Card" />
-                        <x-radio-bordered id="creditradio" name="paymentMethod" value="GCash" />
+                        <x-radio-bordered id="codradio" name="payment_method" value="Cash on Delivery" />
+                        <x-radio-bordered id="gcashradio" name="payment_method" value="Credit Card" />
+                        <x-radio-bordered id="creditradio" name="payment_method" value="GCash" />
 
                     </div>
 
@@ -131,14 +124,14 @@
                                     <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
                                 </svg>
                             </div>
-                            <input datepicker datepicker-autohide type="text" class="border z-10 border-gray-700 bg-gray-800 text-gray-400 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date">
+                            <input datepicker datepicker-autohide type="text" name="expected_date" class="border z-10 border-gray-700 bg-gray-800 text-gray-400 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date">
                         </div>
-                        <input type="time" class="border z-10 w-1/3 border-gray-700 bg-gray-800 text-gray-400 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select time">
+                        <input type="time" name="expected_time" class="border z-10 w-1/3 border-gray-700 bg-gray-800 text-gray-400 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select time">
                     </div>
                 </div>
                 <div class="py-2">
                     <p class="text-gray-100 text-md">Special Instructions</p>
-                    <textarea maxlength="300" id="message" name="message" rows="4" cols="1" class="bg-gray-800 border-none w-full"></textarea>
+                    <textarea maxlength="300" id="specialinstruction" name="special_instructions" rows="4" cols="1" class="bg-gray-800 border-none w-full"></textarea>
 
                 </div>
             </div>
@@ -187,8 +180,8 @@
     };
 
 
-    const deliveryMethodRadios = document.querySelectorAll('input[name="deliveryMethod"]');
-    deliveryMethodRadios.forEach(radio => {
+    const delivery_methodRadios = document.querySelectorAll('input[name="delivery_method"]');
+    delivery_methodRadios.forEach(radio => {
         radio.addEventListener('change', function() {
             updateOrder();
             console.log(radio.id);
@@ -305,7 +298,6 @@
     function showAddress() {
         document.getElementById('newframe').style.display = 'none';
         document.getElementById('textaddress').style.display = 'block';
-        document.getElementById('viewaddress').style.display = 'none';
         document.getElementById('viewaddress').style.style = 'bg-transparent';
     }
 
@@ -430,6 +422,3 @@
 </script>
 @endsection
 
-@section('modal')
-@include('modals.authentication')
-@endsection

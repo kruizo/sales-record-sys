@@ -40,6 +40,9 @@
 
 </body>
 
-@yield('modal')
+@if (Route::has('login'))
 
+    @include('modals.authentication')
+    
+@endif
 </html>

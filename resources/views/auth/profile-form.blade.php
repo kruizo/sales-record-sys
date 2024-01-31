@@ -23,11 +23,6 @@
                 <x-input-text id="lastname" name="last_name" class="border-none hover:cursor-default"  />
                 
             </div>
-            <div class="w-28">
-                <x-input-label for="middleinitial" text="M.I" class="text-gray-300" />
-                <x-input-text id="middleinitial" name="middle_initial" class="border-none hover:cursor-default"  />
-               
-            </div>
     
         </div>
     
