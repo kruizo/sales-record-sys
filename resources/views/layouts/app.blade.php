@@ -37,10 +37,10 @@
 
     </div>
     <script type="text/javascript" src="{{ asset('assets/js/navbar.js') }}"></script>
-
+    <script src="{{ asset('assets/js/alert.js') }}"></script>
     @if (!auth()->check())
        @include('modals.authentication')
     @endif
-
+   
 </body>
 </html>

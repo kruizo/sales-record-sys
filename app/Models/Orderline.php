@@ -12,7 +12,7 @@ class Orderline extends Model
     protected $fillable = [
         'order_id',
         'water_id',
-        'quanity',
+        'quantity',
         'subtotal',
     ];
 

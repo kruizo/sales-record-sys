@@ -20,7 +20,20 @@ input:-webkit-autofill {
     background-color: rgb(17, 24, 39) !important; /* Added background-color */
 }
 
-  
+.animate-toast {
+    animation: slideInUp 0.5s ease-out forwards; /* Adjust the duration as needed */
+}
+
+@keyframes slideInUp {
+    from {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
 
 
 

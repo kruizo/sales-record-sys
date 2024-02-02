@@ -22,6 +22,10 @@ class ProfileController extends Controller
     public function userOrders()
     {
         list($customer, $address) = $this->getCustomerAndAddress();
+        $user = auth()->user();
+        $customer = Customer::where('user_id', $user->id)->first();
+        $address = $customer ? $customer->address : null;
+        $order = $customer ? Order::where('customer_id', $customer->id)->first();
         return view('profiles.order', compact('customer', 'address'));
     }
 

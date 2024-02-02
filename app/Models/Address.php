@@ -23,6 +23,6 @@ class Address extends Model
     }
     public function getFullAddressAttribute()
     {
-        return "{$this->street_address}, {$this->barangay}, {$this->city}, {$this->province}, {$this->zip}";
+        return "{$this->streetaddress}, {$this->barangay}, {$this->city}, {$this->province}, {$this->zip}";
     }
 }

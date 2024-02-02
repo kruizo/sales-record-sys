@@ -18,14 +18,13 @@ Route::post('/save-profile', 'App\Http\Controllers\ProfileController@saveProfile
 
 Route::get('/verified/setup', 'App\Http\Controllers\Auth\VerificationController@setupProfile')->name('verified.setup');
 Route::post('/place-order', [App\Http\Controllers\OrderController::class, 'placeOrder'])->name('place-order');
-Route::get('/test-place-order', [App\Http\Controllers\OrderController::class, 'placeOrderTest']);
 
 
 Route::middleware(['auth'])->group(function () {
     Route::GET('/verification', function () {
         return view('auth.verify');
     })->name('verification');
-    Route::get('/order', [App\Http\Controllers\OrderController::class, 'showOrder'])->name('order');
+    Route::get('/order', [App\Http\Controllers\OrderController::class, 'showOrder'])->name('order')->middleware('verified');
 
     Route::prefix('profile')->group(function () {
         // Route::get('/verification', function () {
