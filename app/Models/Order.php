@@ -21,6 +21,10 @@ class Order extends Model
     }
     public function orderline()
     {
-        return $this->hasOne(Customer::class);
+        return $this->hasMany(Orderline::class);
+    }
+    public function delivery()
+    {
+        return $this->hasOne(Delivery::class);
     }
 }

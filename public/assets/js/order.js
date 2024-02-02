@@ -4,6 +4,8 @@ let longitude = 0;
 let activebtn = '';
 
 
+
+
 const productDataElement = document.getElementById('product-data');
     const productData = JSON.parse(productDataElement.getAttribute('data-products'));
 
@@ -19,6 +21,7 @@ const productDataElement = document.getElementById('product-data');
             quantity: 0
         };
     });
+
 
 function updateOrder() {
     const orderInformation = document.getElementById('order-information');

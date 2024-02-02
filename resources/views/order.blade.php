@@ -15,7 +15,7 @@
     <div class="flex justify-between items-center">
         <x-section-header class="" text="Choose a product" />
     </div>
-    <form method="POST" action="{{ route('place-order') }}">
+    <form method="POST" action="{{ route('place-order') }}" id="orderForm">
         @csrf
 
         @if($errors->any())
@@ -161,10 +161,9 @@
                 </div>
             </div>
         </div>
-        <x-button-primary text="Submit" class="max-w-fit float-right h-10 bg-green-400 hover:bg-green-600"/>
+        <x-button-primary text="Submit" class="max-w-fit float-right h-10 my-5 bg-green-500 hover:bg-green-600"/>
     </form>
 </div>
-
 
 @include('modals/map')
 <script src="{{ asset('assets/js/order.js') }}"></script>

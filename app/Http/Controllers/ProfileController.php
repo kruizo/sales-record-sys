@@ -8,6 +8,8 @@ use App\Models\User;
 use App\Models\Customer;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Address;
+use App\Models\Order;
+use App\Models\Orderline;
 
 class ProfileController extends Controller
 {
@@ -25,8 +27,11 @@ class ProfileController extends Controller
         $user = auth()->user();
         $customer = Customer::where('user_id', $user->id)->first();
         $address = $customer ? $customer->address : null;
-        $order = $customer ? Order::where('customer_id', $customer->id)->first();
-        return view('profiles.order', compact('customer', 'address'));
+        // Use optional() to handle cases where $customer is null
+        $orders = optional($customer)->orders()->with('orderline', 'delivery')->orderBy('created_at', 'desc')->get();
+        $recent = $orders->first();
+
+        return view('profiles.order', compact('customer', 'address', 'orders', 'recent'));
     }
 
     private function getCustomerAndAddress()

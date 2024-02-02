@@ -23,6 +23,6 @@ class Orderline extends Model
 
     public function water()
     {
-        return $this->belingsTo(Water::class);
+        return $this->belongsTo(Water::class);
     }
 }
