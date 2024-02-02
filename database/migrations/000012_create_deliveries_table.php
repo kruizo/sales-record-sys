@@ -19,9 +19,11 @@ return new class extends Migration
             $table->foreignId('employee_id')->constrained('employees')->onDelete('cascade');
             $table->date('delivery_date');
             $table->string('delivery_time');
-            $table->string('delivery_status');
+            $table->string('delivery_status')->default('In progress');
             $table->string('delivery_address');
-            $table->string('special_instruction');
+            $table->string('map_reference')->nullable();
+            $table->string('special_instruction')->nullable();
+            $table->string('date_delivered')->nullable();
             $table->timestamps();
         });
     }

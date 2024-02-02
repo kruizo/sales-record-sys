@@ -369,9 +369,5 @@
     </div>
 </section>
 @endsection
-@if (Route::has('login'))
-    @section('modal')
-    @include('modals.authentication')
-    @endsection 
-@endif
+
     

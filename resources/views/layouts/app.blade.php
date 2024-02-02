@@ -34,15 +34,13 @@
 
             @yield('content')
         </main>
+
     </div>
-    <div id="modal-container"></div>
     <script type="text/javascript" src="{{ asset('assets/js/navbar.js') }}"></script>
 
+    @if (!auth()->check())
+       @include('modals.authentication')
+    @endif
+
 </body>
-
-@if (Route::has('login'))
-
-    @include('modals.authentication')
-    
-@endif
 </html>

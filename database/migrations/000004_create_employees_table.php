@@ -16,11 +16,11 @@ return new class extends Migration
         Schema::create('employees', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('address_id')->constrained('addresses');
             $table->string('firstname');
             $table->string('lastname');
             $table->string('contactnum');
             $table->string('email');
-            $table->foreignId('address_id')->constrained('addresses');
             $table->timestamps();
         });
     }

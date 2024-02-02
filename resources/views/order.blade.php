@@ -15,11 +15,11 @@
     <div class="flex justify-between items-center">
         <x-section-header class="" text="Choose a product" />
     </div>
-    <form action="POST" action="{{route('/')}}">
+    <form method="POST" action="{{ route('place-order') }}">
         @csrf
         <div class="justify-between w-full gap-4 mt-8 md:flex md:space-y-0 space-y-7" id="product-form">
             @foreach ($waters as $water)
-            <x-product-card name="{{$water->type}}" id="{{$water->type}}" price="{{$water->cost}}" productName="{{$water->name}}" size="5gal." />
+            <x-product-card name="{{$water->id}}" id="{{$water->type}}" price="{{$water->cost}}" productName="{{$water->name}}" size="5gal." />
                 
             @endforeach
 
@@ -60,58 +60,60 @@
                         <button class="bg-gray-700 rounded-lg text-lg text-blue-600 py-1 p-2" data-modal-target="mapmodal" data-modal-toggle="mapmodal" id="openModal" type="button"><i style="font-size: 25px;" class="fa fa-map-marker"></i></button>
                     </div>
                 </div>
-                <div id="textaddress">
-                    <div class="w-full my-5">
-                        <x-input-label text="Street Address" for="streetaddress" />
-                        <x-input-text id="streetaddress" name="street_address" value="{{$address->streetaddress}}" readonly />
-
+                <div class="flex w-full">
+                    <div id="textaddress" class="w-full">
+                        <div class="w-full my-5">
+                            <x-input-label text="Street Address" for="streetaddress" />
+                            <x-input-text id="streetaddress" name="street_address" value="{{$address->streetaddress}}" readonly />
+                        </div>
+                        <div class="flex gap-2">
+                            <div class="w-1/2">
+                                <x-input-label text="Province" for="province" />
+                                <x-input-text id="province" name="province" value="{{$address->province}}" readonly />
+    
+                            </div>
+    
+                            <div class="w-1/2">
+                                <x-input-label text="Baranngay" for="barangay" />
+                                <x-input-text id="barangay" name="barangay" value="{{$address->barangay}}" readonly />
+                            </div>
+    
+                        </div>
+                        <div class="flex gap-2">
+                            <div class="w-1/2">
+                                <x-input-label text="City" for="city" />
+                                <x-input-text id="city" name="city" value="{{$address->city}}" readonly />
+    
+                            </div>
+    
+                            <div class="w-1/2">
+                                <x-input-label text="Postal/Zip" for="zip" />
+                                <x-input-text type="number" id="zip" name="zip" value="{{$address->zip}}" readonly />
+                            </div>
+                        </div>
                     </div>
-                    <div class="flex gap-2">
-                        <div class="w-1/2">
-                            <x-input-label text="Province" for="province" />
-                            <x-input-text id="province" name="province" value="{{$address->province}}" readonly />
-
-                        </div>
-
-                        <div class="w-1/2">
-                            <x-input-label text="Baranngay" for="barangay" />
-                            <x-input-text id="barangay" name="barangay" value="{{$address->barangay}}" readonly />
-                        </div>
-
+                 
+                    <div class="w-1/2" class="newiframe" id="newframe" style="display: none">
+                            <iframe id="newmap" src="{{route('map.show')}}" class="w-full h-full" scrolling="no"></iframe>
                     </div>
-                    <div class="flex gap-2">
-                        <div class="w-1/2">
-                            <x-input-label text="City" for="city" />
-                            <x-input-text id="city" name="city" value="{{$address->city}}" readonly />
-
-                        </div>
-
-                        <div class="w-1/2">
-                            <x-input-label text="Postal/Zip" for="zip" />
-                            <x-input-text type="number" id="zip" name="zip" value="{{$address->zip}}" readonly />
-                        </div>
-                    </div>
+                    <input type="hidden" name="mapreference" id="mapreference">
                 </div>
-                <div class="w-full" id="mapaddress">
-                    <div class="newiframe" id="newframe" class="h-96" style="display: none">
-                        <iframe id="newmap" src="{{route('map.show')}}" class="w-full h-96" scrolling="no"></iframe>
-                    </div>
-                </div>
+                
                 <div class="py-2">
                     <p class="text-gray-100 text-md">Are you walk-in or delivery?</p>
                     <div class="flex flex-col">
+                      
                         <x-radio-bordered id="walkin" name="delivery_method" value="Walk-in" />
                         <x-radio-bordered id="delivery" name="delivery_method" value="Delivery" />
                     </div>
+                    
                 </div>
                 <div class="py-2 hidden" id="payment">
                     <p class="text-gray-100 text-md">Payment Method</p>
                     <div class="flex flex-col">
-
                         <x-radio-bordered id="codradio" name="payment_method" value="Cash on Delivery" />
                         <x-radio-bordered id="gcashradio" name="payment_method" value="Credit Card" />
                         <x-radio-bordered id="creditradio" name="payment_method" value="GCash" />
-
                     </div>
 
                 </div>
@@ -147,7 +149,7 @@
 
             </div>
         </div>
-        <x-button-primary text="Submit" type="button" class="max-w-fit float-right h-10 bg-green-400 hover:bg-green-600" id="submitButton" onclick="submit()" />
+        <x-button-primary text="Submit" class="max-w-fit float-right h-10 bg-green-400 hover:bg-green-600"/>
     </form>
 
 </div>
@@ -159,17 +161,17 @@
     let activebtn = '';
     let order = {
         products: {
-            alkaline: {
+            Alkaline: {
                 name: 'Alkaline',
                 price: 40,
                 quantity: 0
             },
-            mineral: {
+            Mineral: {
                 name: 'Mineral',
                 price: 30,
                 quantity: 0
             },
-            distilled: {
+            Distilled: {
                 name: 'Distilled',
                 price: 20,
                 quantity: 0
@@ -193,8 +195,6 @@
 
         });
     });
-
-
 
     function updateOrder() {
         const orderInformation = document.getElementById('order-information');
@@ -291,82 +291,6 @@
         }
     }
 
-
-
-    window.addEventListener('message', handleLocationMessage);
-
-    function showAddress() {
-        document.getElementById('newframe').style.display = 'none';
-        document.getElementById('textaddress').style.display = 'block';
-        document.getElementById('viewaddress').style.style = 'bg-transparent';
-    }
-
-    function showMap() {
-        if (currentMarker) {
-            var newIframe = document.getElementById('newmap');
-            var mapframe = document.getElementById('newframe');
-            const lat = latitude;
-            const lng = longitude;
-            resetmarker('newmap');
-
-            newIframe.contentWindow.postMessage({
-                lat,
-                lng,
-                action: 'view'
-            }, '*');
-            setActive('openModal', 'viewaddress');
-            hideAddress();
-        } else {
-            alert('Please place a marker on the map before confirming.');
-        }
-    }
-
-
-    function handleLocationMessage(event) {
-        if (event.data && typeof event.data === 'object' && event.data.lat && event.data.lng) {
-            const lat = event.data.lat;
-            const lng = event.data.lng;
-            latitude = lat;
-            longitude = lng;
-            currentMarker = true;
-            document.getElementById('locationtxt').textContent = "Lat: " + latitude + " Lgn: " + longitude;
-        }
-    }
-
-    function hideAddress() {
-        document.getElementById('newframe').style.display = 'block';
-        document.getElementById('textaddress').style.display = "none";
-        document.getElementById('viewaddress').style.display = "flex";
-    }
-
-
-    function resetmarker(frame) {
-        document.getElementById(frame).contentWindow.postMessage({
-            action: 'resetMarker'
-        }, '*');
-        if (getActive() == 'openModal') {
-            setActive('viewaddress', 'openModal');
-        } else {
-            document.getElementById('viewaddress').classList.toggle('hidden');
-        }
-    }
-
-    function setActive(active, inactive) {
-        if (active == 'viewaddress') {
-            showAddress();
-        } else {
-            document.getElementById(active).style.backgroundColor = "rgb(0, 145, 255)";
-            document.getElementById(active).style.color = "white";
-        }
-
-        activebtn = active;
-    }
-
-    function getActive() {
-        return activebtn;
-    }
-
-
     function toggleCard(productId) {
         var hiddenDiv = document.getElementById(productId + '-hidden');
         var inputValue = document.getElementById(productId).value;
@@ -419,6 +343,76 @@
         updateSubtotal(productId);
 
     }
+
+    window.addEventListener('message', handleLocationMessage);
+
+    function showAddress() {
+        document.getElementById('newframe').style.display = 'none';
+        document.getElementById('textaddress').style.display = 'block';
+        document.getElementById('viewaddress').style.style = 'bg-transparent';
+    }
+
+    function showMap() {
+        if (currentMarker) {
+            var newIframe = document.getElementById('newmap');
+            var mapframe = document.getElementById('newframe');
+            const lat = latitude;
+            const lng = longitude;
+            resetmarker('newmap');
+            document.getElementById('newframe').style.display = 'block';
+
+            newIframe.contentWindow.postMessage({
+                lat,
+                lng,
+                action: 'view'
+            }, '*');
+        } else {
+            alert('Please place a marker on the map before confirming.');
+        }
+    }
+
+
+    function handleLocationMessage(event) {
+        if (event.data && typeof event.data === 'object' && event.data.lat && event.data.lng) {
+            const lat = event.data.lat;
+            const lng = event.data.lng;
+            latitude = lat;
+            longitude = lng;
+            currentMarker = true;
+            document.getElementById('mapreference').value = "Lat: " + latitude + " Lgn: " + longitude;
+        
+            document.getElementById('locationtxt').textContent = "Lat: " + latitude + " Lgn: " + longitude;
+        }
+    }
+
+    function resetmarker(frame) {
+        document.getElementById(frame).contentWindow.postMessage({
+            action: 'resetMarker'
+        }, '*');
+        if (getActive() == 'openModal') {
+            setActive('viewaddress', 'openModal');
+        } else {
+            document.getElementById('viewaddress').classList.toggle('hidden');
+        }
+    }
+
+    function setActive(active, inactive) {
+        if (active == 'viewaddress') {
+            showAddress();
+        } else {
+            document.getElementById(active).style.backgroundColor = "rgb(0, 145, 255)";
+            document.getElementById(active).style.color = "white";
+        }
+
+        activebtn = active;
+    }
+
+    function getActive() {
+        return activebtn;
+    }
+
+
+    
 </script>
 @endsection
 

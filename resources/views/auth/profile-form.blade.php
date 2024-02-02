@@ -33,7 +33,7 @@
         </div>
         <div class="mb-2 sm:mb-4">
             <x-input-label for="contactnumber" text="Contact Number" class="text-gray-300" />
-            <x-input-text id="contactnumber" name="contact_number" class="border-none hover:cursor-default"  />
+            <x-input-text id="contactnumber" type="number" name="contact_number" class="border-none hover:cursor-default"  />
             
         </div>
         <div class="mb-2 sm:mb-4">

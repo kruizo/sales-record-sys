@@ -26,11 +26,9 @@
 
                     <button type="button" class="flex text-sm items-center font-poppins font-semibold rounded-full md:me-0 dark:focus:ring-gray-600" id="user-menu-button2" aria-expanded="false" data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">
                         <a id="navbarDropdown" class="nav-link dropdown-toggle hidden lg:block" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                            @if (Auth::user()->name != '')
-                            {{ Auth::user()->name }}
-
-                            @endif
-                            @if (Auth::user()->name == '')
+                            @if (Auth::user()->customer && Auth::user()->customer->firstname)
+                                Hi {{ Auth::user()->customer->firstname }}
+                            @else ()
                             {{ Auth::user()->email }}
                             @endif
                         </a>
@@ -43,10 +41,12 @@
 
                 </div>
 
-                <!-- Dropdown menu -->
                 <div class="z-50 hidden my-4 text-base list-none bg-gray-900 divide-y divide-gray-600 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600" id="user-dropdown">
                     <div class="px-4 py-3">
-                        <span class="block text-sm text-gray-300 dark:text-white">{{ Auth::user()->name }}</span>
+                        <span class="block text-sm text-gray-300 dark:text-white">
+                            {{ Auth::user()->customer ? Auth::user()->customer->firstname . ' ' . Auth::user()->customer->lastname : '' }}
+                        </span>
+                        
                         <span class="block text-sm  text-gray-300 truncate dark:text-gray-400">{{ Auth::user()->email }}</span>
                     </div>
                     <ul class="py-2" aria-labelledby="user-menu-button">

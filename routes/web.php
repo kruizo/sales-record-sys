@@ -8,20 +8,24 @@ Route::get('/', function () {
     return view('welcome');
 })->name('/');
 
-Route::get('/order', [App\Http\Controllers\OrderController::class, 'showOrder'])->name('order');
 
 
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('/home'); //->middleware('verified')
 
+Route::post('/save-profile', 'App\Http\Controllers\ProfileController@saveProfile')->name('save-profile');
+
 
 Route::get('/verified/setup', 'App\Http\Controllers\Auth\VerificationController@setupProfile')->name('verified.setup');
+Route::post('/place-order', [App\Http\Controllers\OrderController::class, 'placeOrder'])->name('place-order');
+Route::get('/test-place-order', [App\Http\Controllers\OrderController::class, 'placeOrderTest']);
 
 
 Route::middleware(['auth'])->group(function () {
     Route::GET('/verification', function () {
         return view('auth.verify');
     })->name('verification');
+    Route::get('/order', [App\Http\Controllers\OrderController::class, 'showOrder'])->name('order');
 
     Route::prefix('profile')->group(function () {
         // Route::get('/verification', function () {

@@ -26,7 +26,15 @@
         <div class="w-full min-h-screen py-1 md:w-2/3 lg:w-3/4 default-tab-content">
             <div class="w-full px-8 py-5 sm:max-w-xl sm:rounded-lg">
                 <div class="items-center mt-8 sm:mt-14 text-gray-400 space-y-4" id="profilesetting" role="tabpanel" aria-labelledby="profilesetting-tab">
-                  
+                    <x-error-container />
+                    
+                    @if(session('success'))
+                    <!-- This code will be executed when there is a 'success' message in the session -->
+                    <div class="text-green-300">
+                        {{ session('success') }}
+                    </div>
+                @endif
+                    <div class="w-full"></div>
                     <div class="w-full flex items-center">
                         <x-input-label for="name" text="Name" class="text-gray-300 w-1/3" />
                         <div class="w-full h-fit items-center flex relative">
@@ -43,7 +51,7 @@
                     <div class="w-full flex items-center">
                         <x-input-label for="emailaccount" text="Email" class="text-gray-300 w-1/3" />
                         <div class="w-full h-fit items-center flex relative">
-                            <x-input-text id="emailaccount" name="email" class="border-none hover:cursor-default" readonly value="{{Auth::user()->email}}" />
+                            <x-input-text id="emailaccount" name="email" class="pr-24 border-none hover:cursor-default" readonly value="{{Auth::user()->email}}" />
                             @if (!Auth::user()->isVerified())
                             <x-button-primary type="submit" text="Verify" class="w-24 bg-transparent absolute right-0 hover:bg-transparent text-blue-500" />
                             @else
@@ -81,22 +89,19 @@
                             <x-input-text id="zip" name="zip" class="border-none hover:cursor-default" readonly value="{{$address->zip ?? ''}}" />
                         </div>
                     </div>
-                    
                     <div class="flex justify-end">
-                        <button type="submit" class="text-white bg-blue-700  hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800">Save</button>
+                        <button type="button" data-modal-target="edit-profile" data-modal-toggle="edit-profile" class="text-white bg-green-700  hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800">Edit</button>
                     </div>
-
                 </div>
                 <div class="items-center mt-8 sm:mt-14 text-gray-400" id="accountsetting" role="tabpanel" aria-labelledby="accountsetting-tab">
                     <div class=" w-full mb-2 space-y-7 sm:mb-6">
                         <form action="{{route('profile.verify')}}" method="POST">
                             @csrf
                             <x-error-container />
-
                             <div class="w-full flex items-center">
                                 <x-input-label for="emailaccount" text="Email" class="text-gray-300 w-1/3" />
                                 <div class="w-full h-fit items-center flex relative">
-                                    <x-input-text id="emailaccount" name="email" class="border-none hover:cursor-default" readonly value="{{Auth::user()->email}}" />
+                                    <x-input-text id="emailaccount" name="email" class="pr-24 border-none hover:cursor-default" readonly value="{{Auth::user()->email}}" />
                                     @if (!Auth::user()->isVerified())
                                     <x-button-primary type="submit" text="Verify" class="w-24 bg-transparent absolute right-0 hover:bg-transparent text-blue-500" />
                                     @else
@@ -118,6 +123,7 @@
         </div>
     </div>
 </div>
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         setInitialUIState();
@@ -157,5 +163,6 @@
         });
     }
 </script>
+@include('modals.edit-profile')
 
 @endsection

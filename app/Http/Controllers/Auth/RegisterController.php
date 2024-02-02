@@ -74,6 +74,12 @@ class RegisterController extends Controller
             'email' => Auth::user()->email,
         ]);
 
+        $user = Auth::user();
+        $user->customer->update([
+            'name' => $request->first_name . ' ' . $request->last_name,
+        ]);
+
+
         return redirect()->route('/home');
     }
 }

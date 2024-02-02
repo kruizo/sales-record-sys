@@ -17,9 +17,12 @@ class Address extends Model
         'zip',
     ];
 
-    // Define the relationship with Customer model
     public function customer()
     {
         return $this->hasOne(Customer::class);
+    }
+    public function getFullAddressAttribute()
+    {
+        return "{$this->street_address}, {$this->barangay}, {$this->city}, {$this->province}, {$this->zip}";
     }
 }
