@@ -40,7 +40,7 @@
                 
                     </div>
                 </div>
-                <div class="px-5">
+                {{-- <div class="px-5">
                     <h1 class="text-xl">Order Information</h1>
                 <div class="grid grid-cols-2 space-y-1 py-5 w-full">
                     <h2 id="order-number-label">Order Number:</h2>
@@ -62,7 +62,7 @@
                     <h2 id="payment-type">{{ $recent->payment_type }}</h2>
                 </div>
                 <x-button-link text="Cancel Order" class="text-red-600 p-0" />
-                </div>
+                </div> --}}
                 
 
             </div>
@@ -72,7 +72,7 @@
             @endforeach
            
         </section>
-        <aside class="min-w-1/3 w-1/3 max-w-1/4 hidden lg:block" id="order-information">
+        <aside class="min-w-1/3 w-1/3 max-w-1/3 hidden lg:block" id="order-information">
             <div class="sticky top-32 bg-gray-900 p-4">
                 <h1 class="text-xl">Order Information</h1>
                 <div class="grid grid-cols-2 space-y-1 py-5 w-full">
