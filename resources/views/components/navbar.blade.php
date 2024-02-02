@@ -78,16 +78,16 @@
         <div class="absolute top-24 md:top-0 items-center justify-between bg-gray-900 sm:bg-transparent hidden w-1/2 rounded-lg md:relative md:flex md:w-auto md:order-1" id="navbar-sticky">
             <ul class="flex font-poppins flex-col p-4 md:p-0 font-medium bg-gray-900 sm:bg-transparent rounded-lg  md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 ">
                 <li>
-                    <a href="{{ route('/') }}#home" class="block py-2 px-3 text-gray-300 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Home</a>
+                    <a href="{{ route('/') }}#home" class="block py-2 px-3 text-gray-300 rounded bg-gray-900 md:bg-transparent sm:hover:text-blue-600 md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Home</a>
                 </li>
                 <li>
-                    <a href="{{ route('/') }}#services" class="block py-2 px-3 text-gray-300 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Services</a>
+                    <a href="{{ route('/') }}#services" class="block py-2 px-3 text-gray-300 bg-gray-900 rounded md:bg-transparent sm:hover:text-blue-600 md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Services</a>
                 </li>
                 <li>
-                    <a href="{{ route('/') }}#about" class="block py-2 px-3 text-gray-300 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">About</a>
+                    <a href="{{ route('/') }}#about" class="block py-2 px-3 text-gray-300 bg-gray-900 rounded md:bg-transparent sm:hover:text-blue-600 md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">About</a>
                 </li>
                 <li>
-                    <a href="{{ route('/') }}#contact" class="block py-2 px-3 text-gray-300 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Contact</a>
+                    <a href="{{ route('/') }}#contact" class="block py-2 px-3 text-gray-300 bg-gray-900 rounded md:bg-transparent sm:hover:text-blue-600 md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Contact</a>
                 </li>
             </ul>
         </div>
