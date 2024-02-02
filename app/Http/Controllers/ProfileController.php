@@ -27,7 +27,6 @@ class ProfileController extends Controller
         $user = auth()->user();
         $customer = Customer::where('user_id', $user->id)->first();
         $address = $customer ? $customer->address : null;
-        // Use optional() to handle cases where $customer is null
         $orders = optional($customer)->orders()->with('orderline', 'delivery')->orderBy('created_at', 'desc')->get();
         $recent = $orders->first();
 
