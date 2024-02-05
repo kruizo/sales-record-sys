@@ -1,6 +1,6 @@
 @props(['name' => '', 'id' => '', 'productName' => '', 'price' => '' , 'size' => ''])
 
-<div class="card transition-all hover:cursor-pointer hover: w-full" id="{{ $id }}-card" onclick="toggleCard('{{ $id }}')">
+<div class="card transition-all hover:cursor-pointer shadow-blue-700 w-full" id="{{ $id }}-card" onclick="toggleCard('{{ $id }}')">
     <div class="bg-gray-800 flex p-4 rounded-lg w-full">
         <div class="p-2 flex flex-col relative shadow-2xl w-full">
             <div class="relative">

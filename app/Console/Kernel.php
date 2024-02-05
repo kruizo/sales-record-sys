@@ -23,6 +23,10 @@ class Kernel extends ConsoleKernel
      *
      * @return void
      */
+    protected $commands = [
+        Commands\MigrateInOrder::class,
+    ];
+    
     protected function commands()
     {
         $this->load(__DIR__.'/Commands');

@@ -13,14 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('customers', function (Blueprint $table) {
+        Schema::create('delivery_employees', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users');
-            $table->string('firstname');
-            $table->string('lastname');
-            $table->string('contactnum');
-            $table->string('email');
-            $table->foreignId('address_id')->constrained('addresses');
+            $table->foreignId('employee_id')->constrained('employees')->onDelete('cascade');
+            $table->boolean('isAvailable')->default(1);
+            $table->integer('total_deliveries');
+            $table->boolean('is_archived')->default(0);
             $table->timestamps();
         });
     }
@@ -32,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('customers');
+        Schema::dropIfExists('delivery_employees');
     }
 };

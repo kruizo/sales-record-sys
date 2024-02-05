@@ -13,11 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('delivery_employees', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('employee_id')->constrained('employees')->onDelete('cascade');
-            $table->boolean('isAvailable')->default(1);
-            $table->integer('total_deliveries');
+        Schema::create('registered_customers', function (Blueprint $table) {
+             $table->id();
+            $table->foreignId('customer_id')->constrained('customers')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->boolean('is_archived')->default(0);
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('delivery_employees');
+        Schema::dropIfExists('registered_customers');
     }
 };

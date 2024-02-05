@@ -10,7 +10,11 @@ class Customer extends Model
     use HasFactory;
 
     protected $fillable = [
-        'firstname', 'lastname', 'contactnum', 'email', 'address_id', 'user_id',
+        'firstname', 'lastname', 'contactnum', 'email', 'address_id', 'is_archived'
+    ];
+
+    protected $casts = [
+        'is_archived' => 'boolean',
     ];
 
     public function address()
@@ -18,9 +22,9 @@ class Customer extends Model
         return $this->belongsTo(Address::class);
     }
 
-    public function user()
+    public function registeredcustomer()
     {
-        return $this->belongsTo(User::class);
+        return $this->hasOne(registeredcustomer::class);
     }
     public function orders()
     {

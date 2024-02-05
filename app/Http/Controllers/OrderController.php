@@ -12,19 +12,21 @@ use App\Models\DeliveryEmployee;
 use App\Models\Order;
 use Illuminate\Support\Facades\Date;
 use App\Models\Address;
+use App\Models\RegisteredCustomer;
 
 class OrderController extends Controller
 {
 
 
-    public function showOrder()
+    public function index()
     {
         $user = auth()->user();
-        $customer = Customer::where('user_id', $user->id)->first();
-        if (!$customer) {
+        $registeredcustomer = RegisteredCustomer::where('user_id', $user->id)->first();
+        if (!$registeredcustomer) {
             return redirect()->route('verified.setup');
         }
-        $address = $customer ? $customer->address : null;
+        $customer = $registeredcustomer->customer;
+        $address = $registeredcustomer ? $customer->address : null;
         //get water data
         $waters = Water::all();
         return view('/order', compact('customer', 'address', 'waters'));
@@ -47,13 +49,13 @@ class OrderController extends Controller
             'delivery_address' => ['required', 'string', 'max:255'],
         ]);
 
-        $customerId = auth()->user()->customer->id;
+        $customerId = auth()->user()->registeredcustomer->customer->id;
         $paymentType = $request->input('payment_method');
         $mapReference = $request->input('mapreference');
         $deliveryDate = $request->input('expected_date');
         $deliveryTime = $request->input('expected_time');
         $specialInstructions = $request->input('special_instructions');
-        $employeeId = DeliveryEmployee::where('isAvailable', 1)->first()->id;
+        $employeeId = DeliveryEmployee::where('isAvailable', 1)->first()->employee_id;
         $order = Order::create([
             'customer_id' => $customerId,
             'purchase_type' => 'Delivery',
@@ -62,36 +64,47 @@ class OrderController extends Controller
 
         $deliveryAddress = $request->input('delivery_address');
 
-        Delivery::create([
-            'order_id' => $order->id,
-            'employee_id' => $employeeId,
-            'delivery_date' => $deliveryDate ?? Date::now()->toDateString(),
-            'delivery_time' => $deliveryTime ?? Date::now()->toTimeString(),
-            'delivery_address' => $deliveryAddress,
-            'map_reference' => $mapReference,
-            'special_instruction' => $specialInstructions,
-        ]);
+       
 
         $totalOrders = 0;
 
         foreach ($request->input() as $key => $value) {
-            if (strpos($key, 'product_') !== false && $value > 0) {
+            if (is_numeric($value) && strpos($key, 'product_') !== false && $value > 0) {
                 $waterId = substr($key, 8);
                 $water = Water::find($waterId);
 
                 $subtotal = $value * $water->cost;
+                 
+                $delivery = Delivery::create([
+                    //'orderline_id' => $orderline->id,
+                    'employee_id' => $employeeId,
+                    'delivery_date' => $deliveryDate ?? Date::now()->toDateString(),
+                    'delivery_time' => $deliveryTime ?? Date::now()->toTimeString(),
+                    'delivery_address' => $deliveryAddress,
+                    'map_reference' => $mapReference,
+                    'special_instruction' => $specialInstructions,
+                ]);
 
-                Orderline::create([
+
+                $orderline = Orderline::create([
+                    'delivery_id' => $delivery->id,
                     'order_id' => $order->id,
                     'water_id' => $water->id,
                     'quantity' => $value,
                     'subtotal' => $subtotal,
                 ]);
+         
                 $totalOrders++;
             }
         }
 
 
         return redirect()->route('profile/myorders');
+    }
+
+    public function cancelOrder($id){
+        return Orderline::find($id)->update('is_archived', 1);
+
+        
     }
 }

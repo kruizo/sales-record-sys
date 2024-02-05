@@ -5,12 +5,14 @@ namespace App\Http\Controllers\Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Notifications\VerifyEmailNotification;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Customer;
 use App\Models\Address;
+use App\Models\RegisteredCustomer;
 
 class RegisterController extends Controller
 {
@@ -40,13 +42,43 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
             'email_verified_at' => null,
         ]);
+
     }
 
+    public function initiateRegistration(Request $request)
+    {
+        $request->validate([
+            'email' => ['required', 'string', 'email', 'max:255' ,'unique:users'],
+            'password' => ['required', 'string', 'min:8', 'confirmed']
+        ]);
+
+        // $tempUser = User::create([
+        //     'email' => $request->email,
+        //     'password' => Hash::make($request->password),
+        //     'email_verified_at' => null,
+        // ]);
+
+      
+        // Create a temporary user instance
+        $tempUser = new User([
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
+
+        // Generate a unique verification token
+        $tempUser->verification_token = sha1(time());
+
+        // Send the email verification notification
+        $tempUser->notify(new VerifyEmailNotification($tempUser->verification_token));
+
+        return redirect()->route('verification', ['token' => $tempUser->verification_token]);
+
+    }
 
     public function profileRegistration(Request $request)
     {
         $request->validate([
-            'email' => ['required', 'string', 'email', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:customers'],
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
             'contact_number' => ['required', 'string', 'max:20'],
@@ -64,7 +96,7 @@ class RegisterController extends Controller
             'zip' => $request->zip,
             'barangay' => $request->barangay,
         ]);
-
+        
         $customer = Customer::create([
             'address_id' => $address->id,
             'user_id' => Auth::id(),
@@ -74,10 +106,16 @@ class RegisterController extends Controller
             'email' => Auth::user()->email,
         ]);
 
+        $registeredCustomer = RegisteredCustomer::create([
+            'customer_id' => $customer->id,
+            'user_id' => Auth::user()->id,
+        ]);
+
         $user = Auth::user();
-        $user->customer->update([
+        $user->registeredcustomer->customer->update([
             'name' => $request->first_name . ' ' . $request->last_name,
         ]);
+
 
 
         return redirect()->route('/home');

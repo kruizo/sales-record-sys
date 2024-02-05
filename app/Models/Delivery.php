@@ -10,7 +10,6 @@ class Delivery extends Model
     use HasFactory;
 
     protected $fillable = [
-        'order_id',
         'employee_id',
         'delivery_date',
         'delivery_time',
@@ -18,21 +17,32 @@ class Delivery extends Model
         'delivery_address',
         'map_reference',
         'special_instruction',
-        'date_delivered'
-
+        'date_delivered',
+        'is_archived'
     ];
     protected $casts = [
         'delivery_date' => 'date',
-        'delivery_time' => 'datetime:H:i',
+    'delivery_time' => 'datetime:H:i',
         'date_delivered' => 'datetime',
+        'is_archived' => 'boolean',
     ];
 
-    public function order()
+   public function getStatusText()
     {
-        return $this->belongsTo(Order::class);
+        return $this->deliverystatus->status ?? 'Unknown';
     }
+    
+    public function orderline()
+    {
+        return $this->hasMany(Orderline::class);
+    }
+
     public function employee()
     {
-        return $this->belongsTo(Employee::class);
+        return $this->belongsTo(DeliveryEmployee::class);
+    }
+    public function deliverystatus()
+    {
+        return $this->belongsTo(DeliveryStatus::class, 'delivery_status');
     }
 }

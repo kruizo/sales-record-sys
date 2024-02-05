@@ -7,6 +7,7 @@ use Illuminate\Foundation\Auth\VerifiesEmails;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Customer;
+use App\Models\RegisteredCustomer;
 
 class VerificationController extends Controller
 {
@@ -49,7 +50,7 @@ class VerificationController extends Controller
             abort(404);
         }
 
-        $hasProfile = Customer::where('user_id', $user->id)->exists();
+        $hasProfile = RegisteredCustomer::where('user_id', $user->id)->exists();
 
         if ($hasProfile) {
             return redirect()->route('verification');

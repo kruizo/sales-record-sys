@@ -18,26 +18,29 @@ Route::post('/save-profile', 'App\Http\Controllers\ProfileController@saveProfile
 
 Route::get('/verified/setup', 'App\Http\Controllers\Auth\VerificationController@setupProfile')->name('verified.setup');
 Route::post('/place-order', [App\Http\Controllers\OrderController::class, 'placeOrder'])->name('place-order');
+//Route::post('/initiate-registration', [App\Http\Controllers\Auth\RegisterController::class, 'initiateRegistration'])->name('initiate.registration');
 
 
 Route::middleware(['auth'])->group(function () {
     Route::GET('/verification', function () {
         return view('auth.verify');
     })->name('verification');
-    Route::get('/order', [App\Http\Controllers\OrderController::class, 'showOrder'])->name('order')->middleware('verified');
+    Route::get('/order', [App\Http\Controllers\OrderController::class, 'index'])->name('order')->middleware('verified');
 
     Route::prefix('profile')->group(function () {
         // Route::get('/verification', function () {
         //     return view('auth.verify');
         // })->name('verification');
 
-        Route::get('/', [App\Http\Controllers\ProfileController::class, 'showProfile'])->name('profile');
+        Route::get('/', [App\Http\Controllers\ProfileController::class, 'index'])->name('profile');
         Route::post('/verify', [App\Http\Controllers\ProfileController::class, 'verifyUser'])->name('profile.verify');
 
-        Route::get('/myorders', [App\Http\Controllers\ProfileController::class, 'userOrders'])->name('profile/myorders');
+        Route::get('/myorders', [App\Http\Controllers\ProfileController::class, 'orders'])->name('profile/myorders');
     });
 });
 
+// Route::get('email/verify/{id}/{hash}', 'Auth\VerificationController@verify')
+//     ->name('verification.verify');
 
 Route::group(['middleware' => 'web'], function () {
     Auth::routes(['verify' => true]);

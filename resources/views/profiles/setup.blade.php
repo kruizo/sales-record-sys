@@ -8,10 +8,9 @@
     <div class="text-gray-400 w-full flex flex-col gap-5 md:flex-row ">
         <aside class="hidden py-4 md:w-1/3 lg:w-1/4 md:block" id="default-tab" data-tabs-toggle="#default-tab-content" role="tablist">
             <ul class="sticky flex flex-col gap-2 p-4 text-sm border-r border-gray-400  100 top-12">
-
                 <h2 class="pl-3 mb-4 text-2xl font-semibold">Settings</h2>
                 <li role="presentation">
-                    <button id="signin-tab" data-tab-name="public-profile" data-tabs-target="#profilesetting" type="button" role="tab" aria-controls="profilesetting" aria-selected="false" class="flex items-center px-3 py-2.5 font-bold rounded-full">
+                    <button id="signin-tab" data-tab-name="public-profile" data-tabs-target="#profilesetting" type="button" role="tab" aria-controls="profilesetting" aria-selected="true" class="flex items-center px-3 py-2.5 font-bold rounded-full">
                         Personal Information
                     </button>
                 </li>
@@ -53,7 +52,7 @@
                         <div class="w-full h-fit items-center flex relative">
                             <x-input-text id="emailaccount" name="email" class="pr-24 border-none hover:cursor-default" readonly value="{{Auth::user()->email}}" />
                             @if (!Auth::user()->isVerified())
-                            <x-button-primary type="submit" text="Verify" class="w-24 bg-transparent absolute right-0 hover:bg-transparent text-blue-500" />
+                            <x-input-label text="Not verified" class="absolute right-5 mt-1 text-blue-500" />
                             @else
                             <x-input-label text="Verified" class="absolute right-5 mt-1 text-green-500" />
                             @endif
@@ -93,7 +92,7 @@
                         <button type="button" data-modal-target="edit-profile" data-modal-toggle="edit-profile" class="text-white bg-green-700  hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800">Edit</button>
                     </div>
                 </div>
-                <div class="items-center mt-8 sm:mt-14 text-gray-400" id="accountsetting" role="tabpanel" aria-labelledby="accountsetting-tab">
+                <div class="items-center mt-8 sm:mt-14 text-gray-400 hidden" id="accountsetting" role="tabpanel" aria-labelledby="accountsetting-tab">
                     <div class=" w-full mb-2 space-y-7 sm:mb-6">
                         <form action="{{route('profile.verify')}}" method="POST">
                             @csrf

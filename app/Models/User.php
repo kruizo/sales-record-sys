@@ -21,7 +21,7 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $fillable = [
         'email',
         'password',
-        'customer_id',
+        'is_archived'
     ];
 
     /**
@@ -42,17 +42,34 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
         'is_admin' => 'boolean',
+        'is_archived' => 'boolean',
     ];
+
+
+    public function firstname()
+    {
+        return optional($this->registeredCustomer)->customer->firstname;
+    }
+     public function lastname()
+    {
+        return  optional($this->registeredcustomer)->customer->lastname;
+    }
+    public function fullname()
+    {
+        return $this->registeredcustomer->customer->firstname . ' ' . $this->registeredCustomer->customer->lastname;
+    }
+
 
     public function isVerified()
     {
         return $this->email_verified_at !== null;
     }
 
-    public function customer()
+    public function registeredcustomer()
     {
-        return $this->hasOne(Customer::class);
+        return $this->hasOne(registeredcustomer::class);
     }
+
     public function order()
     {
         return $this->hasOne(Order::class);

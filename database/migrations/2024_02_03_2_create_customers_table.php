@@ -13,12 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('orderlines', function (Blueprint $table) {
+        Schema::create('customers', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('order_id')->constrained('orders')->onDelete('cascade');
-            $table->foreignId('water_id')->constrained('waters')->onDelete('cascade');
-            $table->integer('quantity');
-            $table->integer('subtotal');
+            $table->string('firstname');
+            $table->string('lastname');
+            $table->string('contactnum');
+            $table->string('email');
+            $table->foreignId('address_id')->constrained('addresses');
+            $table->boolean('is_archived')->default(0);
             $table->timestamps();
         });
     }
@@ -30,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('orderlines');
+        Schema::dropIfExists('customers');
     }
 };

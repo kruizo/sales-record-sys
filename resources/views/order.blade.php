@@ -40,13 +40,12 @@
                 <div class="flex gap-2 my-5">
                     <div class="w-full">
                         <x-input-label text="First Name" for="firstname" />
-                        <x-input-text id="firstname" name="first_name" value="{{$customer->firstname}}" readonly />
+                        <x-input-text id="firstname" name="first_name" value="{{ $customer->firstname ?? '' }}" readonly />
 
                     </div>
-
                     <div class="w-full">
                         <x-input-label text="Last Name" for="lastname" />
-                        <x-input-text id="lastname" name="last_name" value="{{$customer->lastname}}" readonly />
+                        <x-input-text id="lastname" name="last_name" value="{{$customer->lastname  ?? ''}}" readonly />
                     </div>
                   
                 </div>
@@ -54,38 +53,37 @@
 
                 <div class="w-full my-5">
                     <x-input-label text="Email" for="email" />
-                    <x-input-text id="email" name="email" value="{{$customer->email}}" readonly />
+                    <x-input-text id="email" name="email" value="{{$customer->email ?? Auth::user()->email}}" readonly />
                 </div>
                 <div class="w-full my-5">
                     <x-input-label text="Contact Number" for="contactnumber" />
-                    <x-input-text id="contactnumber" name="contact_number" value="{{$customer->contactnum}}" readonly />
+                    <x-input-text id="contactnumber" name="contact_number" value="{{$customer->contactnum ?? ''}}" readonly />
                 </div>
                 <div class="w-full my-5">
                     <x-input-label text="Street Address" for="streetaddress" />
-                    <x-input-text id="streetaddress" name="street_address" value="{{$address->streetaddress}}" readonly />
+                    <x-input-text id="streetaddress" name="street_address" value="{{$address->streetaddress ?? ''}}" readonly />
                 </div>
                 <div class="flex gap-2">
                     <div class="w-1/2">
                         <x-input-label text="Province" for="province" />
-                        <x-input-text id="province" name="province" value="{{$address->province}}" readonly />
-
+                        <x-input-text id="province" name="province" value="{{$address->province ?? ''}}" readonly />
                     </div>
 
                     <div class="w-1/2">
                         <x-input-label text="Baranngay" for="barangay" />
-                        <x-input-text id="barangay" name="barangay" value="{{$address->barangay}}" readonly />
+                        <x-input-text id="barangay" name="barangay" value="{{$address->barangay ?? ''}}" readonly />
                     </div>
 
                 </div>
                 <div class="flex gap-2">
                     <div class="w-1/2">
                         <x-input-label text="City" for="city" />
-                        <x-input-text id="city" name="city" value="{{$address->city}}" readonly />
+                        <x-input-text id="city" name="city" value="{{$address->city ?? ''}}" readonly />
 
                     </div>
                     <div class="w-1/2">
                         <x-input-label text="Postal/Zip" for="zip" />
-                        <x-input-text type="number" id="zip" name="zip" value="{{$address->zip}}" readonly />
+                        <x-input-text type="number" id="zip" name="zip" value="{{$address->zip ?? ''}}" readonly />
                     </div>
                 </div>
             </div>
@@ -107,7 +105,7 @@
                     <div id="textaddress" class="w-full">
                         <div class="w-full my-5">
                             <x-input-label text="Delivery Address" for="deliveryaddress" />
-                            <x-input-text id="deliveryaddress" name="delivery_address" value="{{$address->full_address}}" />
+                            <x-input-text id="deliveryaddress" name="delivery_address" value="{{$address->full_address  ?? ''}}" />
                         </div>
                         
                     </div>

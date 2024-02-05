@@ -10,6 +10,10 @@ class Water extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', 'type', 'description', 'cost',
+        'name', 'type', 'description', 'cost',   'is_archived'
+    ];
+
+    protected $casts = [
+        'is_archived' => 'boolean',
     ];
 }

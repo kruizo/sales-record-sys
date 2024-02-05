@@ -5,16 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Order extends Model
+class RegisteredCustomer extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
+      protected $fillable = [
         'customer_id',
-        'purchase_type',
-        'payment_type',
+        'user_id',
         'is_archived'
     ];
+
       protected $casts = [
         'is_archived' => 'boolean',
     ];
@@ -23,8 +23,11 @@ class Order extends Model
     {
         return $this->belongsTo(Customer::class);
     }
-    public function orderline()
+    public function user()
     {
-        return $this->hasMany(Orderline::class);
+        return $this->belongsTo(User::class);
     }
+
+
+
 }

@@ -16,8 +16,13 @@ class Employee extends Model
         'lastname',
         'contactnum',
         'email',
+        'is_archived'
     ];
 
+     protected $casts = [
+        'is_archived' => 'boolean',
+    ];
+    
     public function user()
     {
         return $this->belongsTo(Customer::class);

@@ -22,10 +22,8 @@
             <source src="{{ asset('assets/waterbg.mp4') }}" type="video/mp4">
         </video>
     </div>
-
-    <section class="-z-20 dark:bg-gray-950 min-h-screen sm:pt-24" id="hero">
-        <div class="py-8 px-4 flex-col flex h-full justify-center  mx-auto  max-w-screen-xl text-center lg:pt-16 lg:px-12">
-           
+    <section class="-z-20 dark:bg-gray-950 lg:h-screen min-h-screen sm:pt-24" id="hero">
+        <div class="py-8 px-4 flex-col flex h-full gap-3 justify-center mx-auto lg: max-w-screen-xl text-center lg:pt-16 lg:px-12">
             <h1 class="mb-4 text-5xl font-extrabold tracking-tight leading-none text-white md:text-5xl lg:text-6xl dark:text-white font-poppins">
                 We give
                 <span class="neon">

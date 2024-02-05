@@ -10,36 +10,56 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Address;
 use App\Models\Order;
 use App\Models\Orderline;
+use App\Models\Delivery;
+use App\Models\DeliveryStatus;
+use App\Models\RegisteredCustomer;
 
 class ProfileController extends Controller
 {
-    public function showProfile()
+    public function index()
     {
         list($customer, $address) = $this->getCustomerAndAddress();
         $isAdmin = auth()->user()->isAdmin;
-
         return view('profiles.setup', compact('customer', 'address'));
     }
 
-    public function userOrders()
+    public function orders(Request $request)
     {
-        list($customer, $address) = $this->getCustomerAndAddress();
-        $user = auth()->user();
-        $customer = Customer::where('user_id', $user->id)->first();
-        $address = $customer ? $customer->address : null;
-        $orders = optional($customer)->orders()->with('orderline', 'delivery')->orderBy('created_at', 'desc')->get();
-        $recent = $orders->first();
+      list($customer, $address) = $this->getCustomerAndAddress();
+      $orders = Order::find($customer->id)->latest()->with('orderline.delivery', 'orderline')->get();
 
+      if ($status = request('status')) {
+            $orders = Order::latest()->with('orderline.delivery', 'orderline')->get();
+            $status = trim(str_replace(' ', '', $status));
+            $orders = $orders->filter(function ($order) use ($status) {
+                return $order->orderline->contains(function ($orderline) use ($status) {
+                    $actualStatus = $orderline->delivery->deliverystatus->status;
+                    $actualStatus = trim(str_replace(' ', '', $actualStatus));
+
+                    return strcasecmp($actualStatus, $status) === 0;
+                });
+            });
+        }
+
+//         $recentOrder = $orders->first();
+// $recentOrderline = $recentOrder->orderline->first();
+// $deliveryorder = $recentOrderline->delivery->delivery_date;
+//  dd($recentOrder, $recentOrderline, $deliveryorder);
+
+        $recent = $orders->first()->orderline->first();
         return view('profiles.order', compact('customer', 'address', 'orders', 'recent'));
     }
+
+
+
 
     private function getCustomerAndAddress()
     {
         $user = auth()->user();
-        $customer = Customer::where('user_id', $user->id)->first();
-        $address = $customer ? $customer->address : null;
+        $registeredCustomer = RegisteredCustomer::where('user_id', $user->id)->first();
+        $address = $registeredCustomer ? $registeredCustomer->customer->address : null;
 
-        return [$customer, $address];
+        return [$registeredCustomer->customer ?? null, $address];
     }
 
     public function verifyUser(Request $req)
@@ -66,35 +86,35 @@ class ProfileController extends Controller
             'zip_edit' => 'required|numeric',
         ]);
 
-        $address = Address::updateOrCreate(
-            [
-                'streetaddress' => $request->input('street_address_edit'),
-                'province' => $request->input('province_edit'),
-                'barangay' => $request->input('barangay_edit'),
-                'city' => $request->input('city_edit'),
-                'zip' => $request->input('zip_edit'),
-            ]
-        );
+         list($customer, $address) = $this->getCustomerAndAddress();
+
+         $addressData = [
+            'streetaddress' => $request->input('street_address_edit'),
+            'province' => $request->input('province_edit'),
+            'barangay' => $request->input('barangay_edit'),
+            'city' => $request->input('city_edit'),
+            'zip' => $request->input('zip_edit'),
+        ];
+        
+        $address = $address ? $address->update($addressData) : Address::create($addressData);
+
+        
+        $customerData = [
+            'firstname' => $request->input('firstname_edit'),
+            'lastname' => $request->input('lastname_edit'),
+            'contactnum' => $request->input('contact_edit'),
+            'email' => Auth::user()->email,
+            'address_id' => $address->id,
+        ];
 
         $user = Auth::user();
-        if ($user->customer) {
-            $user->customer->update([
-                'firstname' => $request->input('firstname_edit'),
-                'lastname' => $request->input('lastname_edit'),
-                'contactnum' => $request->input('contact_edit'),
-                'email' => $user->email,
-                'address_id' => $address->id,
-            ]);
-        } else {
-            Customer::create([
-                'firstname' => $request->input('firstname_edit'),
-                'lastname' => $request->input('lastname_edit'),
-                'contactnum' => $request->input('contact_edit'),
-                'email' => $user->email,
-                'address_id' => $address->id,
-                'user_id' => $user->id,
-            ]);
-        }
+
+        $customer = $customer ?  $customer->update($customerData) : Customer::create($customerData);
+      
+        $registeredCustomer = RegisteredCustomer::create([
+            'customer_id' => $customer->id,
+            'user_id' => Auth::user()->id,
+        ]);
 
         return redirect()->route('profile')->with('success', 'Profile updated successfully');
     }

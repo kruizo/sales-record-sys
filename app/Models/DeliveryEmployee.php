@@ -13,10 +13,12 @@ class DeliveryEmployee extends Model
         'employee_id',
         'isAvailable',
         'total_deliveries',
+        'is_archived'
     ];
 
     protected $casts = [
         'isAvailable' => 'boolean',
+        'is_archived' => 'boolean',
     ];
 
     public function employee()

@@ -12,13 +12,24 @@ class Orderline extends Model
     protected $fillable = [
         'order_id',
         'water_id',
+        'delivery_id',
         'quantity',
         'subtotal',
+        'is_archived'
+    ];
+
+      protected $casts = [
+        'is_archived' => 'boolean',
     ];
 
     public function order()
     {
         return $this->belongsTo(Order::class);
+    }
+    
+    public function delivery()
+    {
+        return $this->belongsTo(Delivery::class);
     }
 
     public function water()
