@@ -22,7 +22,7 @@
             <div class="default-tab-content">
                 <div class="hidden" id="signin" role="tabpanel" aria-labelledby="signin-tab">
                     <div class="p-5">
-                        <x-form-header text="Sign in to our platform" class="mb-4"/>
+                        <x-form-header text="Sign in to your account" class="mb-4"/>
                         <x-error-container />
                         <form class="space-y-4" method="POST" action="{{ route('login') }}">
                             @csrf
@@ -57,7 +57,7 @@
                 <div class="hidden" id="register" role="tabpanel" aria-labelledby="register-tab">
 
                     <div class="p-4 md:p-5">
-                        <x-form-header text="Join us" class="mb-4"/>
+                        <x-form-header text="Create an account" class="mb-4"/>
                         <x-error-container />
                         <form method="POST" action="{{ route('register') }}">
                             @csrf

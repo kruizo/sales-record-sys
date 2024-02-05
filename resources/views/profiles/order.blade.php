@@ -95,30 +95,30 @@
             @endforeach
            
         </section>
-        @if ($orders)  
+        @if ($orders && $recent)  
         <aside class="min-w-1/3 w-1/3 max-w-1/3 hidden lg:block" id="order-information">
             <div class="sticky top-32 bg-gray-900 p-4">
                 <h1 class="text-xl">Order Information</h1>
                 <div class="grid grid-cols-2 space-y-1 py-5 w-full">
                     <h2 id="order-number-label">Order Number:</h2>
-                    <h2 id="order-number">{{ $recent->id }}</h2>
+                    <h2 id="order-number">{{ $recent->orderline->first()->id }}</h2>
         
                     <h2 id="date-ordered-label">Date ordered:</h2>
-                    <h2 id="date-ordered">{{ $recent->created_at->format('m/d/y') }}</h2>
+                    <h2 id="date-ordered">{{ $recent->orderline->first()->created_at->format('m/d/y') }}</h2>
         
                     <h2 id="delivery-date-label">Delivery Date:</h2>
-                    <h2 id="delivery-date">{{ $recent->delivery->delivery_date}} </h2>
+                    <h2 id="delivery-date">{{ $recent->orderline->first()->delivery->delivery_date}} </h2>
                     
                     <h2 id="delivery-address-label">Delivery Address:</h2>
-                    <h2 id="delivery-address">{{ $recent->delivery->delivery_address }}</h2>
+                    <h2 id="delivery-address">{{ $recent->orderline->first()->delivery->delivery_address }}</h2>
                     
                     <h2 id="delivery-status-label">Delivery Status:</h2>
-                    <h2 id="delivery-status">{{ $recent->delivery->getStatusText() }}</h2>
+                    <h2 id="delivery-status">{{ $recent->orderline->first()->delivery->deliverystatus->status }}</h2>
                     
                     <h2 id="payment-type-label">Mode of Payment:</h2>
                     <h2 id="payment-type">{{ $recent->payment_type }}</h2>
                 </div>
-                <x-button-link text="Cancel Order" href="{{$recent->id}}" class="text-red-600 p-0" />
+                <x-button-link text="Cancel Order" href="{{$recent->orderline->first()->id}}" class="text-red-600 p-0" />
             </div>
         </aside>
         @endif

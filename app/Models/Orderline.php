@@ -12,7 +12,6 @@ class Orderline extends Model
     protected $fillable = [
         'order_id',
         'water_id',
-        'delivery_id',
         'quantity',
         'subtotal',
         'is_archived'
@@ -29,7 +28,7 @@ class Orderline extends Model
     
     public function delivery()
     {
-        return $this->belongsTo(Delivery::class);
+        return $this->hasOne(Delivery::class);
     }
 
     public function water()

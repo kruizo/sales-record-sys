@@ -16,7 +16,7 @@ return new class extends Migration
     {
         Schema::create('deliveries', function (Blueprint $table) {
             $table->id();
-            //$table->foreignId('orderline_id')->constrained('orderlines')->onDelete('cascade');
+            $table->foreignId('orderline_id')->constrained('orderlines')->onDelete('cascade');
             $table->foreignId('employee_id')->constrained('employees')->onDelete('cascade');
             $table->date('delivery_date')->default(DB::raw('CURRENT_DATE'));
             $table->string('delivery_time')->default(DB::raw('CURRENT_TIME'));

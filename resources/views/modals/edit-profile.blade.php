@@ -42,23 +42,23 @@
                             </div> --}}
                             <div>
                                 <x-input-label for="streetaddress-edit" text="Street address" class="text-gray-300 w-1/3" />
-                                <x-input-text id="streetaddress-edit" name="street_address_edit" value="{{$address->streetaddress ?? ''}}" />
+                                <x-input-text id="streetaddress-edit" name="street_address_edit" value="{{$customer->address->streetaddress ?? ''}}" />
                             </div>
                             <div>
                                 <x-input-label for="province-edit" text="Province" class="text-gray-300 w-1/3" />
-                                <x-input-text id="province-edit" name="province_edit" value="{{$address->province ?? ''}}" />
+                                <x-input-text id="province-edit" name="province_edit" value="{{$customer->address->province ?? ''}}" />
                             </div>
                             <div>
                                 <x-input-label for="barangay-edit" text="Barangay" class="text-gray-300 w-1/3" />
-                                <x-input-text id="barangay-edit" name="barangay_edit" value="{{$address->barangay ?? ''}}" />
+                                <x-input-text id="barangay-edit" name="barangay_edit" value="{{$customer->address->barangay ?? ''}}" />
                             </div>
                             <div>
                                 <x-input-label for="city-edit" text="City" class="text-gray-300 w-1/3" />
-                                <x-input-text id="city-edit" name="city_edit" value="{{$address->city ?? ''}}" />
+                                <x-input-text id="city-edit" name="city_edit" value="{{$customer->address->city ?? ''}}" />
                             </div>
                             <div>
                                 <x-input-label for="zip-edit" text="Postal / Zip" class="text-gray-300 w-1/3" />
-                                <x-input-text id="zip-edit" name="zip_edit" value="{{$address->zip ?? ''}}" />
+                                <x-input-text id="zip-edit" name="zip_edit" value="{{$customer->address->zip ?? ''}}" />
                             </div>
                             <div class="flex justify-end">
                                 <button type="submit" class="text-white bg-blue-700  hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800">Save</button>

@@ -18,18 +18,16 @@ class ProfileController extends Controller
 {
     public function index()
     {
-        list($customer, $address) = $this->getCustomerAndAddress();
-        $isAdmin = auth()->user()->isAdmin;
-        return view('profiles.setup', compact('customer', 'address'));
+        $customer = $this->AuthenticatedCustomer();
+        return view('profiles.setup', compact('customer'));
     }
 
     public function orders(Request $request)
     {
-      list($customer, $address) = $this->getCustomerAndAddress();
-      $orders = Order::find($customer->id)->latest()->with('orderline.delivery', 'orderline')->get();
-
+      $customer = $this->AuthenticatedCustomer();
+      $orders = $customer->orders()->latest()->with('orderline.delivery', 'orderline')->get();
+      
       if ($status = request('status')) {
-            $orders = Order::latest()->with('orderline.delivery', 'orderline')->get();
             $status = trim(str_replace(' ', '', $status));
             $orders = $orders->filter(function ($order) use ($status) {
                 return $order->orderline->contains(function ($orderline) use ($status) {
@@ -41,33 +39,21 @@ class ProfileController extends Controller
             });
         }
 
-//         $recentOrder = $orders->first();
-// $recentOrderline = $recentOrder->orderline->first();
-// $deliveryorder = $recentOrderline->delivery->delivery_date;
-//  dd($recentOrder, $recentOrderline, $deliveryorder);
-
-        $recent = $orders->first()->orderline->first();
-        return view('profiles.order', compact('customer', 'address', 'orders', 'recent'));
+        $recent = $orders->first();
+        return view('profiles.order', compact('customer', 'orders', 'recent'));
     }
 
-
-
-
-    private function getCustomerAndAddress()
+    private function AuthenticatedCustomer()
     {
-        $user = auth()->user();
-        $registeredCustomer = RegisteredCustomer::where('user_id', $user->id)->first();
-        $address = $registeredCustomer ? $registeredCustomer->customer->address : null;
-
-        return [$registeredCustomer->customer ?? null, $address];
+        return optional(RegisteredCustomer::where('user_id', auth()->id())->first())->customer;
     }
 
-    public function verifyUser(Request $req)
+    public function verifyUser(Request $request)
     {
-        $req->validate([
+        $request->validate([
             'email' => ['required', 'string', 'email', 'max:255'],
         ]);
-        $user = User::where('email', $req->email)->first();
+        $user = User::where('email', $request->email)->first();
 
         $user->sendEmailVerificationNotification();
 
@@ -86,7 +72,7 @@ class ProfileController extends Controller
             'zip_edit' => 'required|numeric',
         ]);
 
-         list($customer, $address) = $this->getCustomerAndAddress();
+         $customer = $this->AuthenticatedCustomer();
 
          $addressData = [
             'streetaddress' => $request->input('street_address_edit'),
@@ -96,8 +82,10 @@ class ProfileController extends Controller
             'zip' => $request->input('zip_edit'),
         ];
         
-        $address = $address ? $address->update($addressData) : Address::create($addressData);
-
+        $address = Address::updateOrCreate(
+                ['id' => $customer->address_id ?? ''], 
+                $addressData                       
+            );
         
         $customerData = [
             'firstname' => $request->input('firstname_edit'),
@@ -106,14 +94,14 @@ class ProfileController extends Controller
             'email' => Auth::user()->email,
             'address_id' => $address->id,
         ];
+        $customer = Customer::updateOrCreate(
+                ['id' => $customer->id ?? ''], 
+                $customerData                       
+        );
 
-        $user = Auth::user();
-
-        $customer = $customer ?  $customer->update($customerData) : Customer::create($customerData);
-      
         $registeredCustomer = RegisteredCustomer::create([
             'customer_id' => $customer->id,
-            'user_id' => Auth::user()->id,
+            'user_id' => User::find(auth()->id())->id,
         ]);
 
         return redirect()->route('profile')->with('success', 'Profile updated successfully');

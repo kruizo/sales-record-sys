@@ -10,6 +10,7 @@ class Delivery extends Model
     use HasFactory;
 
     protected $fillable = [
+        'orderline_id',
         'employee_id',
         'delivery_date',
         'delivery_time',
@@ -31,10 +32,10 @@ class Delivery extends Model
     {
         return $this->deliverystatus->status ?? 'Unknown';
     }
-    
+
     public function orderline()
     {
-        return $this->hasMany(Orderline::class);
+        return $this->belongsTo(Orderline::class);
     }
 
     public function employee()

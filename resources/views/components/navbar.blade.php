@@ -17,7 +17,7 @@
         <div class="md:order-2 space-x-3 md:flex md:space-x-0 rtl:space-x-reverse">
             @guest
             @if (Route::has('login'))
-            <button type="button" data-modal-target="authentication-modal" data-modal-toggle="authentication-modal" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Join us</button>
+            <button type="button" data-modal-target="authentication-modal" data-modal-toggle="authentication-modal" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Login</button>
             @endif
             @else
             <div class="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">

@@ -2,13 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
-
-html,body{
+html,
+body {
     margin: 0;
     box-sizing: border-box;
 }
 
-html{
+html {
     background-color: rgb(3 7 18);
     color: rgb(209 213 219);
 }
@@ -35,7 +35,43 @@ input:-webkit-autofill {
     }
 }
 
+.clip-path-polygon {
+    clip-path: polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%);
+}
+.clip-path-left {
+    clip-path: polygon(25% 0%, 100% 0%, 100% 100%, 25% 100%, 0% 50%);
+}
 
+.clip-path-right {
+    clip-path: polygon(0% 0%, 75% 0%, 100% 50%, 75% 100%, 0% 100%);
+}
+
+.image-zoom {
+    transition: transform 0.5s ease-in-out;
+}
+.image-zoom-container:hover .image-zoom {
+    transform: scale(1.2);
+}
+.clip-path-left:hover .image-zoom {
+    transform: scale(1.2);
+}
+.clip-path-right:hover .image-zoom {
+    transform: scale(1.2);
+}
+
+.wave {
+    background-image: url("../../public/assets/image/wave-haikei.svg");
+    background-repeat: no-repeat;
+    background-position: bottom;
+    background-size: contain;
+}
+
+.wave-to-black {
+    background-image: url("../../public/assets/image/wave-to-black.svg");
+    background-repeat: no-repeat;
+    background-position: bottom;
+    background-size: cover;
+}
 
 input:-webkit-autofill:active,
 input:-webkit-autofill:focus,
@@ -44,17 +80,14 @@ input:-webkit-autofill:hover {
     background-color: rgb(17, 24, 39) !important;
 }
 
-.neon{
+.neon {
     display: inline-block;
-    text-shadow:
-    0 0 42px rgb(0, 17, 255),
-    0 0 20px rgb(0, 17, 255),
-    0 0 20px rgb(0, 17, 255),
-    0 0 140px rgb(0, 17, 255),
-    0 0 59px rgb(0, 17, 255);
+    text-shadow: 0 0 42px rgb(0, 17, 255), 0 0 20px rgb(0, 17, 255),
+        0 0 20px rgb(0, 17, 255), 0 0 140px rgb(0, 17, 255),
+        0 0 59px rgb(0, 17, 255);
     -webkit-text-stroke: 3px rgb(0, 119, 255);
 
-    color:transparent;
+    color: transparent;
 }
 
 input[type="time"]::-webkit-clear-button,
@@ -68,6 +101,6 @@ input[type="time"]::-webkit-outer-spin-button {
 }
 
 .sidebar-link.active {
-    background-color: #4a90e2; 
-    color: #ffffff; 
+    background-color: #4a90e2;
+    color: #ffffff;
 }

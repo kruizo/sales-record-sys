@@ -17,7 +17,6 @@ return new class extends Migration
             $table->id();
             $table->foreignId('order_id')->constrained('orders')->onDelete('cascade');
             $table->foreignId('water_id')->constrained('waters')->onDelete('cascade');
-            $table->foreignId('delivery_id')->constrained('deliveries')->onDelete('cascade');
             $table->integer('quantity');
             $table->integer('subtotal');
             $table->boolean('is_archived')->default(0);

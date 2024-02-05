@@ -1,3 +1,3 @@
-import './bootstrap';
-import 'flowbite';
-import '../css/app.css'; 
+import "./bootstrap";
+import "flowbite";
+import "../css/app.css";

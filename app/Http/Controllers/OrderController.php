@@ -47,6 +47,10 @@ class OrderController extends Controller
             'payment_method' => ['required'],
             'total_order' => ['required', 'numeric'],
             'delivery_address' => ['required', 'string', 'max:255'],
+            'expected_date' => ['not_before_today'],
+            ], [
+            'expected_date.not_before_today' => 'The :attribute must not be before today.',
+
         ]);
 
         $customerId = auth()->user()->registeredcustomer->customer->id;
@@ -75,8 +79,15 @@ class OrderController extends Controller
 
                 $subtotal = $value * $water->cost;
                  
+                $orderline = Orderline::create([
+                    'order_id' => $order->id,
+                    'water_id' => $water->id,
+                    'quantity' => $value,
+                    'subtotal' => $subtotal,
+                ]);
+
                 $delivery = Delivery::create([
-                    //'orderline_id' => $orderline->id,
+                    'orderline_id' => $orderline->id,
                     'employee_id' => $employeeId,
                     'delivery_date' => $deliveryDate ?? Date::now()->toDateString(),
                     'delivery_time' => $deliveryTime ?? Date::now()->toTimeString(),
@@ -85,15 +96,6 @@ class OrderController extends Controller
                     'special_instruction' => $specialInstructions,
                 ]);
 
-
-                $orderline = Orderline::create([
-                    'delivery_id' => $delivery->id,
-                    'order_id' => $order->id,
-                    'water_id' => $water->id,
-                    'quantity' => $value,
-                    'subtotal' => $subtotal,
-                ]);
-         
                 $totalOrders++;
             }
         }

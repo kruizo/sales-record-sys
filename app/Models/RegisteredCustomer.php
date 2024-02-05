@@ -18,6 +18,13 @@ class RegisteredCustomer extends Model
       protected $casts = [
         'is_archived' => 'boolean',
     ];
+    public function get(){
+       $user = auth()->user();
+        $registeredCustomer = $this->where('user_id', $user->id)->first();
+        $address = $registeredCustomer ? $registeredCustomer->customer->address : null;
+
+        return $registeredCustomer->customer ?? null;
+    }
 
     public function customer()
     {

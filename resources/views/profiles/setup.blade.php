@@ -61,31 +61,31 @@
                     <div class="w-full flex items-center">
                         <x-input-label for="streetaddress" text="Street address" class="text-gray-300 w-1/3" />
                         <div class="w-full h-fit items-center flex relative">
-                            <x-input-text id="streetaddress" name="street_address" class="border-none hover:cursor-default" readonly value="{{$address->streetaddress ?? ''}}" />
+                            <x-input-text id="streetaddress" name="street_address" class="border-none hover:cursor-default" readonly value="{{$customer->address->streetaddress ?? ''}}" />
                         </div>
                     </div>
                     <div class="w-full flex items-center">
                         <x-input-label for="province" text="Province" class="text-gray-300 w-1/3" />
                         <div class="w-full h-fit items-center flex relative">
-                            <x-input-text id="province" name="province" class="border-none hover:cursor-default" readonly value="{{$address->province ?? ''}}" />
+                            <x-input-text id="province" name="province" class="border-none hover:cursor-default" readonly value="{{$customer->address->province ?? ''}}" />
                         </div>
                     </div>
                     <div class="w-full flex items-center">
                         <x-input-label for="barangay" text="Barangay" class="text-gray-300 w-1/3" />
                         <div class="w-full h-fit items-center flex relative">
-                            <x-input-text id="barangay" name="barangay" class="border-none hover:cursor-default" readonly value="{{$address->barangay ?? ''}}" />
+                            <x-input-text id="barangay" name="barangay" class="border-none hover:cursor-default" readonly value="{{$customer->address->barangay ?? ''}}" />
                         </div>
                     </div>
                     <div class="w-full flex items-center">
                         <x-input-label for="city" text="City" class="text-gray-300 w-1/3" />
                         <div class="w-full h-fit items-center flex relative">
-                            <x-input-text id="city" name="city" class="border-none hover:cursor-default" readonly value="{{$address->city ?? ''}}" />
+                            <x-input-text id="city" name="city" class="border-none hover:cursor-default" readonly value="{{$customer->address->city ?? ''}}" />
                         </div>
                     </div>
                     <div class="w-full flex items-center">
                         <x-input-label for="zip" text="Postal / Zip" class="text-gray-300 w-1/3" />
                         <div class="w-full h-fit items-center flex relative">
-                            <x-input-text id="zip" name="zip" class="border-none hover:cursor-default" readonly value="{{$address->zip ?? ''}}" />
+                            <x-input-text id="zip" name="zip" class="border-none hover:cursor-default" readonly value="{{$customer->address->zip ?? ''}}" />
                         </div>
                     </div>
                     <div class="flex justify-end">
