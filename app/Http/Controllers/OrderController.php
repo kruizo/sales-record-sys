@@ -13,6 +13,7 @@ use App\Models\Order;
 use Illuminate\Support\Facades\Date;
 use App\Models\Address;
 use App\Models\RegisteredCustomer;
+use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
@@ -105,8 +106,23 @@ class OrderController extends Controller
     }
 
     public function cancelOrder($id){
-        return Orderline::find($id)->update('is_archived', 1);
+        $orderline = Orderline::with('order.customer')->find($id);
 
-        
+        if (!$orderline) {
+            abort(404, 'Orderline not found');
+        }
+
+        $authenticatedUserId = Auth::id();
+        $orderCustomerId = $orderline->order->customer->registeredcustomer->user_id;
+
+
+        if ($authenticatedUserId !== $orderCustomerId) {
+            abort(403, 'Unauthorized action'); 
+        }
+
+
+        $orderline->delivery->update(['delivery_status' => 3]);
+
+        return redirect()->back()->with('success', 'Order canceled successfully');
     }
 }

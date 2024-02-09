@@ -46,4 +46,5 @@ class Delivery extends Model
     {
         return $this->belongsTo(DeliveryStatus::class, 'delivery_status');
     }
+
 }

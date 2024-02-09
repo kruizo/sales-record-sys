@@ -3,7 +3,7 @@
 <title>Adelflor | Profile</title>
 @endsection
 @section('content')
-<div class="-z-20 dark:bg-gray-950 min-h-full sm:p-28">
+<div class="-z-20 bg-gray-950 min-h-full sm:p-40">
     <x-section-header text="Your profile" />
     <div class="text-gray-400 w-full flex flex-col gap-5 md:flex-row ">
         <aside class="hidden py-4 md:w-1/3 lg:w-1/4 md:block" id="default-tab" data-tabs-toggle="#default-tab-content" role="tablist">

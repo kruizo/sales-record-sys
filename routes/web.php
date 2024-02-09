@@ -36,6 +36,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/verify', [App\Http\Controllers\ProfileController::class, 'verifyUser'])->name('profile.verify');
 
         Route::get('/myorders', [App\Http\Controllers\ProfileController::class, 'orders'])->name('profile/myorders');
+        Route::get('/cancel/order/{id}', [App\Http\Controllers\OrderController::class, 'cancelOrder'])->name('cancel.order');
     });
 });
 

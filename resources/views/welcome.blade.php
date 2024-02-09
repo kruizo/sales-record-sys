@@ -169,7 +169,7 @@
 
     </div>
 </section> --}}
-<section class="flex flex-col items-center 2xl:-mt-20" id="services">
+<section class="flex flex-col items-center 2xl:-mt-20 overflow-hidden" id="services">
     <h2 class="mb-4 text-4xl tracking-tight text-gray-200 font-poppins dark:text-white">
             What we do.</h2>
     <div class="bg-gray-950 dark:bg-gray-900" data-aos="zoom-out" data-aos-once="true">

@@ -11,7 +11,7 @@
 
 @endsection
 @section('content')
-<div class="-z-20 dark:bg-gray-950 min-h-full sm:pt-28 sm:px-24">
+<div class="-z-20 dark:bg-gray-950  sm:p-40">
     <div class="flex justify-between items-center">
         <x-section-header class="" text="Choose a product" />
     </div>

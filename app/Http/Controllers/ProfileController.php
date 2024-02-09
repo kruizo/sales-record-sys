@@ -25,20 +25,29 @@ class ProfileController extends Controller
     public function orders(Request $request)
     {
       $customer = $this->AuthenticatedCustomer();
-      $orders = $customer->orders()->latest()->with('orderline.delivery', 'orderline')->get();
-      
-      if ($status = request('status')) {
+      $orders = $customer->orders()
+        ->latest()
+        ->whereHas('orderline', function ($query) {
+            $query->where('is_archived', 0);
+        })
+        ->with('orderline.delivery', 'orderline')
+        ->get();
+
+        if ($status = request('status')) {
             $status = trim(str_replace(' ', '', $status));
             $orders = $orders->filter(function ($order) use ($status) {
-                return $order->orderline->contains(function ($orderline) use ($status) {
+                $filteredOrderLines = $order->orderline->filter(function ($orderline) use ($status) {
                     $actualStatus = $orderline->delivery->deliverystatus->status;
                     $actualStatus = trim(str_replace(' ', '', $actualStatus));
-
                     return strcasecmp($actualStatus, $status) === 0;
                 });
-            });
-        }
 
+            $order->setRelation('orderline', $filteredOrderLines);
+
+            return $filteredOrderLines->isNotEmpty();
+            });
+
+        }
         $recent = $orders->first();
         return view('profiles.order', compact('customer', 'orders', 'recent'));
     }
