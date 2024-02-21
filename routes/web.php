@@ -49,16 +49,22 @@ Route::group(['middleware' => 'web'], function () {
 
 
 Route::POST('/profile-registration', [App\Http\Controllers\Auth\RegisterController::class, 'profileRegistration'])->name('profile.registration');
-
+    
 Route::middleware(['auth', 'is_admin'])->prefix('admin')->group(function () {
-    Route::get('home', [App\Http\Controllers\DataTablesController::class, 'index'])->name('admin.home');
-    Route::get('/', [App\Http\Controllers\DataTablesController::class, 'show'])->name('admin');
-    Route::resource('dashboard', App\Http\Controllers\DashboardController::class)->names('admin.dashboard');
-    Route::resource('orders', App\Http\Controllers\OrderTableController::class)->names('admin.orders');
-    Route::resource('customers', App\Http\Controllers\CustomerTableController::class)->names('admin.customers');
-    Route::resource('delivery', App\Http\Controllers\DeliveryTableController::class)->names('admin.delivery');
-    Route::resource('reports', App\Http\Controllers\ReportsController::class)->names('admin.reports');
-    Route::resource('analytics', App\Http\Controllers\AnalyticsController::class)->names('admin.analytics');
+    Route::get('/', [App\Http\Controllers\DashboardController::class])->name('admin');
+    Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'show'])->name('admin.dashboard');
+    Route::get('/orders', [App\Http\Controllers\OrderTableController::class, 'show'])->name('admin.orders');
+    Route::get('/customers', [App\Http\Controllers\CustomerTableController::class, 'show'])->name('admin.customers');
+    Route::get('/delivery', [App\Http\Controllers\DeliveryTableController::class, 'show'])->name('admin.delivery');
+    Route::get('/report', [App\Http\Controllers\ReportsController::class, 'show'])->name('admin.reports');
+    Route::get('/analytics', [App\Http\Controllers\AnalyticsController::class, 'show'])->name('admin.analytics');
+
+    // Route::resource('dashboard', App\Http\Controllers\DashboardController::class)->names('admin.dashboard');
+    // Route::resource('orders', App\Http\Controllers\OrderTableController::class)->names('admin.orders');
+    // Route::resource('customers', App\Http\Controllers\CustomerTableController::class)->names('admin.customers');
+    // Route::resource('delivery', App\Http\Controllers\DeliveryTableController::class)->names('admin.delivery');
+    // Route::resource('reports', App\Http\Controllers\ReportsController::class)->names('admin.reports');
+    // Route::resource('analytics', App\Http\Controllers\AnalyticsController::class)->names('admin.analytics');
 });
 
 Route::get('/view/map', function () {

@@ -1,25 +1,31 @@
 document.addEventListener("DOMContentLoaded", function () {
-    document.getElementById("spinner").classList.toggle("hidden");
+    console.log("asd");
     const sidebarLinks = document.querySelectorAll(".sidebar-link");
-    loadContent("dashboard");
+    const currentUrl = window.location.href;
     sidebarLinks.forEach((link) => {
+        if (link.href === currentUrl) {
+            link.classList.add("active");
+        }
         link.addEventListener("click", function (event) {
-            event.preventDefault();
             sidebarLinks.forEach(function (innerLink) {
                 innerLink.classList.remove("active");
             });
-            link.classList.add("active");
-            const section = this.dataset.section;
-            loadContent(section);
+            return true;
+        });
+    });
+
+    var searchInput = document.querySelector("#table-search");
+
+    searchInput.addEventListener("input", function (event) {
+        var searchTerm = searchInput.value.trim().toLowerCase();
+        var rows = document.querySelectorAll("tbody tr");
+        rows.forEach(function (row) {
+            var textContent = row.textContent.toLowerCase();
+            if (textContent.includes(searchTerm)) {
+                row.style.display = ""; // Show the row
+            } else {
+                row.style.display = "none"; // Hide the row
+            }
         });
     });
 });
-
-function loadContent(section) {
-    fetch(`${section}`)
-        .then((response) => response.text())
-        .then((html) => {
-            document.getElementById("main-content").innerHTML = html;
-        })
-        .catch((error) => console.error("Error loading content:", error));
-}

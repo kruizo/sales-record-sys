@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Order;
 
 class DashboardController extends Controller
 {
@@ -23,7 +24,15 @@ class DashboardController extends Controller
      */
     public function show()
     {
-        return view('admin/dashboard');
+
+        $data = Order::latest()->with('orderline','orderline.water', 'orderline.delivery.deliverystatus', 'customer')->get();
+
+        $perPage = 10; // Number of items per page
+        $currentPage = request()->get('page', 1); // Get the current page or default to 1
+        $pagedData = $data->slice(($currentPage - 1) * $perPage, $perPage)->all(); // Get the slice of data for the current page
+        $paginatedData = new \Illuminate\Pagination\LengthAwarePaginator($pagedData, count($data), $perPage, $currentPage);
+
+        return view('admin/dashboard', compact('paginatedData'));
     }
 
     /**
