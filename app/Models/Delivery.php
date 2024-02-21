@@ -23,7 +23,7 @@ class Delivery extends Model
     ];
     protected $casts = [
         'delivery_date' => 'date',
-    'delivery_time' => 'datetime:H:i',
+        'delivery_time' => 'datetime:H:i',
         'date_delivered' => 'datetime',
         'is_archived' => 'boolean',
     ];

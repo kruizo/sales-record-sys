@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\DB;
 use App\Models\Customer;
 use App\Models\Water;
 use App\Models\Orderline;
@@ -45,7 +45,7 @@ class OrderController extends Controller
             'province' => ['required', 'string', 'max:255'],
             'zip' => ['required', 'string', 'max:10'],
             'barangay' => ['required', 'string', 'max:255'],
-            'payment_method' => ['required'],
+            'payment_method' => ['required', 'string'],
             'total_order' => ['required', 'numeric'],
             'delivery_address' => ['required', 'string', 'max:255'],
             'expected_date' => ['not_before_today'],
@@ -61,18 +61,19 @@ class OrderController extends Controller
         $deliveryTime = $request->input('expected_time');
         $specialInstructions = $request->input('special_instructions');
         $employeeId = DeliveryEmployee::where('isAvailable', 1)->first()->employee_id;
+        $deliveryAddress = $request->input('delivery_address');
+
+        $totalOrder = 0;
+
+        DB::beginTransaction();
+
+        try{
         $order = Order::create([
             'customer_id' => $customerId,
             'purchase_type' => 'Delivery',
             'payment_type' => $paymentType,
+
         ]);
-
-        $deliveryAddress = $request->input('delivery_address');
-
-       
-
-        $totalOrders = 0;
-
         foreach ($request->input() as $key => $value) {
             if (is_numeric($value) && strpos($key, 'product_') !== false && $value > 0) {
                 $waterId = substr($key, 8);
@@ -96,18 +97,23 @@ class OrderController extends Controller
                     'map_reference' => $mapReference,
                     'special_instruction' => $specialInstructions,
                 ]);
-
-                $totalOrders++;
+                $totalOrder += $subtotal;
             }
         }
+        $totalOrder += 10;
+        $order->update(['total' => $totalOrder]);
 
-
+        DB::commit();
         return redirect()->route('profile/myorders');
+        } catch (\Exception $e) {
+            DB::rollback();
+             $errorMessage = $e->getMessage(); 
+            return back()->withError($errorMessage);
+        }
     }
 
     public function cancelOrder($id){
         $orderline = Orderline::with('order.customer')->find($id);
-
         if (!$orderline) {
             abort(404, 'Orderline not found');
         }

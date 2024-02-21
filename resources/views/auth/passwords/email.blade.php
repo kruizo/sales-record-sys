@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class="card">
+<div class="card bg-gray-800">
     <div class="flex items-center p-4  dark:border-gray-600">
         <x-form-header text="Reset Password" />
     </div>
@@ -29,7 +29,7 @@
                 @enderror
             </div>
 
-            <x-button-primary type="submit" text="Send Password Reset Link" />
+            <x-button-primary type="submit" text="Send Password Reset Link" class="mt-5"/>
         </form>
     </div>
 </div>

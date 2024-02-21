@@ -22,7 +22,7 @@
             <source src="{{ asset('assets/waterbg.mp4') }}" type="video/mp4">
         </video>
     </div>
-    <section class="-z-20 2xl:h-screen min-h-full sm:py-32 flex justify-center items-center " id="hero">
+    <section class="-z-20 h-full sm:py-32 flex justify-center items-center " id="hero">
         <div class="py-8 px-4 flex-col flex h-full gap-3 justify-center mx-auto lg: max-w-screen-xl text-center lg:pt-16 lg:px-12">
             <h1 class="mb-4 text-5xl font-extrabold tracking-tight leading-none text-white md:text-5xl lg:text-6xl dark:text-white font-poppins">
                 We give
@@ -169,10 +169,10 @@
 
     </div>
 </section> --}}
-<section class="flex flex-col items-center 2xl:-mt-20 overflow-hidden" id="services">
+<section class="flex flex-col items-center overflow-hidden" id="services">
     <h2 class="mb-4 text-4xl tracking-tight text-gray-200 font-poppins dark:text-white">
             What we do.</h2>
-    <div class="bg-gray-950 dark:bg-gray-900" data-aos="zoom-out" data-aos-once="true">
+    <div data-aos="zoom-out" data-aos-once="true">
         <div class="gap-8  items-center py-8 px-4 mx-auto max-w-screen-xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 lg:px-6 flex lg:flex-row flex-col-reverse">
             <div class="mt-4 md:mt-0">
                 <h2 class="mb-4 text-3xl tracking-tight text-gray-200 font-poppins dark:text-white">Bringing Convenience to Your Doorstep.</h2>
@@ -185,7 +185,7 @@
         </div>
     </div>
 
-    <div class="bg-gray-950 dark:bg-gray-900" data-aos="zoom-out" data-aos-once="true">
+    <div data-aos="zoom-out" data-aos-once="true">
         <div class="gap-8 items-center py-8 px-4 mx-auto max-w-screen-xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 lg:px-6 flex lg:flex-row-reverse flex-col">
             <div class="relative w-full image-zoom-container overflow-hidden rounded-2xl">
                 <div class="z-30 absolute inset-0 bg-black opacity-50 hover:opacity-30 transition-opacity"></div>

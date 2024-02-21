@@ -30,8 +30,10 @@ class ProfileController extends Controller
         ->whereHas('orderline', function ($query) {
             $query->where('is_archived', 0);
         })
-        ->with('orderline.delivery', 'orderline')
+        ->with('orderline.delivery.deliverystatus','orderline.water')
         ->get();
+
+
 
         if ($status = request('status')) {
             $status = trim(str_replace(' ', '', $status));
@@ -46,10 +48,22 @@ class ProfileController extends Controller
 
             return $filteredOrderLines->isNotEmpty();
             });
+        } else{
+            $orders = $orders->filter(function ($order){
+            $filteredOrderLines = $order->orderline->filter(function ($orderline){
+                $actualStatus = $orderline->delivery->delivery_status;
+                return $actualStatus == 1;
+            });
 
+            $order->setRelation('orderline', $filteredOrderLines);
+
+            return $filteredOrderLines->isNotEmpty();
+            });
         }
+       
         $recent = $orders->first();
-        return view('profiles.order', compact('customer', 'orders', 'recent'));
+
+        return view('profiles.order', compact('customer', 'orders', 'recent' , 'status'));
     }
 
     private function AuthenticatedCustomer()

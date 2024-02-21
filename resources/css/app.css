@@ -35,6 +35,16 @@ input:-webkit-autofill {
     }
 }
 
+select#size-select option {
+    background-color: rgba(
+        17,
+        24,
+        39,
+        1
+    ); /* Adjust the background color as needed */
+    color: rgb(209 213 219); /* Adjust the text color as needed */
+}
+
 .clip-path-polygon {
     clip-path: polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%);
 }
@@ -103,4 +113,8 @@ input[type="time"]::-webkit-outer-spin-button {
 .sidebar-link.active {
     background-color: #4a90e2;
     color: #ffffff;
+}
+
+.border-blue {
+    border-left: 4px solid #3b82f6;
 }

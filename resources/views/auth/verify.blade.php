@@ -5,7 +5,7 @@
 @endsection
 @section('content')
 
-<div class="card">
+<div class="card bg-gray-800">
     <div class="flex flex-col gap-5 items-center p-4 justify-center dark:border-gray-600">
             
         @if (!Auth::user()->hasVerifiedEmail())

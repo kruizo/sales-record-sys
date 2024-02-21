@@ -2,11 +2,31 @@ let currentMarker = false;
 let latitude = 0;
 let longitude = 0;
 let activebtn = "";
+const firstName = document.getElementById("firstname");
+const lastName = document.getElementById("lastname");
+const email = document.getElementById("email");
+const contactnumber = document.getElementById("contactnumber");
+const deliveryaddress = document.getElementById("deliveryaddress");
+const date = document.getElementById("date");
+const time = document.getElementById("time");
+const specialinstruction = document.getElementById("specialinstruction");
+const paymentMethodRadios = document.getElementsByName("payment_method");
+const reviewOrderContainer = document.getElementById("review-orders");
+let selectedPaymentMethod = "";
 
 const productDataElement = document.getElementById("product-data");
 const productData = JSON.parse(
     productDataElement.getAttribute("data-products")
 );
+
+document.addEventListener("DOMContentLoaded", function () {
+    var today = new Date();
+    var day = String(today.getDate()).padStart(2, "0");
+    var month = String(today.getMonth() + 1).padStart(2, "0"); // January is 0!
+    var year = today.getFullYear();
+    var defaultDate = month + "-" + day + "-" + year;
+    document.getElementById("date").defaultValue = defaultDate;
+});
 
 let order = {
     products: {},
@@ -37,22 +57,23 @@ function updateOrder() {
 
         if (product.quantity > 0) {
             const productName = document.createElement("h1");
-            productName.id = "product-name";
+            productName.id = `product-${product.name}`;
             productName.innerText = `${product.quantity} ${product.name}`;
 
             const productSubtotal = document.createElement("h2");
-            productSubtotal.id = "product-subtotal";
+            productSubtotal.id = `product-subtotal-${product.name}`;
             productSubtotal.innerText = `₱${product.price * product.quantity}`;
 
             const productContainer = document.createElement("div");
+            productContainer.id = "product-container";
             productContainer.classList.add("flex", "justify-between");
             productContainer.appendChild(productName);
             productContainer.appendChild(productSubtotal);
+
             orderInformation.appendChild(productContainer);
         }
     }
 
-    const deliveryRadio = document.getElementById("delivery");
     if (order.orderCount > 0) {
         const deliveryText = document.createElement("h1");
         deliveryText.id = "delivery-text";
@@ -71,7 +92,6 @@ function updateOrder() {
 
         const totalText = document.createElement("h1");
         totalText.id = "total-text";
-        const deliveryRadio = document.getElementById("total-text");
         totalText.innerText = "Total";
 
         const totalAmount = calculateTotal();
@@ -86,7 +106,14 @@ function updateOrder() {
         totalContainer.appendChild(total);
 
         orderInformation.appendChild(totalContainer);
+        const clonedOrderInformation = orderInformation.cloneNode(true);
+        reviewOrderContainer.innerHTML = "";
+        reviewOrderContainer.appendChild(clonedOrderInformation);
     }
+
+    const clonedOrderInformation = orderInformation.cloneNode(true);
+    reviewOrderContainer.innerHTML = "";
+    reviewOrderContainer.appendChild(clonedOrderInformation);
 }
 
 function calculateTotal() {
@@ -153,8 +180,8 @@ function incrementInput(productId) {
 }
 
 function decrementInput(productId) {
-    var inputElement = document.getElementById(productId);
-    var currentValue = parseInt(inputElement.value);
+    const inputElement = document.getElementById(productId);
+    let currentValue = parseInt(inputElement.value);
     if (currentValue == 1) {
         toggleCard(productId);
     }
@@ -168,8 +195,7 @@ window.addEventListener("message", handleLocationMessage);
 
 function showMap() {
     if (currentMarker) {
-        var newIframe = document.getElementById("newmap");
-        var mapframe = document.getElementById("newframe");
+        const newIframe = document.getElementById("newmap");
         const lat = latitude;
         const lng = longitude;
         resetmarker("newmap");
@@ -215,4 +241,27 @@ function resetmarker(frame) {
         },
         "*"
     );
+}
+
+function populateReviewModal() {
+    for (const radio of paymentMethodRadios) {
+        if (radio.checked) {
+            selectedPaymentMethod = radio.value;
+            break;
+        }
+    }
+
+    document.getElementById("review-name").textContent =
+        firstName.value + " " + lastName.value;
+    document.getElementById("review-email").textContent = email.value;
+    document.getElementById("review-contactnumber").textContent =
+        contactnumber.value;
+    document.getElementById("review-deliveryaddress").textContent =
+        deliveryaddress.value;
+    document.getElementById("review-date").textContent =
+        date.value + " " + time.value;
+    document.getElementById("review-paymentmethod").textContent =
+        selectedPaymentMethod;
+    document.getElementById("review-specialinstruction").textContent =
+        specialinstruction.value;
 }

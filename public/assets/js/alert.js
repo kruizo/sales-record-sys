@@ -1,4 +1,6 @@
-setTimeout(function() {
-    var toast = document.getElementById('toast-simple');
-    toast.style.display = 'none';
+setTimeout(function () {
+    var toasts = document.querySelectorAll("#toast-simple");
+    toasts.forEach(function (toast) {
+        toast.style.display = "none";
+    });
 }, 3000);

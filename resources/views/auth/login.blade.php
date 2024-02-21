@@ -5,7 +5,7 @@
 @section('content')
 
 
-<div class="card">
+<div class="card h-full bg-gray-800">
     <div class="p-4 md:p5">
         <x-form-header text="Login" class="mb-4"/>
 

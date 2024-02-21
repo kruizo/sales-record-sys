@@ -16,16 +16,21 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <style>
+        html,body{
+            background-color: rgb(17 24 39);
+        }
+    </style>
 </head>
 
-<body class="antialiased">
+<body class="antialiased ">
     <div id="app">
         <main>
-            <div class="flex flex-col items-center px-10">
+            <div class="flex flex-col items-center px-10 h-screen ">
                 <a href="{{ route('/') }}" tabindex="-1">
                     <img src="{{ asset('assets/image/logo.png')}}" alt="logo" class="w-20 py-6" srcset="">
                 </a>
-                <div class="justify-content-center bg-gray-800 w-full md:w-1/2 lg:w-1/3">
+                <div class="justify-content-center w-full md:w-1/2 lg:w-1/3">
                     @yield('content')
 
                 </div>

@@ -7,7 +7,7 @@
 <form action="{{ route('profile.registration') }}" method="POST">
 @csrf
     
-    <div class="items-center py-4 text-gray-400 px-4 " id="profilesetting" role="tabpanel" aria-labelledby="profilesetting-tab">
+    <div class="items-center py-4 bg-gray-800 text-gray-400 px-4 " id="profilesetting" role="tabpanel" aria-labelledby="profilesetting-tab">
   
         <x-form-header text="Set up your profile" class="text-2xl pb-8"/>
         <x-error-container />

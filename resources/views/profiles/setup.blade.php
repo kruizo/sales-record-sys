@@ -3,7 +3,7 @@
 <title>Adelflor | Profile</title>
 @endsection
 @section('content')
-<div class="-z-20 bg-gray-950 min-h-full sm:p-40">
+<div class="-z-20 min-h-full max-w-screen-2xl mx-auto sm:py-40">
     <x-section-header text="Your profile" />
     <div class="text-gray-400 w-full flex flex-col gap-5 md:flex-row ">
         <aside class="hidden py-4 md:w-1/3 lg:w-1/4 md:block" id="default-tab" data-tabs-toggle="#default-tab-content" role="tablist">
@@ -35,20 +35,20 @@
                 @endif
                     <div class="w-full"></div>
                     <div class="w-full flex items-center">
-                        <x-input-label for="name" text="Name" class="text-gray-300 w-1/3" />
+                        <x-input-label for="name" text="Name" class="text-gray-300 w-1/3 mt-2" />
                         <div class="w-full h-fit items-center flex relative">
                             <x-input-text id="name" name="name" class="border-none hover:cursor-default" readonly value="{{$customer->firstname ?? ''}} {{$customer->lastname ?? ''}}" />
                         </div>
                     </div>
                     <div class="w-full flex items-center">
-                        <x-input-label for="contact" text="Contact Number" class="text-gray-300 w-1/3" />
+                        <x-input-label for="contact" text="Contact Number" class="text-gray-300 w-1/3 mt-2" />
                         <div class="w-full h-fit items-center flex relative">
                             <x-input-text id="contact" name="contact" class="border-none hover:cursor-default" readonly value="{{$customer->contactnum ?? ''}}" />
                         </div>
                     </div>
                   
                     <div class="w-full flex items-center">
-                        <x-input-label for="emailaccount" text="Email" class="text-gray-300 w-1/3" />
+                        <x-input-label for="emailaccount" text="Email" class="text-gray-300 w-1/3 mt-2" />
                         <div class="w-full h-fit items-center flex relative">
                             <x-input-text id="emailaccount" name="email" class="pr-24 border-none hover:cursor-default" readonly value="{{Auth::user()->email}}" />
                             @if (!Auth::user()->isVerified())
@@ -59,31 +59,31 @@
                         </div>
                     </div>
                     <div class="w-full flex items-center">
-                        <x-input-label for="streetaddress" text="Street address" class="text-gray-300 w-1/3" />
+                        <x-input-label for="streetaddress" text="Street address" class="text-gray-300 w-1/3 mt-2" />
                         <div class="w-full h-fit items-center flex relative">
                             <x-input-text id="streetaddress" name="street_address" class="border-none hover:cursor-default" readonly value="{{$customer->address->streetaddress ?? ''}}" />
                         </div>
                     </div>
                     <div class="w-full flex items-center">
-                        <x-input-label for="province" text="Province" class="text-gray-300 w-1/3" />
+                        <x-input-label for="province" text="Province" class="text-gray-300 w-1/3 mt-2" />
                         <div class="w-full h-fit items-center flex relative">
                             <x-input-text id="province" name="province" class="border-none hover:cursor-default" readonly value="{{$customer->address->province ?? ''}}" />
                         </div>
                     </div>
                     <div class="w-full flex items-center">
-                        <x-input-label for="barangay" text="Barangay" class="text-gray-300 w-1/3" />
+                        <x-input-label for="barangay" text="Barangay" class="text-gray-300 w-1/3 mt-2" />
                         <div class="w-full h-fit items-center flex relative">
                             <x-input-text id="barangay" name="barangay" class="border-none hover:cursor-default" readonly value="{{$customer->address->barangay ?? ''}}" />
                         </div>
                     </div>
                     <div class="w-full flex items-center">
-                        <x-input-label for="city" text="City" class="text-gray-300 w-1/3" />
+                        <x-input-label for="city" text="City" class="text-gray-300 w-1/3 mt-2" />
                         <div class="w-full h-fit items-center flex relative">
                             <x-input-text id="city" name="city" class="border-none hover:cursor-default" readonly value="{{$customer->address->city ?? ''}}" />
                         </div>
                     </div>
                     <div class="w-full flex items-center">
-                        <x-input-label for="zip" text="Postal / Zip" class="text-gray-300 w-1/3" />
+                        <x-input-label for="zip" text="Postal / Zip" class="text-gray-300 w-1/3 mt-2" />
                         <div class="w-full h-fit items-center flex relative">
                             <x-input-text id="zip" name="zip" class="border-none hover:cursor-default" readonly value="{{$customer->address->zip ?? ''}}" />
                         </div>
@@ -97,8 +97,8 @@
                         <form action="{{route('profile.verify')}}" method="POST">
                             @csrf
                             <x-error-container />
-                            <div class="w-full flex items-center">
-                                <x-input-label for="emailaccount" text="Email" class="text-gray-300 w-1/3" />
+                            <div class="w-full flex items-center ">
+                                <x-input-label for="emailaccount" text="Email" class="text-gray-300 w-1/3 mt-2" />
                                 <div class="w-full h-fit items-center flex relative">
                                     <x-input-text id="emailaccount" name="email" class="pr-24 border-none hover:cursor-default" readonly value="{{Auth::user()->email}}" />
                                     @if (!Auth::user()->isVerified())
@@ -151,7 +151,6 @@
         urlParams.set('tab', tabName);
         window.location.hash = urlParams.toString();
     }
-
 
     function setActiveTab(tabName) {
         var tabButtons = document.querySelectorAll('[data-tab-name]');

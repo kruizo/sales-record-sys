@@ -4,9 +4,7 @@
 @endsection
 @section('content')
 
-<div class="card">
-        
-
+<div class="card bg-gray-800">
     <div class="p-4 md:p5" id="form-body">
         <x-form-header text="Register" class="mb-4"/>
         
