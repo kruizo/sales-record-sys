@@ -25,7 +25,15 @@ class DashboardController extends Controller
     public function show()
     {
 
-        $data = Order::latest()->with('orderline','orderline.water', 'orderline.delivery.deliverystatus', 'customer')->get();
+        $data = Order::latest()->with('orderline', 'orderline.water', 'orderline.delivery.deliverystatus', 'customer')->get();
+
+
+        // $data = Order::latest()
+        // ->with('orderline', 'orderline.water', 'orderline.delivery.deliverystatus', 'customer')
+        // ->whereHas('orderline.delivery', function ($query) {
+        //     $query->where('delivery_status', 1);
+        // })
+        // ->get();
 
         $perPage = 10; // Number of items per page
         $currentPage = request()->get('page', 1); // Get the current page or default to 1

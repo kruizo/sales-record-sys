@@ -78,7 +78,11 @@
                         Distilled Qty.
                     </div>
                 </th>
-
+                <th scope="col" class="px-2 py-3">
+                    <div class="flex items-center">
+                    Total
+                </div>
+            </th>
                 <th scope="col" class="px-2 py-3">
                     <div class="flex items-center">
                     Delivery Address
@@ -106,11 +110,7 @@
                         Status
                     </div>
                 </th>
-                <th scope="col" class="px-2 py-3">
-                        <div class="flex items-center">
-                        Total
-                    </div>
-                </th>
+
                 <th scope="col" class="px-2 py-3">
                     Action
                 </th>
@@ -145,6 +145,10 @@
                 <td class="px-2 py-4">
                     {{ $item->orderline->where('water_id', 3)->sum('quantity') }}
                 </td>
+                                
+                <td class="px-2 py-4">
+                    {{$item->total}} PHP
+                </td>
                 <td class="px-2 py-4">
                     {{$item->orderline->first()->delivery->delivery_address}}
                 </td>
@@ -159,14 +163,32 @@
                 </td>
                 <td class="px-2 py-4">
                     <div class="flex items-center">
-                        {{-- <div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div> {{$item->orderline->delivery->deliverystatus->status}} --}}
+
+                        @foreach($item->orderline as $orderline)
+                            @if($orderline->delivery->delivery_status == 1)
+                                <div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div>
+                                {{$orderline->delivery->deliverystatus->status}}
+                            @elseif($orderline->delivery->delivery_status == 2)
+                                <div class="h-2.5 w-2.5 rounded-full bg-blue-500 me-2"></div>
+                                {{$orderline->delivery->deliverystatus->status}}
+                            @break
+                            @else
+                                <div class="h-2.5 w-2.5 rounded-full bg-red-500 me-2"></div>
+                                {{$orderline->delivery->deliverystatus->status}}
+                            @endif
+                            @break
+
+                        @endforeach
                     </div>
                 </td>
-                <td class="px-2 py-4">
-                    {{$item->total}}
-                </td>
-                <td class="px-2 py-4">
-                    <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit user</a>
+
+                <td class="px-2 py-4 ">
+                    <div class="flex gap-4 items-center justify-center">
+                        <i class="fas fa-edit text-xl text-green-400"></i>
+                        <i class="fa fa-download text-xl text-blue-500" aria-hidden="true"></i>
+                        <i class="fas fa-trash-alt text-xl text-red-500"></i>
+                        <i class="fa fa-info-circle text-xl text-blue-500"></i>
+                    </div>
                 </td>
             </tr>
              @endforeach
