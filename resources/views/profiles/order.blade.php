@@ -4,7 +4,7 @@
 <title>Adelflor</title>
 @endsection
 @section('content')
-<div class="z-10 p-6 dark:bg-gray-950 min-h-screen max-w-screen-2xl mx-auto sm:py-40">
+<div class="z-10 p-6 dark:bg-gray-950 min-h-screen max-w-screen-xl mx-auto sm:py-40">
         <x-section-header text="Your orders" />
         
     <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown" class="text-blue-600 h-fit mb-4 focus:outline-none  font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
