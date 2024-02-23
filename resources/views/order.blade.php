@@ -116,7 +116,7 @@
                     </div>
                 </div>
                 <input type="hidden" name="mapreference" id="mapreference">
-                <div class="py-2">
+                {{-- <div class="py-2">
                     <p class="text-gray-100 text-md">Expected Date and Time</p>
                     <div class="space-y-2">
                         <div class="relative w-1/3">
@@ -129,7 +129,7 @@
                         </div>
                         <input type="time" name="expected_time" id="time" class="border z-10 w-1/3 border-gray-700 bg-gray-800 text-gray-400 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select time">
                     </div>
-                </div>
+                </div> --}}
                 <div class="py-2">
                     <div class="flex gap-2">
                          <p class="text-gray-100 text-md">Special Instructions</p><span class="italic">(optional)</span>

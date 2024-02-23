@@ -21,7 +21,11 @@
     <!-- Scripts -->
     <script type="module" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-
+    <style>
+        html {
+            background-color: rgb(3 7 18);
+        }
+    </style>
 </head>
 
 <body class="antialiased">

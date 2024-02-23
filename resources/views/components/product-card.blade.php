@@ -14,9 +14,9 @@
                     <div class="grid grid-cols-3 w-1/2 items-center">
                             <h1 class="text-xl" class="bg-blue-400 w-1/4 col-span-1" >Size</h1>
                             <select name="size" id="size-select" class="col-span-2 bg-transparent">
-                                <option class="bg-transparent" value="2">2 galoon</option>
-                                <option value="4">4 galoon</option>
-                                <option value="5">5 galoon</option>
+                                <option class="bg-transparent" value="2">2 galon</option>
+                                <option value="4">4 galon</option>
+                                <option value="5">5 galon</option>
 
                             </select>
           

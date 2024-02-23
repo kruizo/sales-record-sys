@@ -7,11 +7,10 @@ body {
     margin: 0;
     box-sizing: border-box;
 }
-
-html {
-    background-color: rgb(3 7 18);
+html{
     color: rgb(209 213 219);
 }
+
 
 input:-webkit-autofill {
     caret-color: rgb(243 244 246);

@@ -49,9 +49,9 @@ Route::group(['middleware' => 'web'], function () {
 
 
 Route::POST('/profile-registration', [App\Http\Controllers\Auth\RegisterController::class, 'profileRegistration'])->name('profile.registration');
-    
+
 Route::middleware(['auth', 'is_admin'])->prefix('admin')->group(function () {
-    Route::get('/', [App\Http\Controllers\DashboardController::class])->name('admin');
+    Route::get('/', [App\Http\Controllers\DashboardController::class, 'show'])->name('admin');
     Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'show'])->name('admin.dashboard');
     Route::get('/orders', [App\Http\Controllers\OrderTableController::class, 'show'])->name('admin.orders');
     Route::get('/customers', [App\Http\Controllers\CustomerTableController::class, 'show'])->name('admin.customers');

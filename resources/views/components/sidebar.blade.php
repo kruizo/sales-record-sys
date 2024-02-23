@@ -1,6 +1,6 @@
 <aside id="logo-sidebar" class="fixed  top-0 left-0 z-40 w-64 h-screen  transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0 dark:bg-gray-800 dark:border-gray-700" aria-label="Sidebar">
     <div class="px-3  py-5 ">
-        <a href="https://flowbite.com" class="flex">
+        <a href="#" class="flex">
             <img src="{{ asset('assets/image/logo.png')}}" class="h-12 me-3" alt="FlowBite Logo" />
             <div class="w-full text-gray-700">
                 <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">
