@@ -49,7 +49,7 @@ class OrderController extends Controller
             'total_order' => ['required', 'numeric'],
             'delivery_address' => ['required', 'string', 'max:255'],
             'expected_date' => ['not_before_today'],
-            ], [
+        ], [
             'expected_date.not_before_today' => 'The :attribute must not be before today.',
 
         ]);
@@ -62,57 +62,58 @@ class OrderController extends Controller
         $specialInstructions = $request->input('special_instructions');
         $employeeId = DeliveryEmployee::where('isAvailable', 1)->first()->employee_id;
         $deliveryAddress = $request->input('delivery_address');
-
+        $deliveryfee = 10;
         $totalOrder = 0;
 
         DB::beginTransaction();
 
-        try{
-        $order = Order::create([
-            'customer_id' => $customerId,
-            'purchase_type' => 'Delivery',
-            'payment_type' => $paymentType,
+        try {
+            $order = Order::create([
+                'customer_id' => $customerId,
+                'purchase_type' => 'Delivery',
+                'payment_type' => $paymentType,
+            ]);
 
-        ]);
-        foreach ($request->input() as $key => $value) {
-            if (is_numeric($value) && strpos($key, 'product_') !== false && $value > 0) {
-                $waterId = substr($key, 8);
-                $water = Water::find($waterId);
+            foreach ($request->input() as $key => $value) {
+                if (is_numeric($value) && strpos($key, 'product_') !== false && $value > 0) {
+                    $waterId = substr($key, 8);
+                    $water = Water::find($waterId);
 
-                $subtotal = $value * $water->cost;
-                 
-                $orderline = Orderline::create([
-                    'order_id' => $order->id,
-                    'water_id' => $water->id,
-                    'quantity' => $value,
-                    'subtotal' => $subtotal,
-                ]);
+                    $subtotal = $value * $water->cost;
 
-                $delivery = Delivery::create([
-                    'orderline_id' => $orderline->id,
-                    'employee_id' => $employeeId,
-                    'delivery_date' => $deliveryDate ?? Date::now()->toDateString(),
-                    'delivery_time' => $deliveryTime ?? Date::now()->toTimeString(),
-                    'delivery_address' => $deliveryAddress,
-                    'map_reference' => $mapReference,
-                    'special_instruction' => $specialInstructions,
-                ]);
-                $totalOrder += $subtotal;
+                    $orderline = Orderline::create([
+                        'order_id' => $order->id,
+                        'water_id' => $water->id,
+                        'quantity' => $value,
+                        'subtotal' => $subtotal,
+                    ]);
+                    $delivery = Delivery::create([
+                        'orderline_id' => $orderline->id,
+                        'employee_id' => $employeeId,
+                        'delivery_date' => $deliveryDate ?? Date::now()->toDateString(),
+                        'delivery_time' => $deliveryTime ?? Date::now()->toTimeString(),
+                        'delivery_address' => $deliveryAddress,
+                        'map_reference' => $mapReference,
+                        'special_instruction' => $specialInstructions,
+                    ]);
+
+                    $totalOrder += $subtotal;
+                }
             }
-        }
-        $totalOrder += 10;
-        $order->update(['total' => $totalOrder]);
+            $totalOrder += $deliveryfee;
+            $order->update(['total' => $totalOrder]);
 
-        DB::commit();
-        return redirect()->route('profile/myorders');
+            DB::commit();
+            return redirect()->route('profile/myorders');
         } catch (\Exception $e) {
             DB::rollback();
-             $errorMessage = $e->getMessage(); 
+            $errorMessage = $e->getMessage();
             return back()->withError($errorMessage);
         }
     }
 
-    public function cancelOrder($id){
+    public function cancelOrder($id)
+    {
         $orderline = Orderline::with('order.customer')->find($id);
         if (!$orderline) {
             abort(404, 'Orderline not found');
@@ -123,7 +124,7 @@ class OrderController extends Controller
 
 
         if ($authenticatedUserId !== $orderCustomerId) {
-            abort(403, 'Unauthorized action'); 
+            abort(403, 'Unauthorized action');
         }
 
 

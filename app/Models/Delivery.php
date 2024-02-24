@@ -28,7 +28,7 @@ class Delivery extends Model
         'is_archived' => 'boolean',
     ];
 
-   public function getStatusText()
+    public function getStatusText()
     {
         return $this->deliverystatus->status ?? 'Unknown';
     }
@@ -46,5 +46,4 @@ class Delivery extends Model
     {
         return $this->belongsTo(DeliveryStatus::class, 'delivery_status');
     }
-
 }

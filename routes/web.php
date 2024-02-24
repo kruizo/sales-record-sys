@@ -35,7 +35,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/', [App\Http\Controllers\ProfileController::class, 'index'])->name('profile');
         Route::post('/verify', [App\Http\Controllers\ProfileController::class, 'verifyUser'])->name('profile.verify');
 
-        Route::get('/myorders', [App\Http\Controllers\ProfileController::class, 'orders'])->name('profile/myorders');
+        Route::get('/myorders', [App\Http\Controllers\ProfileController::class, 'orders'])->name('profile/myorders')->middleware('verified');
         Route::get('/cancel/order/{id}', [App\Http\Controllers\OrderController::class, 'cancelOrder'])->name('cancel.order');
     });
 });
@@ -58,13 +58,6 @@ Route::middleware(['auth', 'is_admin'])->prefix('admin')->group(function () {
     Route::get('/delivery', [App\Http\Controllers\DeliveryTableController::class, 'show'])->name('admin.delivery');
     Route::get('/report', [App\Http\Controllers\ReportsController::class, 'show'])->name('admin.reports');
     Route::get('/analytics', [App\Http\Controllers\AnalyticsController::class, 'show'])->name('admin.analytics');
-
-    // Route::resource('dashboard', App\Http\Controllers\DashboardController::class)->names('admin.dashboard');
-    // Route::resource('orders', App\Http\Controllers\OrderTableController::class)->names('admin.orders');
-    // Route::resource('customers', App\Http\Controllers\CustomerTableController::class)->names('admin.customers');
-    // Route::resource('delivery', App\Http\Controllers\DeliveryTableController::class)->names('admin.delivery');
-    // Route::resource('reports', App\Http\Controllers\ReportsController::class)->names('admin.reports');
-    // Route::resource('analytics', App\Http\Controllers\AnalyticsController::class)->names('admin.analytics');
 });
 
 Route::get('/view/map', function () {

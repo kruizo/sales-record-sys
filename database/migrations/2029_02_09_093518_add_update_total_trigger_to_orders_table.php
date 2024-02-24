@@ -24,17 +24,9 @@ return new class extends Migration
                         SET total = (
                             SELECT SUM(subtotal) 
                             FROM orderlines 
-                            WHERE order_id = (
-                                SELECT order_id 
-                                FROM orderlines 
-                                WHERE id = NEW.orderline_id
-                            )
+                            WHERE order_id = NEW.id
                         )
-                        WHERE id = (
-                            SELECT order_id 
-                            FROM orderlines 
-                            WHERE id = NEW.orderline_id
-                        );
+                        WHERE id = NEW.id;
                     END IF;
                 END
                 ');

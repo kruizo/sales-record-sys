@@ -14,6 +14,50 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
+    const checkboxAll = document.getElementById('checkbox-all-search');
+    const checkboxes = document.querySelectorAll('.checkbox');
+
+    checkboxAll.addEventListener('change', function() {
+        checkboxes.forEach(function(checkbox) {
+            checkbox.checked = checkboxAll.checked;
+        });
+    });
+
+    // const filterCheckboxes = document.querySelectorAll('.category-checkbox');
+
+    // filterCheckboxes.forEach(checkbox => {
+    //     checkbox.addEventListener('change', function () {
+    //         const selectedCategories = [...document.querySelectorAll('.category-checkbox:checked')].map(checkbox => checkbox.value);
+            
+    //         const rows = document.querySelectorAll('#dataTable tbody tr');
+
+    //         rows.forEach(row => {
+    //             let shouldShow = true;
+
+    //             selectedCategories.forEach(category => {
+    //                 if (!row.classList.contains(category)) {
+    //                     shouldShow = false;
+    //                 }
+    //             });
+
+    //             if (shouldShow) {
+    //                 row.style.display = '';
+    //             } else {
+    //                 row.style.display = 'none';
+    //             }
+    //         });
+    //     });
+    // });
+
+
+    const rowRange = document.getElementById('minmax-range');
+    const maxRow = document.getElementById('maxrow');
+
+    rowRange.addEventListener('input', function() {
+        maxRow.textContent = rowRange.value;
+    });
+
+
     var searchInput = document.querySelector("#table-search");
 
     searchInput.addEventListener("input", function (event) {
@@ -22,9 +66,9 @@ document.addEventListener("DOMContentLoaded", function () {
         rows.forEach(function (row) {
             var textContent = row.textContent.toLowerCase();
             if (textContent.includes(searchTerm)) {
-                row.style.display = ""; // Show the row
+                row.style.display = ""; 
             } else {
-                row.style.display = "none"; // Hide the row
+                row.style.display = "none";
             }
         });
     });

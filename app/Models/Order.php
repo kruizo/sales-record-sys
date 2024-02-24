@@ -16,7 +16,7 @@ class Order extends Model
         'total',
         'is_archived'
     ];
-      protected $casts = [
+    protected $casts = [
         'is_archived' => 'boolean',
     ];
 

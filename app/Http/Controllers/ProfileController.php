@@ -24,14 +24,14 @@ class ProfileController extends Controller
 
     public function orders(Request $request)
     {
-      $customer = $this->AuthenticatedCustomer();
-      $orders = $customer->orders()
-        ->latest()
-        ->whereHas('orderline', function ($query) {
-            $query->where('is_archived', 0);
-        })
-        ->with('orderline.delivery.deliverystatus','orderline.water')
-        ->get();
+        $customer = $this->AuthenticatedCustomer();
+        $orders = $customer->orders()
+            ->latest()
+            ->whereHas('orderline', function ($query) {
+                $query->where('is_archived', 0);
+            })
+            ->with('orderline.delivery.deliverystatus', 'orderline.water')
+            ->get();
 
 
 
@@ -44,26 +44,26 @@ class ProfileController extends Controller
                     return strcasecmp($actualStatus, $status) === 0;
                 });
 
-            $order->setRelation('orderline', $filteredOrderLines);
+                $order->setRelation('orderline', $filteredOrderLines);
 
-            return $filteredOrderLines->isNotEmpty();
+                return $filteredOrderLines->isNotEmpty();
             });
-        } else{
-            $orders = $orders->filter(function ($order){
-            $filteredOrderLines = $order->orderline->filter(function ($orderline){
-                $actualStatus = $orderline->delivery->delivery_status;
-                return $actualStatus == 1;
-            });
+        } else {
+            $orders = $orders->filter(function ($order) {
+                $filteredOrderLines = $order->orderline->filter(function ($orderline) {
+                    $actualStatus = $orderline->delivery->delivery_status;
+                    return $actualStatus == 1;
+                });
 
-            $order->setRelation('orderline', $filteredOrderLines);
+                $order->setRelation('orderline', $filteredOrderLines);
 
-            return $filteredOrderLines->isNotEmpty();
+                return $filteredOrderLines->isNotEmpty();
             });
         }
-       
+
         $recent = $orders->first();
 
-        return view('profiles.order', compact('customer', 'orders', 'recent' , 'status'));
+        return view('profiles.order', compact('customer', 'orders', 'recent', 'status'));
     }
 
     private function AuthenticatedCustomer()
@@ -95,21 +95,21 @@ class ProfileController extends Controller
             'zip_edit' => 'required|numeric',
         ]);
 
-         $customer = $this->AuthenticatedCustomer();
+        $customer = $this->AuthenticatedCustomer();
 
-         $addressData = [
+        $addressData = [
             'streetaddress' => $request->input('street_address_edit'),
             'province' => $request->input('province_edit'),
             'barangay' => $request->input('barangay_edit'),
             'city' => $request->input('city_edit'),
             'zip' => $request->input('zip_edit'),
         ];
-        
+
         $address = Address::updateOrCreate(
-                ['id' => $customer->address_id ?? ''], 
-                $addressData                       
-            );
-        
+            ['id' => $customer->address_id ?? ''],
+            $addressData
+        );
+
         $customerData = [
             'firstname' => $request->input('firstname_edit'),
             'lastname' => $request->input('lastname_edit'),
@@ -118,8 +118,8 @@ class ProfileController extends Controller
             'address_id' => $address->id,
         ];
         $customer = Customer::updateOrCreate(
-                ['id' => $customer->id ?? ''], 
-                $customerData                       
+            ['id' => $customer->id ?? ''],
+            $customerData
         );
 
         $registeredCustomer = RegisteredCustomer::create([

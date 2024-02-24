@@ -17,7 +17,7 @@ class Orderline extends Model
         'is_archived'
     ];
 
-      protected $casts = [
+    protected $casts = [
         'is_archived' => 'boolean',
     ];
 
@@ -25,7 +25,7 @@ class Orderline extends Model
     {
         return $this->belongsTo(Order::class);
     }
-    
+
     public function delivery()
     {
         return $this->hasOne(Delivery::class);
