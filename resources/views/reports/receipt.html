@@ -7,12 +7,23 @@
     <title>Document</title>
 </head>
 <style>
+    .receipt-body {
+        margin: 0;
+        box-sizing: border-box;
+
+        height: 100%;
+    }
+
     #container {
         width: 62mm;
         box-shadow: 0 0 1in -0.25in rgb(0, 0, 0.5);
         padding: 2mm;
         margin: 0 auto;
         background-color: #fff;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -70%);
     }
 
     #container h1 {
@@ -119,14 +130,13 @@
     }
 </style>
 
-<body>
+<body class="receipt-body">
 
     <div id="container">
         <div id="printed content">
             <center id="top">
                 <h1>Adelfor</h1>
 
-                <img src="{{asset('assets/image/logo.png')}}" alt="" srcset="">
 
                 <div class="info">
 

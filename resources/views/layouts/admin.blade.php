@@ -8,7 +8,7 @@
 
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="{{asset('assets/image/logo.png')}}" type="image/x-icon">
+    <link rel="preload" rel="icon" href="{{asset('assets/image/logo.png')}}" type="image/x-icon" as="image">
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @yield('title')

@@ -353,13 +353,13 @@
                                         data-modal-toggle="confirm-modal" 
                                         class="order-mark-btn" 
                                         data-id="{{$order->id}}">
-                                    <i class="fa fa-check text-xl text-green-400" aria-hidden="true"></i>
+                                    <i class="fas fa-check text-xl text-green-400" aria-hidden="true"></i>
                                 </button>
                             </form>
-                            <button type="button" onclick="PrintReceiptContent('print')">
-                            
+                            <button type="button" class="print-btn" onclick="PrintReceiptContent('print')">
+                            <i class="fas fa-download text-xl text-blue-500" aria-hidden="true"></i>
+                                
                             </button>
-                            <i class="fa fa-download text-xl text-blue-500" aria-hidden="true"></i>
                             <i class="fas fa-edit text-xl text-sky-300"></i>
                         </div>
                     </td>
@@ -391,30 +391,31 @@
             </li>
         </ul>
     </nav>
-    
 </div>
 <x-modal-confirm text="Are you sure to mark this order as complete?" variant="confirm" />
 
-<div id="print">
-    @include('reports/receipt')
+<div id="print" class="hidden">
+    @include('reports.receipt')
 </div>
 
 @include('modals/map')
 
 <script>
-    function PrintReceiptContent(id){
-        const data = '<input type="button" id="printPageButton" class="w-full bg-blue-700 border-none text-white p-4 text-lg text-center" value="Print Receipt" onClick="window.print()">';
-        data += document.getElementById(id).innerHtml;
-        receipt = window.open("","win","left=150","top=130", "width=400", "height=400")
-            receipt.screenX =0;
-            receipt.screenY =0;
-            receipt.document.write(data);
-            receipt.document.title = "Print Receipt";
-            receipt.focus();
 
-            setTimeout(() => {
-               receipt.close(); 
-            }, 8000);
+
+    function PrintReceiptContent(el){
+        var data = '<input onClick="window.print()" type="button" id="printPageButton" style="width: 100%; background: blue; border: none; color:white; bottom: 0; position: absolute; padding: 10px; font-size: 1rem; text-alignment:center; z-index: 10;" value="Print Receipt">';
+        data += document.getElementById(el).innerHTML;
+
+         
+        document.getElementById(el).innerHTML;
+       receipt = window.open("", "win", "left=150", "top=130", "width=100", "height=100%");
+        receipt.document.write(data);
+        receipt.document.title = "Print Receipt";
+        receipt.focus();
+        
+          
     }
 </script>
+
 @endsection
