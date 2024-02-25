@@ -62,7 +62,6 @@ class OrderController extends Controller
         $specialInstructions = $request->input('special_instructions');
         $employeeId = DeliveryEmployee::where('isAvailable', 1)->first()->employee_id;
         $deliveryAddress = $request->input('delivery_address');
-        $deliveryfee = 10;
         $totalOrder = 0;
 
         DB::beginTransaction();
@@ -74,6 +73,7 @@ class OrderController extends Controller
                 'payment_type' => $paymentType,
             ]);
 
+            $deliveryfee = 0;
             foreach ($request->input() as $key => $value) {
                 if (is_numeric($value) && strpos($key, 'product_') !== false && $value > 0) {
                     $waterId = substr($key, 8);
@@ -87,6 +87,7 @@ class OrderController extends Controller
                         'quantity' => $value,
                         'subtotal' => $subtotal,
                     ]);
+
                     $delivery = Delivery::create([
                         'orderline_id' => $orderline->id,
                         'employee_id' => $employeeId,
@@ -96,7 +97,7 @@ class OrderController extends Controller
                         'map_reference' => $mapReference,
                         'special_instruction' => $specialInstructions,
                     ]);
-
+                    $deliveryfee = $orderline->delivery->delivery_fee;
                     $totalOrder += $subtotal;
                 }
             }
@@ -131,5 +132,23 @@ class OrderController extends Controller
         $orderline->delivery->update(['delivery_status' => 3]);
 
         return redirect()->back()->with('success', 'Order canceled successfully');
+    }
+
+    public function markOrder($id, $status)
+    {
+        try {
+        $order = Order::findOrFail($id);
+
+        foreach ($order->orderline as $orderline) {
+            $delivery = $orderline->delivery;
+            if ($delivery) {
+                $delivery->delivery_status = $status;
+                $delivery->save();
+                }
+            }
+            return back()->withSuccess('Order set as completed succesfully');
+        } catch (\Exception $e) {
+            return back()->withError('Failed to update delivery status');
+        }
     }
 }

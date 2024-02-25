@@ -19,6 +19,8 @@ const productData = JSON.parse(
     productDataElement.getAttribute("data-products")
 );
 
+
+
 document.addEventListener("DOMContentLoaded", function () {
     var today = new Date();
     var day = String(today.getDate()).padStart(2, "0");

@@ -11,7 +11,7 @@
 </head>
 <style>
     #map {
-        height: 570px;
+        height: 600px;
         width: 100%;
     }
 </style>
@@ -31,6 +31,7 @@
             if (event.data && event.data.action === 'resetMarker') {
                 if (currentMarker) {
                     map.removeLayer(currentMarker);
+
                     currentMarker = null;
                 }
             } else if (event.data && event.data.action === 'view') {

@@ -3,16 +3,27 @@
     <title>Dashboard</title>
 @endsection
 @section('content')
-<div class="relative overflow-hidden sm:ml-64 p-4 shadow-md sm:rounded-lg">
+
+@if (session('success'))
+    <x-modal-success text="{{ session('success') }}"/>
+@endif
+<div class="overflow-hidden sm:ml-64 p-4 shadow-md sm:rounded-lg">
+<button data-modal-target="success-modal" data-modal-toggle="success-modal" class="w-96 h-96">ASDSADSAD</button>
+
     <div class="flex gap-4 mb-10 justify-around flex-wrap">
-        <x-sales-card id="order-count" title="Total Order" count="{{$data->count()}}"/>
-        <x-sales-card id="proft-count" title="Total Earnings" count="₱ {{$watersold->sum('subtotal')}}"/>
-        <x-sales-card id="water-count" title="Waters Sold" count="{{$watersold->sum('quantity')}}"/>
-        <x-sales-card id="order-count" title="Pending Deliveries Today " count="{{$deliveries->count()}}"/>
+        <x-sales-card id="order-card" title="Total Order" countId="order-text" count="{{$totalorder}}"/>
+        <x-sales-card id="proft-card" title="Total Earnings" countId="profit-text" count="₱ {{$watersold->sum('subtotal')}}"/>
+        <x-sales-card id="water-card" title="Waters Sold" countId="water-text" count="{{$watersold->sum('quantity')}}"/>
+        <x-sales-card id="deliveries-card" title="Pending Deliveries Today " countId="deliveries-text" count="{{$deliveries->count()}}"/>
 
     </div>
     <div>
-        <h1 class="text-xl text-black font-bold">You have <span class="text-green-600">{{$data->count()}} </span> order(s) today</h1>
+        <h1 class="text-xl text-black font-bold">You have <span class="text-green-600" id="order-count" >{{$data->count()}} </span>        
+        @if (!$request->has('delivery') && !$request->has('status'))
+             order(s) today
+        @else
+            filtered order(s)  
+        @endif</h1>
     </div>
     <div class="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 bg-white dark:bg-gray-900">
         <div class="flex gap-10 justify-center items-center ">
@@ -38,111 +49,112 @@
             
                     </div>
                 </div>
-                <div class="flex items-center justify-center p-4">
-                    <button id="dropdownDefault" data-dropdown-toggle="dropdown"
-                      class="text-gray-600 border hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-                      type="button">
-                      Filter by category
-                      <svg class="w-4 h-4 ml-2" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                      </svg>
-                    </button>
-                  
-                    <!-- Dropdown menu -->
-                    <form action="{{route('admin.dashboard')}}" method="GET">
-                    <div id="dropdown" class="z-10 hidden w-56 p-4 border bg-white rounded-lg shadow dark:bg-gray-700">
-                        <h6 class="mb-3 text-sm font-bold text-gray-900 dark:text-white">
-                            Delivery
-                          </h6>
-                          <ul class="space-y-2 text-sm" aria-labelledby="dropdownDefault">
-                            <li class="flex items-center">
-                                <input id="today" name="delivery[]" type="checkbox" value="today"
-                                  class="category-checkbox w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
+                <form action="{{route('admin.dashboard')}}" method="GET">
+                    <div class="flex  ">
+                        <div class="flex items-center justify-center p-4">
+                            <button id="dropdownDefault" data-dropdown-toggle="dropdown"
+                            class="text-gray-600 border focus:outline-none hover:bg-gray-200 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                            type="button">
+                            Filter by category
+                            <svg class="w-4 h-4 ml-2" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                            </button>
                         
-                                <label for="today" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">
-                                  Today
+                            <!-- Dropdown menu -->
+                            <div id="dropdown" class="z-10 hidden absolute w-56 p-4 border bg-white rounded-lg shadow dark:bg-gray-700">
+                                <h6 class="mb-3 text-sm font-bold text-gray-900 dark:text-white">
+                                    Delivery
+                                </h6>
+                                <ul class="space-y-2 text-sm" aria-labelledby="dropdownDefault">
+                                    <li class="flex items-center">
+                                        <input id="today" name="delivery[]" type="checkbox" value="today"
+                                        class="category-checkbox w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
+                                
+                                        <label for="today" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">
+                                        Today
+                                        </label>
+                                    </li>
+                                    <li class="flex items-center">
+                                    <input id="tomorrow" type="checkbox" name="delivery[]" value="tomorrow"
+                                        class="category-checkbox w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
+                            
+                                    <label for="tomorrow" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">
+                                        Tomorrow
+                                    </label>
+                                    </li>
+                            
+                                    <li class="flex items-center">
+                                    <input id="week" type="checkbox" name="delivery[]" value="week"
+                                        class="category-checkbox w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
+                            
+                                    <label for="ThisWeek" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">
+                                        This week
+                                    </label>
+                                    </li>
+                            
+                                    <li class="flex items-center">
+                                    <input id="month" type="checkbox" name="delivery[]" value="month"
+                                        class="category-checkbox w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
+                            
+                                    <label for="ThisMonth" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">
+                                        This month
+                                    </label>
+                                    </li>
+                                </ul>
+                            <h6 class="mb-3  pt-4 text-sm font-bold text-gray-900 dark:text-white">
+                                Status
+                            </h6>
+                            <ul class="space-y-2 text-sm" aria-labelledby="dropdownDefault">
+                                <li class="flex items-center">
+                                <input id="inprogress" type="checkbox" name="status[]" value="inprogress"
+                                    class="category-checkbox w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
+                        
+                                <label for="inprogress" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">
+                                    In progress
                                 </label>
-                              </li>
-                            <li class="flex items-center">
-                              <input id="tomorrow" type="checkbox" name="delivery[]" value="tomorrow"
-                                class="category-checkbox w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
-                      
-                              <label for="tomorrow" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">
-                                Tomorrow
-                              </label>
-                            </li>
-                      
-                            <li class="flex items-center">
-                              <input id="ThisWeek" type="checkbox" name="delivery[]" value="week"
-                                class="category-checkbox w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
-                      
-                              <label for="ThisWeek" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">
-                                This week
-                              </label>
-                            </li>
-                      
-                            <li class="flex items-center">
-                              <input id="ThisMonth" type="checkbox" name="delivery[]" value="month"
-                                class="category-checkbox w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
-                      
-                              <label for="ThisMonth" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">
-                                This month
-                              </label>
-                            </li>
-                          </ul>
-                      <h6 class="mb-3  pt-4 text-sm font-bold text-gray-900 dark:text-white">
-                        Status
-                      </h6>
-                      <ul class="space-y-2 text-sm" aria-labelledby="dropdownDefault">
-                        <li class="flex items-center">
-                          <input id="inProgress" type="checkbox" name="status[]" value="1"
-                            class="category-checkbox w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
-                  
-                          <label for="inProgress" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">
-                            In progress
-                          </label>
-                        </li>
-                  
-                        <li class="flex items-center">
-                          <input id="completed" type="checkbox" name="status[]" value="2"
-                            class="category-checkbox w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
-                  
-                          <label for="completed" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">
-                            Completed
-                          </label>
-                        </li>
-                  
-                        <li class="flex items-center">
-                          <input id="cancelled" type="checkbox" name="status[]" value="3"
-                            class="category-checkbox w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
-                  
-                          <label for="cancelled" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">
-                            Cancelled
-                          </label>
-                        </li>
-                      </ul>
-                      <x-button-primary text="Filter" class="w-full" type="submit"/>
-                    </div>
-                    </form>
-                </div>
-                <div class="flex items-center justify-center p-4">
-
-                    <button id="dropdownHelperRadioButton" data-dropdown-toggle="dropdownHelperRadio" class="text-gray-600 border hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center " type="button">Table Size <svg class="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-                      </svg></button>
-                    
-                    <!-- Dropdown menu -->
-                    <div id="dropdownHelperRadio" class="z-10 hidden border p-4 text-gray-600 divide-y bg-white divide-gray-100 rounded-lg shadow w-60 dark:bg-gray-700 dark:divide-gray-600" data-popper-reference-hidden="" data-popper-escaped="" data-popper-placement="top" style="position: absolute; inset: auto auto 0px 0px; margin: 0px; transform: translate3d(522.5px, 6119.5px, 0px);">
-                        <div class="flex justify-between">
-                            <label for="minmax-range" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Rows</label>
-                            <p id="maxrow">5</p>
+                                </li>
+                        
+                                <li class="flex items-center">
+                                <input id="completed" type="checkbox" name="status[]" value="completed"
+                                    class="category-checkbox w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
+                        
+                                <label for="completed" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">
+                                    Completed
+                                </label>
+                                </li>
+                        
+                                <li class="flex items-center">
+                                <input id="cancelled" type="checkbox" name="status[]" value="cancelled"
+                                    class="category-checkbox w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
+                        
+                                <label for="cancelled" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">
+                                    Cancelled
+                                </label>
+                                </li>
+                            </ul>
+                            <x-button-primary text="Filter" class="w-full text-white mt-4" type="submit"/>
+                            </div>
                         </div>
-                        <input id="minmax-range" type="range" min="1" max="10" value="5" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700">
-                    </div>
-                </div>
-            </div>
+                        <div class="flex items-center justify-center p-4">
+                            <button id="dropdownHelperRadioButton" data-dropdown-toggle="dropdownHelperRadio" class="text-gray-600 border focus:outline-none hover:bg-gray-200 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center " type="button">Table Size <svg class="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+                            </svg></button>
+                                <!-- Dropdown menu -->
+                                <div id="dropdownHelperRadio" class="z-10 hidden border p-4 text-gray-600 divide-y bg-white divide-gray-100 rounded-lg shadow w-60 dark:bg-gray-700 dark:divide-gray-600" data-popper-reference-hidden="" data-popper-escaped="" data-popper-placement="top" style="position: absolute; inset: auto auto 0px 0px; margin: 0px; transform: translate3d(522.5px, 6119.5px, 0px);">
+                                    <div class="flex justify-between">
+                                        <label for="minmax-range" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Rows</label>
+                                        <p id="maxrow">10</p>
+                                    </div>
+                                    <input id="minmax-range" type="range" name="rowSize" min="5" max="20" value="10" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700">
+                                    <x-button-primary class="w-full text-white mt-4" type="button" id="rowrange" text="Apply" />
+                                </div>
 
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
 
         <label for="table-search" class="sr-only">Search</label>
@@ -235,65 +247,63 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($paginatedData as $item)
+                @foreach ($paginatedData as $order)
     
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                     <td class="w-4 p-4 ">
                         <div class="flex items-center">
-                            <input id="checkbox-table-search-{{$item->id}}" type="checkbox" class="checkbox w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                            <label for="checkbox-table-search-{{$item->id}}" class="sr-only">checkbox</label>
+                            <input id="checkbox-table-search-{{$order->id}}" type="checkbox" class="checkbox w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                            <label for="checkbox-table-search-{{$order->id}}" class="sr-only">checkbox</label>
                         </div>
                     </td>
                     <td class="px-2 py-4">
-                        {{$item->id}}
+                        {{$order->id}}
                     </td>
                     <th scope="row" class="px-2 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                            <div class="text-base font-semibold">{{$item->customer->firstname}}</div>
-                            <div class="font-normal text-gray-500">{{$item->customer->email}}</div>
+                            <div class="text-base font-semibold">{{$order->customer->firstname}}</div>
+                            <div class="font-normal text-gray-500">{{$order->customer->email}}</div>
                     </th>
                     <td class="px-2 py-4">
-                        {{$item->customer->contactnum}}
+                        {{$order->customer->contactnum}}
                     </td>
                     <td class="px-2 py-4">
-                        {{ $item->orderline->where('water_id', 1)->sum('quantity') }}
+                        {{ $order->orderline->where('water_id', 1)->sum('quantity') }}
                     </td>
                     <td class="px-2 py-4">
-                        {{ $item->orderline->where('water_id', 2)->sum('quantity') }}
+                        {{ $order->orderline->where('water_id', 2)->sum('quantity') }}
                     </td>
                     <td class="px-2 py-4">
-                        {{ $item->orderline->where('water_id', 3)->sum('quantity') }}
+                        {{ $order->orderline->where('water_id', 3)->sum('quantity') }}
                     </td>
                                     
                     <td class="px-2 py-4">
-                        {{$item->total}} PHP
+                        {{$order->total}} PHP
                     </td>
                     <td class="px-2 py-4">
-                        {{$item->orderline->first()->delivery->delivery_address}}
+                        {{$order->orderline->first()->delivery->delivery_address}}
                     </td>
                     <td class="px-2 py-4 text-ellipsis overflow-hidden max-w-14">
-                        @if ($item->orderline->first()->delivery->map_reference != null)
-                            <button class="text-blue-600">Show map</button>
-                            
+                        @if ($order->orderline->first()->delivery->map_reference != null)
+                            <button class="text-blue-600" id="table-map-{{$order->orderline->first()->id}}" data-modal-target="mapmodal" data-modal-toggle="mapmodal" id="openModal" data-loc="{{$order->orderline->first()->delivery->map_reference}}">Show map</button>
                         @endif
                     </td>
                     <td class="px-2 py-4 flex flex-col items-center">
-                        {{ \Carbon\Carbon::parse($item->orderline->first()->delivery->delivery_date)->format('Y-m-d') }}
+                        {{ \Carbon\Carbon::parse($order->orderline->first()->delivery->delivery_date)->format('Y-m-d') }}
 
                         @php
                         $hasInProgress = false;
-                        $deliveryDate = \Carbon\Carbon::parse($item->orderline->first()->delivery->delivery_date)->startOfDay();
+                        $deliveryDate = \Carbon\Carbon::parse($order->orderline->first()->delivery->delivery_date)->startOfDay();
                         $now = \Carbon\Carbon::now()->startOfDay();
                         $daysUntilDelivery = $now->diffInDays($deliveryDate, false); 
                     @endphp
 
-                    @foreach($item->orderline as $orderline)
+                    @foreach($order->orderline as $orderline)
                         @if($orderline->delivery->delivery_status == 1)
                             @php
                                 $hasInProgress = true;
                             @endphp
                         @endif
                     @endforeach
-                    <script>console.log({{$daysUntilDelivery}})</script>
                     @if ($hasInProgress)
                         @if ($daysUntilDelivery == 1)
                             <span class="badge bg-blue-500 rounded-full p-1 text-xs text-white">Tomorrow</span>
@@ -309,29 +319,26 @@
                     <td class="px-2 py-4">
                         
                     </td>
-                    <td class="px-4 py-4">
+                    <td class="px-2 py-4 ">
                         <div class="flex flex-col justify-start">
                             
                             @if ($hasInProgress)
-                            <div class="flex">
+                            <div class="flex items-center w-28">
                                 <div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div>
-                                In Progress
+                                {{$orderline->delivery->deliverystatus->name}}
                             </div>
-
                             @else
-                                @foreach($item->orderline as $orderline)
+                                @foreach($order->orderline as $orderline)
                                     @if($orderline->delivery->delivery_status == 2)
-                                    <div class="flex">
+                                    <div class="flex items-center">
                                         <div class="h-2.5 w-2.5 rounded-full bg-blue-500 me-2"></div>
-                                        {{$orderline->delivery->deliverystatus->status}}
+                                        {{$orderline->delivery->deliverystatus->name}}
                                     </div>
-
                                     @else
-                                    <div class="flex">
+                                    <div class="flex items-center">
                                         <div class="h-2.5 w-2.5 rounded-full bg-red-500 me-2"></div>
-                                        {{$orderline->delivery->deliverystatus->status}}                                        
+                                        {{$orderline->delivery->deliverystatus->name}}                                        
                                     </div>
-
                                     @endif
                                 @endforeach
                             @endif
@@ -340,12 +347,18 @@
     
                     <td class="px-2 py-4 ">
                         <div class="flex gap-4 items-center justify-center">
-                            <i class="fa fa-check text-xl text-green-400" aria-hidden="true"></i>
+                            <form action="{{ route('mark-order', ['id' => $order->id, 'status' => 2]) }}" method="post" id="form-complete-{{ $order->id }}">
+                                @csrf
+                                <button type="button" 
+                                        data-modal-target="confirm-modal" 
+                                        data-modal-toggle="confirm-modal" 
+                                        class="order-mark-btn" 
+                                        data-id="{{$order->id}}">
+                                    <i class="fa fa-check text-xl text-green-400" aria-hidden="true"></i>
+                                </button>
+                            </form>
                             <i class="fa fa-download text-xl text-blue-500" aria-hidden="true"></i>
                             <i class="fas fa-edit text-xl text-sky-300"></i>
-    
-                            {{-- <i class="fas fa-trash-alt text-xl text-red-500"></i> --}}
-                            {{-- <i class="fa fa-info-circle text-xl text-blue-500"></i> --}}
                         </div>
                     </td>
                 </tr>
@@ -378,4 +391,9 @@
     </nav>
     
 </div>
+<x-modal-confirm text="Are you sure to mark this order as complete?" variant="confirm" />
+
+
+
+@include('modals/map')
 @endsection

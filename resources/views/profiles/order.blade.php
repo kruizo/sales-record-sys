@@ -8,7 +8,7 @@
         <x-section-header text="Your orders" />
         
     <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown" class="text-blue-600 h-fit mb-4 focus:outline-none  font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
-        {{ $status ? ucfirst($status) :'In progress'}} 
+        {{ $status ? $status :'In progress'}} 
         <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
         </svg>
@@ -45,7 +45,7 @@
                                         <h1 class="text-xl">{{$orderline->water->name}}</h1>
                                     </strong>
                                     <h1 class="text-md w-full">Qty. x{{$orderline->quantity}}</h1>
-                                    <h1 class="text-blue-600 text-xl">{{$orderline->delivery->deliverystatus->status}}</h1>
+                                    <h1 class="text-blue-600 text-xl">{{$orderline->delivery->deliverystatus->name}}</h1>
                                 </div>
                                 <div class="justify-between hidden md:flex h-full space-x-4 w-1/2 ">
                                     <div class="space-y-4 text-center">
@@ -107,7 +107,7 @@
                 @endphp
 
                 <div class="w-full px-2">
-                    <h1>You have no {{$statusText}}</h1>
+                    <h1>You have no {{lcfirst($statusText)}}</h1>
                 </div>
             @endif
            
@@ -155,7 +155,6 @@
     </div>
 </div>
 
-{{-- <x-confirm-modal id="deleteModal" message="Are you sure you want to cancel this item?" /> --}}
     
 <div id="receipt-modal" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
     <div class="relative w-full max-w-md max-h-full">

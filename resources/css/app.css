@@ -7,10 +7,9 @@ body {
     margin: 0;
     box-sizing: border-box;
 }
-html{
+html {
     color: rgb(209 213 219);
 }
-
 
 input:-webkit-autofill {
     caret-color: rgb(243 244 246);
@@ -21,6 +20,22 @@ input:-webkit-autofill {
 
 .animate-toast {
     animation: slideInUp 0.5s ease-out forwards; /* Adjust the duration as needed */
+}
+
+.animate-modal-alert {
+    animation: bounce 0.5s ease-out forwards; /* Adjust the duration as needed */
+}
+
+@keyframes bounce {
+    0% {
+        transform: scale(0.9);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
 }
 
 @keyframes slideInUp {

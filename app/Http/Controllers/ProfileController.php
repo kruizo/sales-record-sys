@@ -34,20 +34,21 @@ class ProfileController extends Controller
             ->get();
 
 
-
         if ($status = request('status')) {
-            $status = trim(str_replace(' ', '', $status));
+            
             $orders = $orders->filter(function ($order) use ($status) {
                 $filteredOrderLines = $order->orderline->filter(function ($orderline) use ($status) {
                     $actualStatus = $orderline->delivery->deliverystatus->status;
-                    $actualStatus = trim(str_replace(' ', '', $actualStatus));
+                    
                     return strcasecmp($actualStatus, $status) === 0;
                 });
 
                 $order->setRelation('orderline', $filteredOrderLines);
-
+                
                 return $filteredOrderLines->isNotEmpty();
             });
+                $status = DeliveryStatus::where('status', $status)->first()->name;
+
         } else {
             $orders = $orders->filter(function ($order) {
                 $filteredOrderLines = $order->orderline->filter(function ($orderline) {
@@ -60,6 +61,8 @@ class ProfileController extends Controller
                 return $filteredOrderLines->isNotEmpty();
             });
         }
+
+       
 
         $recent = $orders->first();
 

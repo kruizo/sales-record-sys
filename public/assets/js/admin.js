@@ -1,5 +1,16 @@
 document.addEventListener("DOMContentLoaded", function () {
-    console.log("asd");
+    SetInitialUIState();
+    const successMessage = document.querySelector("[data-success-message]");
+    if (successMessage) {
+        // If the success message exists, trigger the modal to show
+        const modalId = successMessage.dataset.successMessage;
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            modal.classList.remove("hidden"); // Show the modal
+            modal.focus(); // Focus on the modal for accessibility
+        }
+    }
+
     const sidebarLinks = document.querySelectorAll(".sidebar-link");
     const currentUrl = window.location.href;
     sidebarLinks.forEach((link) => {
@@ -14,49 +25,52 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    const checkboxAll = document.getElementById('checkbox-all-search');
-    const checkboxes = document.querySelectorAll('.checkbox');
+    const checkboxAll = document.getElementById("checkbox-all-search");
+    const checkboxes = document.querySelectorAll(".checkbox");
 
-    checkboxAll.addEventListener('change', function() {
-        checkboxes.forEach(function(checkbox) {
+    checkboxAll.addEventListener("change", function () {
+        checkboxes.forEach(function (checkbox) {
             checkbox.checked = checkboxAll.checked;
         });
     });
 
-    // const filterCheckboxes = document.querySelectorAll('.category-checkbox');
+    var mapButtons = document.querySelectorAll("[id^='table-map-']");
+    mapButtons.forEach(function (button) {
+        button.addEventListener("click", function () {
+            var mapReference = this.getAttribute("data-loc");
 
-    // filterCheckboxes.forEach(checkbox => {
-    //     checkbox.addEventListener('change', function () {
-    //         const selectedCategories = [...document.querySelectorAll('.category-checkbox:checked')].map(checkbox => checkbox.value);
-            
-    //         const rows = document.querySelectorAll('#dataTable tbody tr');
+            var matches = mapReference.match(
+                /Lat:\s*([-+]?\d*\.\d+)\s*Lgn:\s*([-+]?\d*\.\d+)/
+            );
+            var lat = parseFloat(matches[1]);
+            var lng = parseFloat(matches[2]);
 
-    //         rows.forEach(row => {
-    //             let shouldShow = true;
+            var modal = document.getElementById(
+                this.getAttribute("data-modal-target")
+            );
 
-    //             selectedCategories.forEach(category => {
-    //                 if (!row.classList.contains(category)) {
-    //                     shouldShow = false;
-    //                 }
-    //             });
+            var mapIframe = modal.querySelector("iframe#map");
 
-    //             if (shouldShow) {
-    //                 row.style.display = '';
-    //             } else {
-    //                 row.style.display = 'none';
-    //             }
-    //         });
-    //     });
-    // });
+            mapIframe.contentWindow.postMessage(
+                { lat, lng, action: "view" },
+                "*"
+            );
 
-
-    const rowRange = document.getElementById('minmax-range');
-    const maxRow = document.getElementById('maxrow');
-
-    rowRange.addEventListener('input', function() {
-        maxRow.textContent = rowRange.value;
+            modal.classList.remove("hidden");
+        });
     });
 
+    var button = document.getElementById("table-map");
+    if (button) {
+        button.addEventListener("click", handleClick);
+    }
+
+    const rowRange = document.getElementById("minmax-range");
+    const maxRow = document.getElementById("maxrow");
+
+    rowRange.addEventListener("input", function () {
+        maxRow.textContent = rowRange.value;
+    });
 
     var searchInput = document.querySelector("#table-search");
 
@@ -66,10 +80,63 @@ document.addEventListener("DOMContentLoaded", function () {
         rows.forEach(function (row) {
             var textContent = row.textContent.toLowerCase();
             if (textContent.includes(searchTerm)) {
-                row.style.display = ""; 
+                row.style.display = "";
             } else {
                 row.style.display = "none";
             }
         });
     });
+});
+
+function resetmarker(frame) {
+    document.getElementById(frame).contentWindow.postMessage(
+        {
+            action: "resetMarker",
+        },
+        "*"
+    );
+}
+
+function SetInitialUIState() {
+    const urlParams = new URLSearchParams(window.location.search);
+
+    if (urlParams.has("delivery[]")) {
+        const deliveryValues = urlParams.getAll("delivery[]");
+        console.log(deliveryValues);
+        deliveryValues.forEach(function (value) {
+            const decodedValue = decodeURIComponent(value);
+            console.log(`decoded ${decodedValue}`);
+            document.getElementById(decodedValue).checked = true;
+        });
+    }
+
+    if (urlParams.has("status[]")) {
+        const statusValues = urlParams.getAll("status[]");
+        statusValues.forEach(function (value) {
+            const decodedValue = decodeURIComponent(value);
+            document.getElementById(decodedValue).checked = true;
+        });
+    }
+
+    const rowSize = urlParams.get("rowSize");
+    if (rowSize) {
+        document.getElementById("minmax-range").value = rowSize;
+        document.getElementById("maxrow").textContent = rowSize;
+    }
+}
+
+const orderMarkButtons = document.querySelectorAll(".order-mark-btn");
+const confirmButton = document.getElementById("confirm-button");
+
+orderMarkButtons.forEach((button) => {
+    button.addEventListener("click", function () {
+        const orderId = this.dataset.id; // Get the order ID from data-id attribute
+        confirmButton.dataset.id = orderId; // Set the data-id attribute of the confirm button
+    });
+});
+
+confirmButton.addEventListener("click", function () {
+    const orderId = this.dataset.id;
+    const form = document.getElementById(`form-complete-${orderId}`);
+    form.submit();
 });

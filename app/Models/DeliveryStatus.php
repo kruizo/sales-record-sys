@@ -11,6 +11,7 @@ class DeliveryStatus extends Model
 
     protected $fillable = [
         'status',
+        'name',
         'description'
     ];
 

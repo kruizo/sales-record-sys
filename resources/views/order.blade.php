@@ -97,12 +97,11 @@
                             <x-input-label text="Delivery Address" for="deliveryaddress" />
                             <x-input-text id="deliveryaddress" name="delivery_address" value="{{$address->full_address  ?? ''}}" />
                         </div>
-                        
                     </div>
 
                 </div>
                 <div class="w-full" class="newiframe" id="newframe" style="display: none">
-                    <iframe id="newmap" src="{{route('map.show')}}" class="w-full h-96" scrolling="no"></iframe>
+                    <iframe id="newmap" src="{{route('map.show')}}" class="w-full h-96" style="" scrolling="no"></iframe>
                 </div>
                 <div class="w-full">
                     <button class="hover:bg-gray-700 rounded-lg text-lg text-blue-600 py-2 p-2" data-modal-target="mapmodal" data-modal-toggle="mapmodal" id="openModal" type="button"><i class="fa fa-plus" aria-hidden="true"></i><span class="pl-2">Add map reference</span></button>

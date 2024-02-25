@@ -18,6 +18,9 @@ Route::post('/save-profile', 'App\Http\Controllers\ProfileController@saveProfile
 
 Route::get('/verified/setup', 'App\Http\Controllers\Auth\VerificationController@setupProfile')->name('verified.setup');
 Route::post('/place-order', [App\Http\Controllers\OrderController::class, 'placeOrder'])->name('place-order');
+Route::post('/mark-order/{id}/{status}', [App\Http\Controllers\OrderController::class, 'markOrder'])->name('mark-order');
+
+
 //Route::post('/initiate-registration', [App\Http\Controllers\Auth\RegisterController::class, 'initiateRegistration'])->name('initiate.registration');
 
 
