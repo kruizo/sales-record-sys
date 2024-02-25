@@ -1,15 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
     SetInitialUIState();
-    const successMessage = document.querySelector("[data-success-message]");
-    if (successMessage) {
-        // If the success message exists, trigger the modal to show
-        const modalId = successMessage.dataset.successMessage;
-        const modal = document.getElementById(modalId);
-        if (modal) {
-            modal.classList.remove("hidden"); // Show the modal
-            modal.focus(); // Focus on the modal for accessibility
-        }
-    }
 
     const sidebarLinks = document.querySelectorAll(".sidebar-link");
     const currentUrl = window.location.href;

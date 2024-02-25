@@ -3,12 +3,16 @@
     <title>Dashboard</title>
 @endsection
 @section('content')
-
 @if (session('success'))
-    <x-modal-success text="{{ session('success') }}"/>
+    <x-modal-success text="{{ session('success') }}">
+        <slot name="icon" class="flex justify-center">
+            <svg class="fill-green-400" width="50px" height="50px" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M12 0c6.623 0 12 5.377 12 12s-5.377 12-12 12-12-5.377-12-12 5.377-12 12-12zm0 1c6.071 0 11 4.929 11 11s-4.929 11-11 11-11-4.929-11-11 4.929-11 11-11zm7 7.457l-9.005 9.565-4.995-5.865.761-.649 4.271 5.016 8.24-8.752.728.685z"/></svg>
+        </slot>
+    </x-modal-success>
 @endif
+
 <div class="overflow-hidden sm:ml-64 p-4 shadow-md sm:rounded-lg">
-<button data-modal-target="success-modal" data-modal-toggle="success-modal" class="w-96 h-96">ASDSADSAD</button>
+
 
     <div class="flex gap-4 mb-10 justify-around flex-wrap">
         <x-sales-card id="order-card" title="Total Order" countId="order-text" count="{{$totalorder}}"/>
@@ -248,7 +252,6 @@
             </thead>
             <tbody>
                 @foreach ($paginatedData as $order)
-    
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                     <td class="w-4 p-4 ">
                         <div class="flex items-center">
@@ -272,7 +275,7 @@
                     <td class="px-2 py-4">
                         {{ $order->orderline->where('water_id', 2)->sum('quantity') }}
                     </td>
-                    <td class="px-2 py-4">
+                    <td class="px-2 py-4 ">
                         {{ $order->orderline->where('water_id', 3)->sum('quantity') }}
                     </td>
                                     
@@ -287,10 +290,10 @@
                             <button class="text-blue-600" id="table-map-{{$order->orderline->first()->id}}" data-modal-target="mapmodal" data-modal-toggle="mapmodal" id="openModal" data-loc="{{$order->orderline->first()->delivery->map_reference}}">Show map</button>
                         @endif
                     </td>
-                    <td class="px-2 py-4 flex flex-col items-center">
+                    <td class="px-2 py-4 text-center ">
                         {{ \Carbon\Carbon::parse($order->orderline->first()->delivery->delivery_date)->format('Y-m-d') }}
 
-                        @php
+                    @php
                         $hasInProgress = false;
                         $deliveryDate = \Carbon\Carbon::parse($order->orderline->first()->delivery->delivery_date)->startOfDay();
                         $now = \Carbon\Carbon::now()->startOfDay();
@@ -302,19 +305,17 @@
                             @php
                                 $hasInProgress = true;
                             @endphp
-                        @endif
+                        @endif  
                     @endforeach
                     @if ($hasInProgress)
                         @if ($daysUntilDelivery == 1)
-                            <span class="badge bg-blue-500 rounded-full p-1 text-xs text-white">Tomorrow</span>
+                            <div class="mx-auto badge bg-blue-500 rounded-full p-1 text-xs w-fit text-white">Tomorrow</div>
                         @elseif ($daysUntilDelivery == 0)
-                            <span class="badge bg-green-500 rounded-full p-1 text-xs text-white">Today</span>
+                            <div class="mx-auto badge bg-green-500 rounded-full p-1 text-xs w-fit text-white">Today</div>
                         @elseif ($daysUntilDelivery < 0)
-                            <span class="badge bg-red-500 rounded-full p-1 text-xs text-white">Overdue</span>
-                    
+                            <div class="mx-auto badge bg-red-500 rounded-full p-1 text-xs w-fit text-white">Overdue</div>
                         @endif
                     @endif
-                    
                     </td>
                     <td class="px-2 py-4">
                         
@@ -328,7 +329,6 @@
                                 {{$orderline->delivery->deliverystatus->name}}
                             </div>
                             @else
-                                @foreach($order->orderline as $orderline)
                                     @if($orderline->delivery->delivery_status == 2)
                                     <div class="flex items-center">
                                         <div class="h-2.5 w-2.5 rounded-full bg-blue-500 me-2"></div>
@@ -340,7 +340,6 @@
                                         {{$orderline->delivery->deliverystatus->name}}                                        
                                     </div>
                                     @endif
-                                @endforeach
                             @endif
                         </div>
                     </td>
@@ -357,6 +356,9 @@
                                     <i class="fa fa-check text-xl text-green-400" aria-hidden="true"></i>
                                 </button>
                             </form>
+                            <button type="button" onclick="PrintReceiptContent('print')">
+                            
+                            </button>
                             <i class="fa fa-download text-xl text-blue-500" aria-hidden="true"></i>
                             <i class="fas fa-edit text-xl text-sky-300"></i>
                         </div>
@@ -393,7 +395,26 @@
 </div>
 <x-modal-confirm text="Are you sure to mark this order as complete?" variant="confirm" />
 
-
+<div id="print">
+    @include('reports/receipt')
+</div>
 
 @include('modals/map')
+
+<script>
+    function PrintReceiptContent(id){
+        const data = '<input type="button" id="printPageButton" class="w-full bg-blue-700 border-none text-white p-4 text-lg text-center" value="Print Receipt" onClick="window.print()">';
+        data += document.getElementById(id).innerHtml;
+        receipt = window.open("","win","left=150","top=130", "width=400", "height=400")
+            receipt.screenX =0;
+            receipt.screenY =0;
+            receipt.document.write(data);
+            receipt.document.title = "Print Receipt";
+            receipt.focus();
+
+            setTimeout(() => {
+               receipt.close(); 
+            }, 8000);
+    }
+</script>
 @endsection

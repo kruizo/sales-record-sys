@@ -3,8 +3,11 @@ setTimeout(function () {
     toasts.forEach(function (toast) {
         toast.remove();
     });
+}, 3000);
+
+setTimeout(function () {
     var success = document.querySelectorAll("#success-modal");
     success.forEach(function (success) {
         success.remove();
     });
-}, 3000);
+}, 1000);
