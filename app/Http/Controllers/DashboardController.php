@@ -24,64 +24,67 @@ class DashboardController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-public function show(Request $request)
-{
+    public function show(Request $request)
+    {
 
-    $data = Order::latest()->with('orderline', 'orderline.water', 'orderline.delivery.deliverystatus', 'customer');
-    $totalorder = $data->count();
-    $existingParams = $request->query();
+        $data = Order::where('is_archived', 0)
+            ->with('orderline', 'orderline.water', 'orderline.delivery.deliverystatus', 'customer')
+            ->orderBy('created_at', 'asc');
 
-    if (isset($existingParams['delivery']) && !is_array($existingParams['delivery'])) {
-        $existingParams['delivery'] = [$existingParams['delivery']];
-    }
+        $totalorder = $data->count();
+        $existingParams = $request->query();
 
-    if ($request->has('delivery')) {
-        // Merge existing and new delivery dates and remove duplicates
-        $deliveryDates = array_unique(array_merge($existingParams['delivery'] ?? [], (array) $request->delivery));
-        $data->whereHas('orderline.delivery', function ($query) use ($deliveryDates) {
-            $query->where(function ($subquery) use ($deliveryDates) {
-                foreach ($deliveryDates as $deliveryDate) {
-                if ($deliveryDate === 'today') {
-                        $subquery->orWhereDate('delivery_date', today());
+        if (isset($existingParams['delivery']) && !is_array($existingParams['delivery'])) {
+            $existingParams['delivery'] = [$existingParams['delivery']];
+        }
+
+        if ($request->has('delivery')) {
+            // Merge existing and new delivery dates and remove duplicates
+            $deliveryDates = array_unique(array_merge($existingParams['delivery'] ?? [], (array) $request->delivery));
+            $data->whereHas('orderline.delivery', function ($query) use ($deliveryDates) {
+                $query->where(function ($subquery) use ($deliveryDates) {
+                    foreach ($deliveryDates as $deliveryDate) {
+                        if ($deliveryDate === 'today') {
+                            $subquery->orWhereDate('delivery_date', today());
+                        }
+                        if ($deliveryDate === 'tomorrow') {
+                            $subquery->orWhereDate('delivery_date', today()->addDay());
+                        }
+                        if ($deliveryDate === 'week') {
+                            $subquery->orWhereBetween('delivery_date', [today(), today()->endOfWeek()]);
+                        }
+                        if ($deliveryDate === 'month') {
+                            $subquery->orWhereMonth('delivery_date', now()->month);
+                        }
                     }
-                    if ($deliveryDate === 'tomorrow') {
-                        $subquery->orWhereDate('delivery_date', today()->addDay());
-                    }
-                    if ($deliveryDate === 'week') {
-                        $subquery->orWhereBetween('delivery_date', [today(), today()->endOfWeek()]);
-                    }
-                    if ($deliveryDate === 'month') {
-                        $subquery->orWhereMonth('delivery_date', now()->month);
-                    }
-                }
+                });
             });
-        });
+        }
+
+        // Convert status to an array if it's a string
+        if ($request->has('status') && !is_array($request->status)) {
+            $request->merge(['status' => [$request->status]]);
+        }
+
+        // Filter by delivery status
+        if ($request->has('status')) {
+            $data->whereHas('orderline.delivery.deliverystatus', function ($query) use ($request) {
+                $query->whereIn('status', $request->status);
+            });
+        }
+
+        $rowSize = $request->input('rowSize', 10);
+
+        $paginatedData = $data->paginate($rowSize);
+
+        $watersold = Orderline::whereHas('delivery', function ($query) {
+            $query->where('delivery_status', 2);
+        })->get();
+
+        $deliveries = Delivery::latest()->where('delivery_date', today())->where('delivery_status', 1)->get();
+
+        return view('admin/dashboard', compact('paginatedData', 'totalorder', 'data', 'watersold', 'deliveries', 'request'));
     }
-
-    // Convert status to an array if it's a string
-    if ($request->has('status') && !is_array($request->status)) {
-        $request->merge(['status' => [$request->status]]);
-    }
-
-    // Filter by delivery status
-    if ($request->has('status')) {
-        $data->whereHas('orderline.delivery.deliverystatus', function ($query) use ($request) {
-            $query->whereIn('status', $request->status);
-        });
-    }
-
-    $rowSize = $request->input('rowSize', 10);
-
-    $paginatedData = $data->paginate($rowSize);
-
-    $watersold = Orderline::whereHas('delivery', function ($query) {
-        $query->where('delivery_status', 2);
-    })->get();
-
-    $deliveries = Delivery::latest()->where('delivery_date', today())->where('delivery_status', 1)->get();
-
-    return view('admin/dashboard', compact('paginatedData', 'totalorder', 'data', 'watersold', 'deliveries', 'request'));
-}
 
     /**
      * Show the form for creating a new resource.

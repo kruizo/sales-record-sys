@@ -11,7 +11,7 @@ use App\Models\Delivery;
 use App\Models\DeliveryEmployee;
 use App\Models\Order;
 use Illuminate\Support\Facades\Date;
-use App\Models\Address;
+use Illuminate\Support\Facades\Redirect;
 use App\Models\RegisteredCustomer;
 use Illuminate\Support\Facades\Auth;
 
@@ -137,16 +137,35 @@ class OrderController extends Controller
     public function markOrder($id, $status)
     {
         try {
-        $order = Order::findOrFail($id);
+            $order = Order::findOrFail($id);
 
-        foreach ($order->orderline as $orderline) {
-            $delivery = $orderline->delivery;
-            if ($delivery) {
-                $delivery->delivery_status = $status;
-                $delivery->save();
+            foreach ($order->orderline as $orderline) {
+                $delivery = $orderline->delivery;
+                if ($delivery) {
+                    $delivery->delivery_status = $status;
+                    $delivery->save();
                 }
             }
-            return back()->withSuccess('Order set as completed succesfully');
+            return back()->withSuccess('Order set as completed successfully');
+        } catch (\Exception $e) {
+            return back()->withError('Failed to update delivery status');
+        }
+    }
+
+    public function markArchive($id, $status)
+    {
+        try {
+            $order = Order::findOrFail($id);
+
+            $order->is_archived = $status;
+            $order->save();
+
+            foreach ($order->orderline as $orderline) {
+                if ($orderline) {
+                    $orderline->is_archived = $status;
+                }
+            }
+            return Redirect::back()->withSuccess('Order set as completed successfully');
         } catch (\Exception $e) {
             return back()->withError('Failed to update delivery status');
         }

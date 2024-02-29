@@ -24,6 +24,98 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
+    const completeAllBtn = document.getElementById("markAllCompleteBtn");
+    const archiveAllBtn = document.getElementById('markAllArchive');
+
+    archiveAllBtn.addEventListener("click", function () {
+        const selectedOrderIds = [];
+        checkboxes.forEach(function (checkbox) {
+            if (checkbox.checked) {
+                selectedOrderIds.push(checkbox.dataset.orderId);
+            }
+        });
+
+        if (selectedOrderIds.length > 0) {
+            markOrdersArchive(selectedOrderIds);
+        } else {
+            alert("Please select at least one order.");
+        }
+    });
+
+    // completeAllBtn.addEventListener("click", function () {
+    //     const selectedOrderIds = [];
+    //     checkboxes.forEach(function (checkbox) {
+    //         if (checkbox.checked) {
+    //             selectedOrderIds.push(checkbox.dataset.orderId);
+    //         }
+    //     });
+
+    //     if (selectedOrderIds.length > 0) {
+    //         confirmButton.addEventListener("click", function () {
+    //             markOrdersAsComplete(selectedOrderIds);
+
+    //         });
+       
+    //     } else {
+    //         alert("Please select at least one order.");
+    //     }
+
+    // });
+
+    function markOrdersArchive(orderIds) {
+        const status = 1;
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+        orderIds.forEach(orderId => {
+            console.log(orderId);
+            fetch(`/set-archive/${orderId}/${status}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken 
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    console.log(`Order ${orderId} archived successfully`);
+                } else {
+                    console.error(`Failed to mark order ${orderId} as complete`);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    }
+
+    function markOrdersAsComplete(orderIds) {
+        const status = 2;
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+        orderIds.forEach(orderId => {
+            console.log(orderId);
+            fetch(`/mark-order/${orderId}/${status}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken 
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+
+                    location.reload();
+
+                } else {
+                    console.error(`Failed to mark order ${orderId} as complete`);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    }
+
     var mapButtons = document.querySelectorAll("[id^='table-map-']");
     mapButtons.forEach(function (button) {
         button.addEventListener("click", function () {
@@ -77,6 +169,9 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 });
+
+
+
 
 function resetmarker(frame) {
     document.getElementById(frame).contentWindow.postMessage(

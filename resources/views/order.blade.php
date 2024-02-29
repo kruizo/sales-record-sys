@@ -115,8 +115,10 @@
                     </div>
                 </div>
                 <input type="hidden" name="mapreference" id="mapreference">
-                {{-- <div class="py-2">
-                    <p class="text-gray-100 text-md">Expected Date and Time</p>
+                <div class="py-2">
+                    <div class="flex gap-2 ">
+                        <p class="text-gray-100 text-md">Preffered Date and Time</p><span><i>(optional)</i></span>
+                    </div>
                     <div class="space-y-2">
                         <div class="relative w-1/3">
                             <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
@@ -124,11 +126,11 @@
                                     <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
                                 </svg>
                             </div>
-                            <input datepicker datepicker-autohide type="text" id="date" name="expected_date" class="border z-10 border-gray-700 bg-gray-800 text-gray-400 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date">
+                            <input datepicker datepicker-autohide type="text" id="date" name="expected_date" class="hover:cursor-pointer border z-10 border-gray-700 bg-gray-800 text-gray-400 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date">
                         </div>
-                        <input type="time" name="expected_time" id="time" class="border z-10 w-1/3 border-gray-700 bg-gray-800 text-gray-400 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select time">
+                        <input type="time" name="expected_time" id="time" class="hover:cursor-pointer border z-10 w-1/3 border-gray-700 bg-gray-800 text-gray-400 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select time">
                     </div>
-                </div> --}}
+                </div>
                 <div class="py-2">
                     <div class="flex gap-2">
                          <p class="text-gray-100 text-md">Special Instructions</p><span class="italic">(optional)</span>
@@ -148,7 +150,7 @@
                 </div>
             </div>
         </div>
-        <button data-modal-target="small-modal" data-modal-toggle="small-modal" onclick="populateReviewModal();"class="float-right block w-full md:w-auto text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
+        <button data-modal-target="small-modal" data-modal-toggle="small-modal" onclick="populateReviewModal();"class="mt-5 float-right block w-full md:w-auto text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
            Submit
         </button>
         <div id="small-modal" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">

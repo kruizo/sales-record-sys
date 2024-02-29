@@ -19,7 +19,7 @@
 
     <div id="video-container" class="absolute bg-[rgba(0,0,0,0.5)] -z-20 h-full w-full overflow-hidden">
         <video id="background-video" class="" autoplay muted loop playsinline style="width: 100%; height: 100%; object-fit: cover;">
-            <source src="{{ asset('assets/waterbg.mp4') }}" type="video/mp4">
+            <source src="{{ asset('assets/waterbg2.mp4') }}" type="video/mp4">
         </video>
     </div>
     <section class="-z-20 h-full sm:py-32 flex justify-center items-center " id="hero">
@@ -44,10 +44,6 @@
                     <i class="fa fa-phone" aria-hidden="true"></i>
                     Call us
                 </a>
-                <!-- <a href="#" class="inline-flex justify-center gap-2 bg-gray-100 items-center py-3 px-5 text-base font-medium text-center text-gray-900 rounded-lg border border-gray-300 hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800">
-                    Order now
-                    <i class="fas fa-shopping-cart"></i>
-                </a> -->
             </div>
             <div class="space-y-4 sm:grid sm:grid-cols-2 lg:flex justify-around gap-y-4 items-center px-12 py-12 mt-8 lg:flex-wrap">
                 <div class="flex flex-col flex-wrap">
@@ -85,90 +81,6 @@
     </section>
 </section>
 
-{{-- <section class="flex items-center flex-col gap-20 bg-gray-950 mx-auto px-20 dark:bg-gray-900 sm:py-16 w-full" >
-    <h2 class="mb-4 text-4xl tracking-tight text-gray-200 font-poppins dark:text-white">
-        What we do</h2>
-    <div class="mt-4 md:mt-0 ml-20">
-        <div class="max-w-sm w-full lg:max-w-full lg:flex ">
-            <div class="relative w-1/2 bg-red-400">
-                <div class="z-30 absolute inset-0 bg-black opacity-50"></div>
-                <img class="object-cover dark:hidden rounded-l-lg" src="{{asset('assets/image/service1.png')}}" alt="dashboard image">
-            </div>
-            <div class="border-r border-b  rounded-r-lg border-l border-gray-900 bg-gray-950 rounded-b lg:rounded-b-none lg:rounded-r px-4 flex flex-col leading-normal">
-                    <div class="text-gray-200 text-3xl mb-2 font-extrabold">Bringing Convenience to Your Doorstep</div>
-                        <p class="text-gray-400 text-md font-poppins">A dedicated delivery rider stands proudly next to a sleek motorcycle loaded with pristine, blue water cooler bottles. With the sun casting a warm glow, it portrays the convenience and speed of our water delivery service. Whether at your home or office, we ensure quick and efficient hydration delivery with a smile..</p>
-                    </div>
-             
-            </div>
-        </div>
-    </div>
-    <div class="mt-4 md:mt-0 ml-20">
-        <div class="max-w-sm w-full lg:max-w-full lg:flex ">
-            <div class="relative w-1/2 bg-red-400">
-                <div class="z-30 absolute inset-0 bg-black opacity-50"></div>
-                <img class="object-cover dark:hidden rounded-l-lg" src="{{asset('assets/image/service1.png')}}" alt="dashboard image">
-            </div>
-            <div class="border-r border-b  rounded-r-lg border-l border-gray-900 bg-gray-950 rounded-b lg:rounded-b-none lg:rounded-r px-4 flex flex-col leading-normal">
-                    <div class="text-gray-200 text-3xl mb-2 font-extrabold">Bringing Convenience to Your Doorstep</div>
-                        <p class="text-gray-400 text-md font-poppins">A dedicated delivery rider stands proudly next to a sleek motorcycle loaded with pristine, blue water cooler bottles. With the sun casting a warm glow, it portrays the convenience and speed of our water delivery service. Whether at your home or office, we ensure quick and efficient hydration delivery with a smile..</p>
-                    </div>
-
-        </div>
-    </div>
-    <div class="mt-4 md:mt-0 ml-20">
-        <div class="max-w-sm w-full lg:max-w-full lg:flex ">
-            <div class="relative w-1/2 bg-red-400">
-                <div class="z-30 absolute inset-0 bg-black opacity-50"></div>
-                <img class="object-cover dark:hidden rounded-l-lg" src="{{asset('assets/image/service1.png')}}" alt="dashboard image">
-            </div>
-            <div class="border-r border-b  rounded-r-lg border-l border-gray-900 bg-gray-950 rounded-b lg:rounded-b-none lg:rounded-r px-4 flex flex-col leading-normal">
-                    <div class="text-gray-200 text-3xl mb-2 font-extrabold">Bringing Convenience to Your Doorstep</div>
-                        <p class="text-gray-400 text-md font-poppins">A dedicated delivery rider stands proudly next to a sleek motorcycle loaded with pristine, blue water cooler bottles. With the sun casting a warm glow, it portrays the convenience and speed of our water delivery service. Whether at your home or office, we ensure quick and efficient hydration delivery with a smile..</p>
-                    </div>
-
-            </div>
-        </div>
-    </div>
-    
-</section> --}}
-
-{{-- <section class="bg-gray-950 dark:bg-gray-900">
-    <div class="gap-8 items-center py-8 px-4 mx-auto max-w-screen-xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 lg:px-6 flex lg:flex-row flex-col-reverse">
-        <div class="mt-4 md:mt-0">
-            <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-200 font-poppins dark:text-white">Quenching Thirst, Connecting Lives.</h2>
-            <p class="mb-6 font-light text-gray-300 md:text-lg dark:text-gray-300">Discover the essence of hydration with our water refilling station containers. We bring people together through the shared commitment to a sustainable and healthy lifestyle. Join our community and experience the refreshing difference of clean, purified water, fostering connections and well-being for you and your loved ones.</p>
-        </div>
-    <div id="default-carousel" class="relative w-full z-10" data-carousel="slide">
-        <div class="relative h-56 overflow-hidden rounded-lg md:h-96">
-            <div class="z-30 absolute inset-0 bg-black opacity-50 rounded-lg"></div>
-            <div class="hidden duration-900 ease-in-out " data-carousel-item>
-                <img src="{{asset('assets/image/service2.png')}}" class="absolute block w-full h-full object-cover rounded-lg -translate-x-1/2 left-1/2" alt="...">
-            </div>
-            <div class="hidden duration-900 ease-in-out" data-carousel-item>
-                <img src="{{asset('assets/image/service1.png')}}" class="absolute block w-full h-full rounded-lg -translate-x-1/2 left-1/2" alt="...">
-            </div>
-            <div class="hidden duration-900 ease-in-out" data-carousel-item>
-                <img src="{{asset('assets/image/service3.png')}}" class="absolute block w-full h-full rounded-lg -translate-x-1/2 left-1/2" alt="...">
-            </div>
-            <div class="hidden duration-900 ease-in-out" data-carousel-item>
-                <img src="{{asset('assets/image/service4.png')}}" class="absolute block w-full h-full rounded-lg -translate-x-1/2 left-1/2" alt="...">
-            </div>
-            
-        </div>
-     
-        <div class="absolute z-30 flex -translate-x-1/2 bottom-5 left-1/2 space-x-3 rtl:space-x-reverse">
-            <button type="button" class="w-3 h-3 rounded-full" aria-current="true" aria-label="Slide 1" data-carousel-slide-to="0"></button>
-            <button type="button" class="w-3 h-3 rounded-full" aria-current="false" aria-label="Slide 2" data-carousel-slide-to="1"></button>
-            <button type="button" class="w-3 h-3 rounded-full" aria-current="false" aria-label="Slide 3" data-carousel-slide-to="2"></button>
-            <button type="button" class="w-3 h-3 rounded-full" aria-current="false" aria-label="Slide 4" data-carousel-slide-to="3"></button>
-        </div>
-            <span class="sr-only">Previous</span>
-            <span class="sr-only">Next</span>
-    </div>
-
-
-    </div>
-</section> --}}
 <section class="flex flex-col items-center overflow-hidden" id="services">
     <h2 class="mb-4 text-4xl tracking-tight text-gray-200 font-poppins dark:text-white">
             What we do.</h2>
