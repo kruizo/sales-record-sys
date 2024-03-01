@@ -24,24 +24,47 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
+    const orderMarkButtons = document.querySelectorAll(".order-mark-btn");
+    const actionInput = document.getElementById("actionInput");
+    const statusInput = document.getElementById("statusInput");
+    const confirmButton = document.getElementById("confirm-button");
+    const orderIdInput = document.getElementById("orderIdInput");
     const completeAllBtn = document.getElementById("markAllCompleteBtn");
     const archiveAllBtn = document.getElementById("markAllArchive");
 
-    archiveAllBtn.addEventListener("click", function () {
-        const selectedOrderIds = [];
-        checkboxes.forEach(function (checkbox) {
-            if (checkbox.checked) {
-                selectedOrderIds.push(checkbox.dataset.orderId);
-            }
-        });
+    orderMarkButtons.forEach((button) => {
+        button.addEventListener("click", function () {
+            const orderId = this.dataset.id;
+            const status = this.dataset.status;
+            const action = this.dataset.action;
 
-        if (selectedOrderIds.length > 0) {
-            markOrdersArchive(selectedOrderIds);
-        } else {
-            alert("Please select at least one order.");
-        }
+            orderIdInput.value = orderId;
+            actionInput.value = action;
+            statusInput.value = status;
+
+            confirmButton.addEventListener("click", function () {
+                const form = document.getElementById("mark-orders-form");
+                form.submit();
+            });
+        });
     });
 
+    completeAllBtn.addEventListener("click", handleBulkAction);
+    archiveAllBtn.addEventListener("click", handleBulkAction);
+
+    function handleBulkAction() {
+        const action = this.getAttribute("data-action");
+        const status = this.getAttribute("data-status");
+        const actionInput = document.getElementById("actionInput");
+        const statusInput = document.getElementById("statusInput");
+        actionInput.value = action;
+        statusInput.value = status;
+
+        confirmButton.addEventListener("click", function () {
+            const form = document.getElementById("mark-orders-form");
+            form.submit();
+        });
+    }
     // completeAllBtn.addEventListener("click", function () {
     //     const selectedOrderIds = [];
     //     checkboxes.forEach(function (checkbox) {
@@ -59,85 +82,37 @@ document.addEventListener("DOMContentLoaded", function () {
     //     } else {
     //         alert("Please select at least one order.");
     //     }
-
     // });
 
-    const orderMarkButtons = document.querySelectorAll(".order-mark-btn");
-    const confirmButton = document.getElementById("confirm-button");
+    // function markOrdersArchive(orderIds) {
+    //     const status = 1;
+    //     const csrfToken = document
+    //         .querySelector('meta[name="csrf-token"]')
+    //         .getAttribute("content");
 
-    orderMarkButtons.forEach((button) => {
-        button.addEventListener("click", function () {
-            const orderId = this.dataset.id; // Get the order ID from data-id attribute
-            confirmButton.dataset.id = orderId; // Set the data-id attribute of the confirm button
-        });
-    });
-
-    orderMarkButtons.forEach((button) => {
-        button.addEventListener("click", function () {
-            const orderId = this.dataset.id; // Get the order ID from data-id attribute
-            confirmButton.dataset.id = orderId; // Set the data-id attribute of the confirm button
-
-            // Set the value of the hidden input field to the order ID
-            const orderIdInput = document.getElementById("order-id-input");
-            orderIdInput.value = orderId;
-
-            // Submit the form
-            const form = document.getElementById("mark-orders-form");
-            form.submit();
-        });
-    });
-
-    confirmButton.addEventListener("click", function () {
-        const orderId = this.dataset.id;
-        console.log(orderId);
-        const form = document.getElementById(`form-complete-${orderId}`);
-        console.log(form);
-        form.submit();
-    });
-
-    completeAllBtn.addEventListener("click", function () {
-        const action = this.getAttribute("data-action");
-        const status = this.getAttribute("data-status");
-        const actionInput = document.getElementById("actionInput");
-        const statusInput = document.getElementById("statusInput");
-        actionInput.value = action;
-        statusInput.value = status;
-
-        confirmButton.addEventListener("click", function () {
-            const form = document.getElementById(`mark-orders-form`);
-            form.submit();
-        });
-    });
-
-    function markOrdersArchive(orderIds) {
-        const status = 1;
-        const csrfToken = document
-            .querySelector('meta[name="csrf-token"]')
-            .getAttribute("content");
-
-        orderIds.forEach((orderId) => {
-            console.log(orderId);
-            fetch(`/set-archive/${orderId}/${status}`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRF-TOKEN": csrfToken,
-                },
-            })
-                .then((response) => {
-                    if (response.ok) {
-                        console.log(`Order ${orderId} archived successfully`);
-                    } else {
-                        console.error(
-                            `Failed to mark order ${orderId} as complete`
-                        );
-                    }
-                })
-                .catch((error) => {
-                    console.error("Error:", error);
-                });
-        });
-    }
+    //     orderIds.forEach((orderId) => {
+    //         console.log(orderId);
+    //         fetch(`/set-archive/${orderId}/${status}`, {
+    //             method: "POST",
+    //             headers: {
+    //                 "Content-Type": "application/json",
+    //                 "X-CSRF-TOKEN": csrfToken,
+    //             },
+    //         })
+    //             .then((response) => {
+    //                 if (response.ok) {
+    //                     console.log(`Order ${orderId} archived successfully`);
+    //                 } else {
+    //                     console.error(
+    //                         `Failed to mark order ${orderId} as complete`
+    //                     );
+    //                 }
+    //             })
+    //             .catch((error) => {
+    //                 console.error("Error:", error);
+    //             });
+    //     });
+    // }
 
     var mapButtons = document.querySelectorAll("[id^='table-map-']");
     mapButtons.forEach(function (button) {

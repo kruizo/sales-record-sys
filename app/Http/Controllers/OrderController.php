@@ -136,7 +136,6 @@ class OrderController extends Controller
 
     public function updateOrderStatus($id, $status)
     {
-
         $order = Order::findOrFail($id);
         foreach ($order->orderline as $orderline) {
             $delivery = $orderline->delivery;
@@ -145,7 +144,6 @@ class OrderController extends Controller
                 $delivery->save();
             }
         }
-        return back()->withSuccess('Order set as completed successfully');
     }
 
     public function updateOrderArchiveStatus($id, $status)
@@ -160,27 +158,45 @@ class OrderController extends Controller
                 $orderline->is_archived = $status;
             }
         }
-        return back()->withSuccess('Order moved to archive successfully');
     }
 
     public function updateOrArchiveOrders(Request $request)
     {
         $selectedOrderIds = $request->input('selectedOrders');
+        $individualOrderId = $request->input('orderId');
         $action = $request->input('action');
         $status = $request->input('status');
-        dd($request->all());
+
         try {
-            foreach ($selectedOrderIds as $orderId) {
-                if ($action === 'complete') {
-                    $this->updateOrderStatus($orderId, $status);
-                    return back()->withSuccess('Order set as completed successfully');
-                } elseif ($action === 'archive') {
-                    $this->updateOrderArchiveStatus($orderId, $status);
-                    return back()->withSuccess('Order moved to archive successfully');
-                }
+            if (!in_array($action, ['complete', 'archive'])) {
+                throw new \Exception('Invalid action');
             }
+
+            if ($individualOrderId) {
+                // Handle individual order
+                if ($action === 'complete') {
+                    $this->updateOrderStatus($individualOrderId, $status);
+                } elseif ($action === 'archive') {
+                    $this->updateOrderArchiveStatus($individualOrderId, $status);
+                }
+            } elseif (!empty($selectedOrderIds)) {
+                foreach ($selectedOrderIds as $orderId) {
+                    if ($action === 'complete') {
+                        $this->updateOrderStatus($orderId, $status);
+                    } elseif ($action === 'archive') {
+                        $this->updateOrderArchiveStatus($orderId, $status);
+                    }
+                }
+            } else {
+                throw new \Exception('No order selected');
+            }
+
+            $message = $individualOrderId ? 'Order updated successfully' :
+                    ($action === 'complete' ? 'Orders set as completed successfully' : 'Orders moved to archive successfully');
+            return back()->withSuccess($message);
         } catch (\Exception $e) {
-            return back()->withError('Failed to execute action');
+            return back()->withError($e->getMessage());
         }
     }
+
 }
