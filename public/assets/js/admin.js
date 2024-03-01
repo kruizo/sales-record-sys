@@ -62,7 +62,33 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // });
 
+    
+    const orderMarkButtons = document.querySelectorAll(".order-mark-btn");
+    const confirmButton = document.getElementById("confirm-button");
+
+    orderMarkButtons.forEach((button) => {
+        button.addEventListener("click", function () {
+            const orderId = this.dataset.id; // Get the order ID from data-id attribute
+            confirmButton.dataset.id = orderId; // Set the data-id attribute of the confirm button
+        });
+    });
+
+    confirmButton.addEventListener("click", function () {
+        const orderId = this.dataset.id;
+        console.log(orderId);
+        const form = document.getElementById(`form-complete-${orderId}`);
+        console.log(form);
+        form.submit();
+    });
+
     completeAllBtn.addEventListener("click", function () {
+        const action = this.getAttribute('data-action');
+        const status = this.getAttribute('data-status');
+        const actionInput = document.getElementById('actionInput');
+        const statusInput = document.getElementById('statusInput');
+        actionInput.value = action;
+        statusInput.value = status;
+
         confirmButton.addEventListener("click", function () {
             const form = document.getElementById(`mark-orders-form`);
             form.submit();
@@ -85,34 +111,6 @@ document.addEventListener("DOMContentLoaded", function () {
             .then(response => {
                 if (response.ok) {
                     console.log(`Order ${orderId} archived successfully`);
-                } else {
-                    console.error(`Failed to mark order ${orderId} as complete`);
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-        });
-    }
-
-    function markOrdersAsComplete(orderIds) {
-        const status = 2;
-        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-
-        orderIds.forEach(orderId => {
-            console.log(orderId);
-            fetch(`/mark-order/${orderId}/${status}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': csrfToken 
-                }
-            })
-            .then(response => {
-                if (response.ok) {
-
-                    location.reload();
-
                 } else {
                     console.error(`Failed to mark order ${orderId} as complete`);
                 }
@@ -217,18 +215,3 @@ function SetInitialUIState() {
     }
 }
 
-const orderMarkButtons = document.querySelectorAll(".order-mark-btn");
-const confirmButton = document.getElementById("confirm-button");
-
-orderMarkButtons.forEach((button) => {
-    button.addEventListener("click", function () {
-        const orderId = this.dataset.id; // Get the order ID from data-id attribute
-        confirmButton.dataset.id = orderId; // Set the data-id attribute of the confirm button
-    });
-});
-
-confirmButton.addEventListener("click", function () {
-    const orderId = this.dataset.id;
-    const form = document.getElementById(`form-complete-${orderId}`);
-    form.submit();
-});

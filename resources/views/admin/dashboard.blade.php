@@ -11,6 +11,13 @@
     </slot>
 </x-modal-success>
 @endif
+@if (session('error'))
+<x-modal-success text="{{ session('error') }}">
+    <slot name="icon" class="flex justify-center">
+        <svg class="fill-red-500" clip-rule="evenodd" fill-rule="evenodd" height="50px" width="50px" stroke-linejoin="round" stroke-miterlimit="2" viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg"><path d="m12.002 2.005c5.518 0 9.998 4.48 9.998 9.997 0 5.518-4.48 9.998-9.998 9.998-5.517 0-9.997-4.48-9.997-9.998 0-5.517 4.48-9.997 9.997-9.997zm0 1.5c-4.69 0-8.497 3.807-8.497 8.497s3.807 8.498 8.497 8.498 8.498-3.808 8.498-8.498-3.808-8.497-8.498-8.497zm0 7.425 2.717-2.718c.146-.146.339-.219.531-.219.404 0 .75.325.75.75 0 .193-.073.384-.219.531l-2.717 2.717 2.727 2.728c.147.147.22.339.22.531 0 .427-.349.75-.75.75-.192 0-.384-.073-.53-.219l-2.729-2.728-2.728 2.728c-.146.146-.338.219-.53.219-.401 0-.751-.323-.751-.75 0-.192.073-.384.22-.531l2.728-2.728-2.722-2.722c-.146-.147-.219-.338-.219-.531 0-.425.346-.749.75-.749.192 0 .385.073.531.219z" fill-rule="nonzero"/></svg>
+        </slot>
+</x-modal-success>
+@endif
 
 
 <div class="overflow-hidden sm:ml-64 p-4 shadow-md sm:rounded-lg">
@@ -177,8 +184,8 @@
         </div>
     </div>
     <div class="overflow-x-auto">
-        <form id="mark-orders-form" action="{{ route('mark-orders') }}" method="POST">
-            @csrf 
+
+
         <table id="dataTable" class="w-full overflow-x-scroll text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
@@ -259,12 +266,15 @@
             </thead>
      
             <tbody>
-                
+                <form id="mark-orders-form" action="{{ route('update-orders') }}" method="POST">
+                    @csrf 
+                    <input type="hidden" name="action" id="actionInput"> <!-- Add a hidden input field for the action -->
+                    <input type="hidden" name="status" id="statusInput">
                 @foreach ($paginatedData as $order)
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                     <td class="w-4 p-4 ">
                         <div class="flex items-center">
-                            <input id="checkbox-table-search-{{$order->id}}" data-order-id="{{$order->id}}" name="selectedOrders[]" type="checkbox" class="checkbox w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                            <input id="checkbox-table-search-{{$order->id}}" data-order-id="{{$order->id}}" value="{{$order->id}}" name="selectedOrders[]" type="checkbox" class="checkbox w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                             <label for="checkbox-table-search-{{$order->id}}" class="sr-only">checkbox</label>
                         </div>
                     </td>
@@ -353,10 +363,11 @@
                             @endif
                         </div>
                     </td>
-    
+                  
+                    <form action="{{ route('mark-order', ['id' => $order->id, 'status' => 2]) }}" method="post" id="form-complete-{{ $order->id }}">
+                        
                     <td class="px-2 py-4 ">
                         <div class="flex gap-4 items-center justify-center">
-                            <form action="{{ route('mark-order', ['id' => $order->id, 'status' => 2]) }}" method="post" id="form-complete-{{ $order->id }}">
                                 @csrf
                                 <button type="button" 
                                         data-modal-target="confirm-modal" 
@@ -365,7 +376,6 @@
                                         data-id="{{$order->id}}">
                                     <i class="fas fa-check text-xl text-green-400" aria-hidden="true"></i>
                                 </button>
-                            </form>
                             <button type="button" class="print-btn" onclick="PrintReceiptContent('print')">
                             <i class="fas fa-download text-xl text-blue-500" aria-hidden="true"></i>
                                 
@@ -373,26 +383,29 @@
                             <i class="fas fa-edit text-xl text-sky-300"></i>
                         </div>
                     </td>
+                    </form>
+
                 </tr>
                  @endforeach
+
+
                  <div id="dropdownAction" class="z-10 w-fit hidden bg-white divide-y p-4 border divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600">
                     <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownActionButton">
                         <li>
                             <button data-modal-target="confirm-modal" 
-                            data-modal-toggle="confirm-modal" type="button" name="action" value="archive" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white" id="markAllArchive">Move to archive</button>
+                            data-modal-toggle="confirm-modal" type="button" data-action="archive" data-status="1" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white" id="markAllArchive">Move to archive</button>
                         </li>
                         <li>
-                            <input type="hidden" name="status" value="2">
                             <button data-modal-target="confirm-modal" 
-                            data-modal-toggle="confirm-modal" type="button" name="action" value="complete" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white" id="markAllCompleteBtn">Mark as complete</button>
+                            data-modal-toggle="confirm-modal" type="button" data-action="complete" data-status="2" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white" id="markAllCompleteBtn">Mark as complete</button>
 
                         </li>
                     </ul>
                 </div>
+            </form>
             </tbody>
 
         </table>
-    </form>
 
     </div>
 

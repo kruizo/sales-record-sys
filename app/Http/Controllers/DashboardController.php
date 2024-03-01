@@ -27,11 +27,10 @@ class DashboardController extends Controller
     public function show(Request $request)
     {
 
-        $data = Order::where('is_archived', 0)
-            ->with('orderline', 'orderline.water', 'orderline.delivery.deliverystatus', 'customer')
-            ->orderBy('created_at', 'asc');
+        $data = Order::latest()->with('orderline', 'orderline.water', 'orderline.delivery.deliverystatus', 'customer');
 
         $totalorder = $data->count();
+        $data = $data->where('is_archived', 0);
         $existingParams = $request->query();
 
         if (isset($existingParams['delivery']) && !is_array($existingParams['delivery'])) {

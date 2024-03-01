@@ -134,77 +134,52 @@ class OrderController extends Controller
         return redirect()->back()->with('success', 'Order canceled successfully');
     }
 
-    public function markOrder($id, $status)
+    public function updateOrderStatus($id, $status)
     {
-        try {
-            $order = Order::findOrFail($id);
 
-            foreach ($order->orderline as $orderline) {
-                $delivery = $orderline->delivery;
-                if ($delivery) {
-                    $delivery->delivery_status = $status;
-                    $delivery->save();
-                }
+        $order = Order::findOrFail($id);
+        foreach ($order->orderline as $orderline) {
+            $delivery = $orderline->delivery;
+            if ($delivery) {
+                $delivery->delivery_status = $status;
+                $delivery->save();
             }
-            return back()->withSuccess('Order set as completed successfully');
-        } catch (\Exception $e) {
-            return back()->withError('Failed to update delivery status');
         }
+        return back()->withSuccess('Order set as completed successfully');
     }
 
-    public function markArchive($id, $status)
+    public function updateOrderArchiveStatus($id, $status)
     {
-        try {
-            $order = Order::findOrFail($id);
+        $order = Order::findOrFail($id);
 
-            $order->is_archived = $status;
-            $order->save();
+        $order->is_archived = $status;
+        $order->save();
 
-            foreach ($order->orderline as $orderline) {
-                if ($orderline) {
-                    $orderline->is_archived = $status;
-                }
+        foreach ($order->orderline as $orderline) {
+            if ($orderline) {
+                $orderline->is_archived = $status;
             }
-            return back()->withSuccess('Order set as completed successfully');
-        } catch (\Exception $e) {
-            return back()->withError('Failed to update delivery status');
         }
+        return back()->withSuccess('Order moved to archive successfully');
     }
-    public function markOrArchiveOrders(Request $request)
+
+    public function updateOrArchiveOrders(Request $request)
     {
-        dd($request->all());
         $selectedOrderIds = $request->input('selectedOrders');
         $action = $request->input('action');
         $status = $request->input('status');
-
-        foreach ($selectedOrderIds as $orderId) {
-            try {
-                $order = Order::findOrFail($orderId);
-
-                if ($action === 'mark') {
-                    foreach ($order->orderline as $orderline) {
-                        $delivery = $orderline->delivery;
-                        if ($delivery) {
-                            $delivery->delivery_status = $status; // Make sure $status is defined
-                            $delivery->save();
-                        }
-                    }
-                    return back()->withError('Orders marked as complete is successful.');
+        try {
+            foreach ($selectedOrderIds as $orderId) {
+                if ($action === 'complete') {
+                    $this->updateOrderStatus($orderId, $status);
+                    return back()->withSuccess('Order set as completed successfully');
                 } elseif ($action === 'archive') {
-                    // Logic to archive the order
+                    $this->updateOrderArchiveStatus($orderId, $status);
+                    return back()->withSuccess('Order moved to archive successfully');
                 }
-
-                // Additional logic for marking or archiving the order if needed
-
-            } catch (\Exception $e) {
-                return back()->withError('Failed to update delivery status');
             }
-        }
-
-        if ($action === 'mark') {
-            return back()->withSuccess('Selected orders marked as completed successfully');
-        } elseif ($action === 'archive') {
-            return back()->withSuccess('Selected orders archived successfully');
+        } catch (\Exception $e) {
+            return back()->withError('Failed to execute action');
         }
     }
 }
