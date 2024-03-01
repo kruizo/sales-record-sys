@@ -437,8 +437,6 @@
                                         @endif
                                     </div>
                                 </td>
-
-
                                 <td class="px-2 py-4 ">
                                     <div class="flex gap-4 items-center justify-center">
                                         <button type="button" data-modal-target="confirm-modal"
@@ -449,8 +447,8 @@
                                         <button type="button" class="print-btn" onclick="PrintReceiptContent('print')">
                                             <i class="fas fa-download text-xl text-blue-500" aria-hidden="true"></i>
                                         </button>
-                                        <button type="button" data-modal-target="edit-order-modal"
-                                            data-modal-toggle="edit-order-modal" class="edit-btn"
+                                        <button type="button" data-modal-target="edit-order-modal-{{ $order->id }}"
+                                            data-modal-toggle="edit-order-modal-{{ $order->id }}" class="edit-btn"
                                             data-id="{{ $order->id }}">
                                             <i class="fas fa-edit text-xl text-sky-300"></i>
                                         </button>
@@ -458,7 +456,124 @@
                                 </td>
 
                             </tr>
-                            <x-modal.edit-order />
+                            {{-- Modal --}}
+                            <div id="edit-order-modal-{{ $order->id }}" tabindex="-1"
+                                class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                                <div class="relative p-4 w-full max-w-screen-md max-h-full">
+                                    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                                        <button type="button"
+                                            class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                                            data-modal-hide="edit-order-modal-{{ $order->id }}">
+                                            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                                fill="none" viewBox="0 0 14 14">
+                                                <path stroke="currentColor" stroke-linecap="round"
+                                                    stroke-linejoin="round" stroke-width="2"
+                                                    d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                                            </svg>
+                                            <span class="sr-only">Close modal</span>
+                                        </button>
+                                        <div class="p-4 md:p-5 text-center">
+                                            <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+                                                Order #{{ $order->id }}</h3>
+                                            @foreach ($order->orderline as $orderline)
+                                                <div class="border flex w-full text-gray-900 object-fill">
+                                                    <div class="">
+                                                        <img src="{{ asset('assets/image/container1.png') }}"
+                                                            height="100" class="h-full pt-2 " width="100"
+                                                            alt="" srcset="">
+                                                    </div>
+
+                                                    <div class="flex flex-col justify-between w-full p-1 py-3">
+                                                        <h1 class="text-start text-xl font-bold">
+                                                            {{ $orderline->water->name }}
+                                                            <span>
+                                                                P
+                                                                {{ $orderline->water->cost }}
+                                                            </span>
+                                                        </h1>
+                                                        <div class="flex gap-2 justify-start items-center">
+                                                            <h1>QTY. </h1>
+                                                            <button type="button" class="rounded-lg w-fit"
+                                                                aria-label="Decrease quantity of Alkaline">
+                                                                <svg width="24" height="24"
+                                                                    xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd"
+                                                                    class="fill-blue-800" clip-rule="evenodd">
+                                                                    <path
+                                                                        d="M11.5 0c6.347 0 11.5 5.153 11.5 11.5s-5.153 11.5-11.5 11.5-11.5-5.153-11.5-11.5 5.153-11.5 11.5-11.5zm0 1c5.795 0 10.5 4.705 10.5 10.5s-4.705 10.5-10.5 10.5-10.5-4.705-10.5-10.5 4.705-10.5 10.5-10.5zm-6.5 10h13v1h-13v-1z" />
+                                                                </svg>
+
+                                                            </button>
+                                                            <input name="product_{{ $orderline->water->name }}"
+                                                                id="{{ $orderline->id }}"
+                                                                value="{{ $orderline->quantity }}"
+                                                                class="bg-transparent min-w-6 w-auto max-w-10 text-center word-wrap"></input>
+                                                            <button type="button" class="rounded-lg w-8"
+                                                                aria-label="Decrease quantity of Alkaline">
+                                                                <svg width="24" height="24" class="fill-blue-800"
+                                                                    xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd"
+                                                                    clip-rule="evenodd">
+                                                                    <path
+                                                                        d="M11.5 0c6.347 0 11.5 5.153 11.5 11.5s-5.153 11.5-11.5 11.5-11.5-5.153-11.5-11.5 5.153-11.5 11.5-11.5zm0 1c5.795 0 10.5 4.705 10.5 10.5s-4.705 10.5-10.5 10.5-10.5-4.705-10.5-10.5 4.705-10.5 10.5-10.5zm.5 10h6v1h-6v6h-1v-6h-6v-1h6v-6h1v6z" />
+                                                                </svg>
+                                                            </button>
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex items-center gap-4 px-4">
+                                                        @if ($orderline->delivery->delivery_status != 2)
+                                                            <button type="button"
+                                                                class="rounded-2xl w-fit h-10 flex items-center bg-green-400 text-white px-3 py-2 gap-2">
+                                                                <!-- Icon -->
+                                                                <svg clip-rule="evenodd" class="fill-white w-7"
+                                                                    fill-rule="evenodd" stroke-linejoin="round"
+                                                                    stroke-miterlimit="2" viewBox="0 0 30 30"
+                                                                    xmlns="http://www.w3.org/2000/svg">
+                                                                    <path
+                                                                        d="m2.25 12.321 7.27 6.491c.143.127.321.19.499.19.206 0 .41-.084.559-.249l11.23-12.501c.129-.143.192-.321.192-.5 0-.419-.338-.75-.749-.75-.206 0-.411.084-.559.249l-10.731 11.945-6.711-5.994c-.144-.127-.322-.19-.5-.19-.417 0-.75.336-.75.749 0 .206.084.412.25.56"
+                                                                        fill-rule="nonzero" />
+                                                                </svg>
+
+                                                                <!-- Text -->
+                                                                <h1>Complete</h1>
+                                                            </button>
+                                                        @endif
+
+
+
+                                                        <button type="button"
+                                                            class="rounded-2xl w-fit h-10 bg-red-500 flex items-center justify-center text-white px-3 py-2 gap-2">
+                                                            <div class="flex items-center w-full">
+                                                                <!-- Icon -->
+                                                                <svg clip-rule="evenodd" fill-rule="evenodd"
+                                                                    class="fill-white w-7" stroke-linejoin="round"
+                                                                    stroke-miterlimit="2" viewBox="0 0 30 30"
+                                                                    xmlns="http://www.w3.org/2000/svg">
+                                                                    <path
+                                                                        d="m4.015 5.494h-.253c-.413 0-.747-.335-.747-.747s.334-.747.747-.747h5.253v-1c0-.535.474-1 1-1h4c.526 0 1 .465 1 1v1h5.254c.412 0 .746.335.746.747s-.334.747-.746.747h-.254v15.435c0 .591-.448 1.071-1 1.071-2.873 0-11.127 0-14 0-.552 0-1-.48-1-1.071zm14.5 0h-13v15.006h13zm-4.25 2.506c-.414 0-.75.336-.75.75v8.5c0 .414.336.75.75.75s.75-.336.75-.75v-8.5c0-.414-.336-.75-.75-.75zm-4.5 0c-.414 0-.75.336-.75.75v8.5c0 .414.336.75.75.75s.75-.336.75-.75v-8.5c0-.414-.336-.75-.75-.75zm3.75-4v-.5h-3v.5z"
+                                                                        fill-rule="nonzero" />
+                                                                </svg>
+
+                                                                <!-- Text -->
+                                                                <p class="ml-2">Remove</p>
+                                                            </div>
+                                                        </button>
+
+
+                                                    </div>
+                                                </div>
+                                            @endforeach
+
+                                            <button id="save-btn" data-modal-hide="edit-order-modal-{{ $order->id }}"
+                                                class="text-white bg-green-600 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
+                                                Save Changes
+                                            </button>
+                                            <button data-modal-hide="edit-order-modal-{{ $order->id }}" type="button"
+                                                class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">No,
+                                                cancel</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         @endforeach
                     </form>
 

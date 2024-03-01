@@ -31,15 +31,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const orderIdInput = document.getElementById("orderIdInput");
     const completeAllBtn = document.getElementById("markAllCompleteBtn");
     const archiveAllBtn = document.getElementById("markAllArchive");
-    const editBtns = document.querySelectorAll(".edit-btn");
-    const editModal = document.getElementById("edit-order-modal");
-
-    editBtns.forEach(editBtn => {
-        editBtn.addEventListener("click", function () {
-            const orderId = this.dataset.id;
-            editModal.setAttribute('data-order-id', orderId);
-        });
-    });
 
     orderMarkButtons.forEach((button) => {
         button.addEventListener("click", function () {
