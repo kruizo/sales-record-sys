@@ -32,7 +32,7 @@
     <div id="app">
         <header>
             <x-navbar />
-            <x-alert-toast />
+            <x-alert.alert-toast />
 
         </header>
 
