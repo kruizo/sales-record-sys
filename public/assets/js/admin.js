@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     const completeAllBtn = document.getElementById("markAllCompleteBtn");
-    const archiveAllBtn = document.getElementById('markAllArchive');
+    const archiveAllBtn = document.getElementById("markAllArchive");
 
     archiveAllBtn.addEventListener("click", function () {
         const selectedOrderIds = [];
@@ -55,14 +55,13 @@ document.addEventListener("DOMContentLoaded", function () {
     //             markOrdersAsComplete(selectedOrderIds);
 
     //         });
-       
+
     //     } else {
     //         alert("Please select at least one order.");
     //     }
 
     // });
 
-    
     const orderMarkButtons = document.querySelectorAll(".order-mark-btn");
     const confirmButton = document.getElementById("confirm-button");
 
@@ -70,6 +69,21 @@ document.addEventListener("DOMContentLoaded", function () {
         button.addEventListener("click", function () {
             const orderId = this.dataset.id; // Get the order ID from data-id attribute
             confirmButton.dataset.id = orderId; // Set the data-id attribute of the confirm button
+        });
+    });
+
+    orderMarkButtons.forEach((button) => {
+        button.addEventListener("click", function () {
+            const orderId = this.dataset.id; // Get the order ID from data-id attribute
+            confirmButton.dataset.id = orderId; // Set the data-id attribute of the confirm button
+
+            // Set the value of the hidden input field to the order ID
+            const orderIdInput = document.getElementById("order-id-input");
+            orderIdInput.value = orderId;
+
+            // Submit the form
+            const form = document.getElementById("mark-orders-form");
+            form.submit();
         });
     });
 
@@ -82,10 +96,10 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     completeAllBtn.addEventListener("click", function () {
-        const action = this.getAttribute('data-action');
-        const status = this.getAttribute('data-status');
-        const actionInput = document.getElementById('actionInput');
-        const statusInput = document.getElementById('statusInput');
+        const action = this.getAttribute("data-action");
+        const status = this.getAttribute("data-status");
+        const actionInput = document.getElementById("actionInput");
+        const statusInput = document.getElementById("statusInput");
         actionInput.value = action;
         statusInput.value = status;
 
@@ -97,27 +111,31 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function markOrdersArchive(orderIds) {
         const status = 1;
-        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        const csrfToken = document
+            .querySelector('meta[name="csrf-token"]')
+            .getAttribute("content");
 
-        orderIds.forEach(orderId => {
+        orderIds.forEach((orderId) => {
             console.log(orderId);
             fetch(`/set-archive/${orderId}/${status}`, {
-                method: 'POST',
+                method: "POST",
                 headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': csrfToken 
-                }
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": csrfToken,
+                },
             })
-            .then(response => {
-                if (response.ok) {
-                    console.log(`Order ${orderId} archived successfully`);
-                } else {
-                    console.error(`Failed to mark order ${orderId} as complete`);
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
+                .then((response) => {
+                    if (response.ok) {
+                        console.log(`Order ${orderId} archived successfully`);
+                    } else {
+                        console.error(
+                            `Failed to mark order ${orderId} as complete`
+                        );
+                    }
+                })
+                .catch((error) => {
+                    console.error("Error:", error);
+                });
         });
     }
 
@@ -175,9 +193,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
-
-
-
 function resetmarker(frame) {
     document.getElementById(frame).contentWindow.postMessage(
         {
@@ -214,4 +229,3 @@ function SetInitialUIState() {
         document.getElementById("maxrow").textContent = rowSize;
     }
 }
-

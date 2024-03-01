@@ -168,6 +168,7 @@ class OrderController extends Controller
         $selectedOrderIds = $request->input('selectedOrders');
         $action = $request->input('action');
         $status = $request->input('status');
+        dd($request->all());
         try {
             foreach ($selectedOrderIds as $orderId) {
                 if ($action === 'complete') {

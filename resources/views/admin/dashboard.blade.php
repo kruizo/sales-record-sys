@@ -266,21 +266,23 @@
             </thead>
      
             <tbody>
-                <form id="mark-orders-form" action="{{ route('update-orders') }}" method="POST">
-                    @csrf 
+                <form l="mark-orders-form" action="{{ route('update-orders') }}" method="POST">
+                @csrf 
                     <input type="hidden" name="action" id="actionInput"> <!-- Add a hidden input field for the action -->
                     <input type="hidden" name="status" id="statusInput">
                 @foreach ($paginatedData as $order)
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                    <td class="w-4 p-4 ">
-                        <div class="flex items-center">
-                            <input id="checkbox-table-search-{{$order->id}}" data-order-id="{{$order->id}}" value="{{$order->id}}" name="selectedOrders[]" type="checkbox" class="checkbox w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                            <label for="checkbox-table-search-{{$order->id}}" class="sr-only">checkbox</label>
-                        </div>
-                    </td>
+
+                        <td class="w-4 p-4 ">
+                            <div class="flex items-center">
+                                <input id="checkbox-table-search-{{$order->id}}" data-order-id="{{$order->id}}" value="{{$order->id}}" name="selectedOrders[]" type="checkbox" class="checkbox w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                <label for="checkbox-table-search-{{$order->id}}" class="sr-only">checkbox</label>
+                            </div>
+                        </td>
+
                     <td class="px-2 py-4">
-              {{$order->id}}
-                        
+                        {{$order->id}}
+                        <input type="hidden" name="order_ids[]" value="{{$order->id}}">
                     </td>
                     <th scope="row" class="px-2 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                             <div class="text-base font-semibold">{{$order->customer->firstname}}</div>
@@ -364,7 +366,6 @@
                         </div>
                     </td>
                   
-                    <form action="{{ route('mark-order', ['id' => $order->id, 'status' => 2]) }}" method="post" id="form-complete-{{ $order->id }}">
                         
                     <td class="px-2 py-4 ">
                         <div class="flex gap-4 items-center justify-center">
@@ -383,11 +384,10 @@
                             <i class="fas fa-edit text-xl text-sky-300"></i>
                         </div>
                     </td>
-                    </form>
 
                 </tr>
                  @endforeach
-
+                </form>
 
                  <div id="dropdownAction" class="z-10 w-fit hidden bg-white divide-y p-4 border divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600">
                     <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownActionButton">
@@ -401,8 +401,8 @@
 
                         </li>
                     </ul>
-                </div>
-            </form>
+                    </div>
+
             </tbody>
 
         </table>
