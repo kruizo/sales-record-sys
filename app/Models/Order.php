@@ -13,9 +13,11 @@ class Order extends Model
         'customer_id',
         'purchase_type',
         'payment_type',
+        'delivery_fee',
         'total',
         'is_archived'
     ];
+
     protected $casts = [
         'is_archived' => 'boolean',
     ];

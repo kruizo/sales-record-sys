@@ -17,7 +17,7 @@
     @yield('import')
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@200&display=swap" rel="stylesheet">
 
-    <link rel="icon" href="{{asset('assets/image/logo.png')}}" type="image/x-icon">
+    <link rel="icon" href="{{ asset('assets/image/logo.png') }}" type="image/x-icon">
     <!-- Scripts -->
     <script type="module" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
@@ -47,8 +47,9 @@
     <script type="text/javascript" src="{{ asset('assets/js/navbar.js') }}"></script>
     <script src="{{ asset('assets/js/alert.js') }}"></script>
     @if (!auth()->check())
-       @include('modals.authentication')
+        @include('modals.authentication')
     @endif
-   
+
 </body>
+
 </html>

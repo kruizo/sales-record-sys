@@ -17,8 +17,7 @@
                     </svg>
                 </slot>
             </x-sales-card>
-            <x-sales-card id="proft-card" title="Total Earnings" countId="profit-text"
-                count="₱ {{ $watersold->sum('subtotal') }}">
+            <x-sales-card id="proft-card" title="Total Earnings" countId="profit-text" count="₱ {{ $totalearning }}">
                 <slot name="icon">
                     <svg xmlns="http://www.w3.org/2000/svg" class="fill-yellow-500" width="24" height="24"
                         viewBox="0 0 24 24">
@@ -27,8 +26,7 @@
                     </svg>
                 </slot>
             </x-sales-card>
-            <x-sales-card id="water-card" title="Waters Sold" countId="water-text"
-                count="{{ $watersold->sum('quantity') }}">
+            <x-sales-card id="water-card" title="Waters Sold" countId="water-text" count="{{ $watersold }}">
                 <slot name="icon">
                     <svg xmlns="http://www.w3.org/2000/svg" class="fill-blue-500" width="24" height="24"
                         viewBox="0 0 24 24">
@@ -173,6 +171,25 @@
                                     </ul>
                                     <x-button-primary text="Filter" class="w-full text-white mt-4" type="submit" />
                                 </div>
+                            </div>
+                            <div id="dropdownAction"
+                                class="z-10 w-fit hidden bg-white divide-y p-4 border divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600">
+                                <ul class="py-1 text-sm text-gray-700 dark:text-gray-200"
+                                    aria-labelledby="dropdownActionButton">
+                                    <li>
+                                        <button data-modal-target="confirm-modal" data-modal-toggle="confirm-modal"
+                                            type="button" data-action="archive" data-status="1"
+                                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                                            id="markAllArchive">Move to archive</button>
+                                    </li>
+                                    <li>
+                                        <button data-modal-target="confirm-modal" data-modal-toggle="confirm-modal"
+                                            type="button" data-action="complete" data-status="2"
+                                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                                            id="markAllCompleteBtn">Mark as complete</button>
+
+                                    </li>
+                                </ul>
                             </div>
                             <div class="flex items-center justify-center p-4">
                                 <button id="dropdownHelperRadioButton" data-dropdown-toggle="dropdownHelperRadio"
@@ -403,7 +420,7 @@
                                         @if ($hasInProgress)
                                             <div class="flex items-center w-28">
                                                 <div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div>
-                                                {{ $orderline->delivery->deliverystatus->name }}
+                                                {{ $orderline->delivery->deliverystatus->find(1)->name }}
                                             </div>
                                         @else
                                             @if ($orderline->delivery->delivery_status == 2)
@@ -431,34 +448,21 @@
                                         </button>
                                         <button type="button" class="print-btn" onclick="PrintReceiptContent('print')">
                                             <i class="fas fa-download text-xl text-blue-500" aria-hidden="true"></i>
-
                                         </button>
-                                        <i class="fas fa-edit text-xl text-sky-300"></i>
+                                        <button type="button" data-modal-target="edit-order-modal"
+                                            data-modal-toggle="edit-order-modal" class="edit-btn"
+                                            data-id="{{ $order->id }}">
+                                            <i class="fas fa-edit text-xl text-sky-300"></i>
+                                        </button>
                                     </div>
                                 </td>
 
                             </tr>
+                            <x-modal.edit-order />
                         @endforeach
                     </form>
 
-                    <div id="dropdownAction"
-                        class="z-10 w-fit hidden bg-white divide-y p-4 border divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600">
-                        <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownActionButton">
-                            <li>
-                                <button data-modal-target="confirm-modal" data-modal-toggle="confirm-modal"
-                                    type="button" data-action="archive" data-status="1"
-                                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                                    id="markAllArchive">Move to archive</button>
-                            </li>
-                            <li>
-                                <button data-modal-target="confirm-modal" data-modal-toggle="confirm-modal"
-                                    type="button" data-action="complete" data-status="2"
-                                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                                    id="markAllCompleteBtn">Mark as complete</button>
 
-                            </li>
-                        </ul>
-                    </div>
 
                 </tbody>
 
@@ -494,7 +498,8 @@
             </ul>
         </nav>
     </div>
-    <x-modal-confirm text="Are you sure to mark this order as complete?" variant="confirm" />
+
+    <x-modal.modal-confirm text="Are you sure to mark this order as complete?" variant="confirm" />
 
     <div id="print" class="hidden">
         @include('reports.receipt')

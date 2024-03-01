@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('delivery_address');
             $table->string('map_reference')->nullable();
             $table->string('special_instruction')->nullable();
-            $table->integer('delivery_fee')->nullable()->default(10);
+            // $table->integer('delivery_fee')->nullable()->default(10);
             $table->string('date_delivered')->nullable();
             $table->boolean('is_archived')->default(1);
             $table->timestamps();

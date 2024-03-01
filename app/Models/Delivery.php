@@ -18,7 +18,7 @@ class Delivery extends Model
         'delivery_address',
         'map_reference',
         'special_instruction',
-        'delivery_fee',
+        // 'delivery_fee',
         'date_delivered',
         'is_archived'
     ];

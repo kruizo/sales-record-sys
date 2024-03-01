@@ -9,6 +9,7 @@ use App\Models\Water;
 use App\Models\Orderline;
 use App\Models\Delivery;
 use App\Models\DeliveryEmployee;
+use App\Models\DeliveryFee;
 use App\Models\Order;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Redirect;
@@ -67,13 +68,15 @@ class OrderController extends Controller
         DB::beginTransaction();
 
         try {
+
+            $deliveryfee = DeliveryFee::find(1)->fee;
             $order = Order::create([
                 'customer_id' => $customerId,
                 'purchase_type' => 'Delivery',
                 'payment_type' => $paymentType,
+                'delivery_fee' => $deliveryfee,
             ]);
 
-            $deliveryfee = 0;
             foreach ($request->input() as $key => $value) {
                 if (is_numeric($value) && strpos($key, 'product_') !== false && $value > 0) {
                     $waterId = substr($key, 8);
@@ -97,7 +100,7 @@ class OrderController extends Controller
                         'map_reference' => $mapReference,
                         'special_instruction' => $specialInstructions,
                     ]);
-                    $deliveryfee = $orderline->delivery->delivery_fee;
+
                     $totalOrder += $subtotal;
                 }
             }
@@ -191,12 +194,10 @@ class OrderController extends Controller
                 throw new \Exception('No order selected');
             }
 
-            $message = $individualOrderId ? 'Order updated successfully' :
-                    ($action === 'complete' ? 'Orders set as completed successfully' : 'Orders moved to archive successfully');
+            $message = $individualOrderId ? 'Order updated successfully' : ($action === 'complete' ? 'Orders set as completed successfully' : 'Orders moved to archive successfully');
             return back()->withSuccess($message);
         } catch (\Exception $e) {
             return back()->withError($e->getMessage());
         }
     }
-
 }

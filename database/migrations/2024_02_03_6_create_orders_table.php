@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreignId('customer_id')->constrained('customers')->onDelete('cascade');
             $table->string('purchase_type');
             $table->string('payment_type')->nullable();
+            $table->integer('delivery_fee')->nullable()->default(10);
             $table->integer('total')->default(0);
             $table->string('is_archived')->default(0);
             $table->timestamps();

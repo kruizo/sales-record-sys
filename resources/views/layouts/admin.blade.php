@@ -9,10 +9,8 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="preload" rel="icon" href="{{ asset('assets/image/logo.png') }}" type="image/x-icon" as="image">
-    <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @yield('title')
-    <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
