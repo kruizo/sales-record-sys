@@ -62,6 +62,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // });
 
+    completeAllBtn.addEventListener("click", function () {
+        confirmButton.addEventListener("click", function () {
+            const form = document.getElementById(`mark-orders-form`);
+            form.submit();
+        });
+    });
+
     function markOrdersArchive(orderIds) {
         const status = 1;
         const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');

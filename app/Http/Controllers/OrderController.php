@@ -165,9 +165,46 @@ class OrderController extends Controller
                     $orderline->is_archived = $status;
                 }
             }
-            return Redirect::back()->withSuccess('Order set as completed successfully');
+            return back()->withSuccess('Order set as completed successfully');
         } catch (\Exception $e) {
             return back()->withError('Failed to update delivery status');
+        }
+    }
+    public function markOrArchiveOrders(Request $request)
+    {
+        dd($request->all());
+        $selectedOrderIds = $request->input('selectedOrders');
+        $action = $request->input('action');
+        $status = $request->input('status');
+
+        foreach ($selectedOrderIds as $orderId) {
+            try {
+                $order = Order::findOrFail($orderId);
+
+                if ($action === 'mark') {
+                    foreach ($order->orderline as $orderline) {
+                        $delivery = $orderline->delivery;
+                        if ($delivery) {
+                            $delivery->delivery_status = $status; // Make sure $status is defined
+                            $delivery->save();
+                        }
+                    }
+                    return back()->withError('Orders marked as complete is successful.');
+                } elseif ($action === 'archive') {
+                    // Logic to archive the order
+                }
+
+                // Additional logic for marking or archiving the order if needed
+
+            } catch (\Exception $e) {
+                return back()->withError('Failed to update delivery status');
+            }
+        }
+
+        if ($action === 'mark') {
+            return back()->withSuccess('Selected orders marked as completed successfully');
+        } elseif ($action === 'archive') {
+            return back()->withSuccess('Selected orders archived successfully');
         }
     }
 }

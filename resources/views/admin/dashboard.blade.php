@@ -56,21 +56,7 @@
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
                         </svg>
                     </button>
-                    <!-- Dropdown menu -->
-                    <div id="dropdownAction" class="z-10 w-fit hidden bg-white divide-y p-4 border divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600">
-                        <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownActionButton">
-                            <li>
-                                <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white" id="markAllArchive">Move to archive</a>
-                            </li>
-                            <li>
-                                    
-                                <button data-modal-target="confirm-modal" 
-                                data-modal-toggle="confirm-modal" type="button" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white" id="markAllCompleteBtn">Mark as complete</button>
 
-                            </li>
-                        </ul>
-            
-                    </div>
                 </div>
                 <form action="{{route('admin.dashboard')}}" method="GET">
                     <div class="flex  ">
@@ -191,6 +177,8 @@
         </div>
     </div>
     <div class="overflow-x-auto">
+        <form id="mark-orders-form" action="{{ route('mark-orders') }}" method="POST">
+            @csrf 
         <table id="dataTable" class="w-full overflow-x-scroll text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
@@ -269,14 +257,14 @@
                     </th>
                 </tr>
             </thead>
-            
+     
             <tbody>
-                <form id="mark-orders-form" action="{{ route('mark-orders') }}" method="POST">
+                
                 @foreach ($paginatedData as $order)
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                     <td class="w-4 p-4 ">
                         <div class="flex items-center">
-                            <input id="checkbox-table-search-{{$order->id}}" data-order-id="{{$order->id}}" type="checkbox" class="checkbox w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                            <input id="checkbox-table-search-{{$order->id}}" data-order-id="{{$order->id}}" name="selectedOrders[]" type="checkbox" class="checkbox w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                             <label for="checkbox-table-search-{{$order->id}}" class="sr-only">checkbox</label>
                         </div>
                     </td>
@@ -387,9 +375,25 @@
                     </td>
                 </tr>
                  @endforeach
-                </form>
+                 <div id="dropdownAction" class="z-10 w-fit hidden bg-white divide-y p-4 border divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600">
+                    <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownActionButton">
+                        <li>
+                            <button data-modal-target="confirm-modal" 
+                            data-modal-toggle="confirm-modal" type="button" name="action" value="archive" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white" id="markAllArchive">Move to archive</button>
+                        </li>
+                        <li>
+                            <input type="hidden" name="status" value="2">
+                            <button data-modal-target="confirm-modal" 
+                            data-modal-toggle="confirm-modal" type="button" name="action" value="complete" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white" id="markAllCompleteBtn">Mark as complete</button>
+
+                        </li>
+                    </ul>
+                </div>
             </tbody>
+
         </table>
+    </form>
+
     </div>
 
     <nav class="flex items-center flex-column flex-wrap md:flex-row justify-between pt-4" aria-label="Table navigation">
