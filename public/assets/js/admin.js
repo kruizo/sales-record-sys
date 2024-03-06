@@ -65,24 +65,156 @@ document.addEventListener("DOMContentLoaded", function () {
             form.submit();
         });
     }
-    // completeAllBtn.addEventListener("click", function () {
-    //     const selectedOrderIds = [];
-    //     checkboxes.forEach(function (checkbox) {
-    //         if (checkbox.checked) {
-    //             selectedOrderIds.push(checkbox.dataset.orderId);
-    //         }
-    //     });
 
-    //     if (selectedOrderIds.length > 0) {
-    //         confirmButton.addEventListener("click", function () {
-    //             markOrdersAsComplete(selectedOrderIds);
+    const saveBtn = document.querySelector("#save-btn");
+    const removeBtns = document.querySelectorAll(".remove-btn");
+    const completeBtns = document.querySelectorAll(".complete-btn");
+    const cancelBtn = document.querySelector("#cancel-btn");
+    const orderlineItems = document.querySelectorAll(".orderline-item");
 
-    //         });
+    let selectedOrderlineIdsToComplete = [];
+    let selectedOrderlineIdsToRemove = [];
 
-    //     } else {
-    //         alert("Please select at least one order.");
-    //     }
-    // });
+    completeBtns.forEach(function (completeBtn) {
+        completeBtn.addEventListener("click", function () {
+            const orderlineId = this.dataset.id;
+            const orderlineItem = document.getElementById(
+                `orderline-item-${orderlineId}`
+            );
+
+            if (orderlineItem.classList.contains("bg-green-400")) {
+                orderlineItem.classList.remove("bg-green-400");
+                this.innerText = "Complete";
+                const index =
+                    selectedOrderlineIdsToComplete.indexOf(orderlineId);
+                if (index !== -1) {
+                    selectedOrderlineIdsToComplete.splice(index, 1); // Remove unmarked orderline ID
+                }
+            } else {
+                orderlineItem.classList.add("bg-green-400");
+                this.innerText = "Marked";
+                selectedOrderlineIdsToComplete.push(orderlineId); // Add marked orderline ID
+            }
+        });
+    });
+    saveBtn.addEventListener("click", async function () {
+        try {
+            const promises = [];
+
+            if (selectedOrderlineIdsToComplete) {
+                console.log(
+                    "Selected orderline ID:",
+                    selectedOrderlineIdsToComplete
+                );
+                promises.push(
+                    completeOrderline(selectedOrderlineIdsToComplete)
+                );
+            }
+            if (selectedOrderlineIdsToRemove) {
+                promises.push(removeOrderline(selectedOrderlineIdsToRemove));
+            }
+
+            await Promise.all(promises);
+            location.reload();
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    });
+
+    cancelBtn.addEventListener("click", function () {
+        console.log("executed");
+        orderlineItems.forEach(function (orderlineItem) {
+            orderlineItem.classList.remove("bg-green-400");
+            orderlineItem.classList.remove("hidden");
+        });
+        completeBtns.forEach(function (completeBtn) {
+            completeBtn.innerText = "Complete";
+        });
+    });
+
+    async function completeOrderline(orderlineIds) {
+        const csrfToken = document
+            .querySelector('meta[name="csrf-token"]')
+            .getAttribute("content");
+
+        if (!Array.isArray(orderlineIds)) {
+            orderlineIds = [orderlineIds];
+        }
+
+        console.log(orderlineIds);
+
+        const responses = await Promise.all(
+            orderlineIds.map(async (orderlineId) => {
+                const response = await fetch(
+                    `/update-orderline/${orderlineId}/2`,
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-CSRF-TOKEN": csrfToken,
+                        },
+                    }
+                );
+
+                if (!response.ok) {
+                    throw new Error(
+                        `Failed to complete orderline ${orderlineId}`
+                    );
+                }
+
+                return response;
+            })
+        );
+
+        console.log("All orderlines completed successfully");
+        return responses;
+    }
+
+    removeBtns.forEach(function (removeBtn) {
+        removeBtn.addEventListener("click", function () {
+            const orderlineId = this.dataset.id;
+            const orderlineItem = document.querySelector(
+                `#orderline-item-${orderlineId}`
+            );
+            orderlineItem.classList.add("hidden");
+            selectedOrderlineIdsToRemove.push(orderlineId);
+        });
+    });
+
+    async function removeOrderline(orderlineIds) {
+        const csrfToken = document
+            .querySelector('meta[name="csrf-token"]')
+            .getAttribute("content");
+
+        if (!Array.isArray(orderlineIds)) {
+            orderlineIds = [orderlineIds];
+        }
+
+        try {
+            const fetchPromises = orderlineIds.map((orderlineId) => {
+                return fetch(`/remove-orderline/${orderlineId}`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": csrfToken,
+                    },
+                }).then((response) => {
+                    if (response.ok) {
+                        console.log(
+                            `Orderline ${orderlineId} removed successfully`
+                        );
+                    } else {
+                        console.error(
+                            `Failed to remove orderline ${orderlineId} `
+                        );
+                    }
+                });
+            });
+            await Promise.all(fetchPromises);
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    }
 
     // function markOrdersArchive(orderIds) {
     //     const status = 1;

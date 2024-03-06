@@ -10,7 +10,7 @@
     </x-modal.modal-success>
 @endif
 @if (session('error'))
-    <x-modal.modal-success text="{{ session('error') }}">
+    <x-modal.modal-success text="{{ session('error')}}">
         <slot name="icon" class="flex justify-center">
             <svg class="fill-red-500" clip-rule="evenodd" fill-rule="evenodd" height="50px" width="50px"
                 stroke-linejoin="round" stroke-miterlimit="2" viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg">

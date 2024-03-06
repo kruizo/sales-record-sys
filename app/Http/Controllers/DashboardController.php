@@ -33,11 +33,14 @@ class DashboardController extends Controller
         $data = $data->where('is_archived', 0);
         $existingParams = $request->query();
         $rowSize = $request->input('rowSize', 10);
-        $paginatedData = $data->paginate($rowSize);
 
         $completedOrders = $orders->reject(function ($order) {
-            return $order->orderline->contains(function ($orderLine) {
-                return $orderLine->delivery->delivery_status == 1 || $orderLine->delivery->delivery_status == 3; // Exclude orders with any order line that is cancelled
+            return $order->orderline->contains(function ($orderline) {
+                return $orderline->delivery->delivery_status == 1;
+            });
+        })->filter(function ($order) {
+            return $order->orderline->contains(function ($orderline) {
+                return $orderline->delivery->delivery_status == 2 || $orderline->delivery->delivery_status == 3;
             });
         });
 
@@ -85,6 +88,8 @@ class DashboardController extends Controller
                 $query->whereIn('status', $request->status);
             });
         }
+        $paginatedData = $data->paginate($rowSize);
+
 
         return view('admin/dashboard', compact('paginatedData', 'totalorder', 'totalearning', 'data', 'watersold', 'deliveries', 'request'));
     }

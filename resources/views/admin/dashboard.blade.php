@@ -304,6 +304,11 @@
                         </th>
                         <th scope="col" class="px-2 py-3">
                             <div class="flex items-center">
+                                Payment Method
+                            </div>
+                        </th>
+                        <th scope="col" class="px-2 py-3">
+                            <div class="flex items-center">
                                 Special Instruction
                             </div>
                         </th>
@@ -352,13 +357,13 @@
                                     {{ $order->customer->contactnum }}
                                 </td>
                                 <td class="px-2 py-4">
-                                    {{ $order->orderline->where('water_id', 1)->sum('quantity') }}
+                                    {{ $order->orderline->where('water_id', 1)->sum('quantity') ?? 0}}
                                 </td>
                                 <td class="px-2 py-4">
-                                    {{ $order->orderline->where('water_id', 2)->sum('quantity') }}
+                                    {{ $order->orderline->where('water_id', 2)->sum('quantity') ?? 0}}
                                 </td>
                                 <td class="px-2 py-4 ">
-                                    {{ $order->orderline->where('water_id', 3)->sum('quantity') }}
+                                    {{ $order->orderline->where('water_id', 3)->sum('quantity') ?? 0}}
                                 </td>
 
                                 <td class="px-2 py-4">
@@ -381,6 +386,7 @@
 
                                     @php
                                         $hasInProgress = false;
+                                        $completed = false;
                                         $deliveryDate = \Carbon\Carbon::parse(
                                             $order->orderline->first()->delivery->delivery_date,
                                         )->startOfDay();
@@ -392,6 +398,11 @@
                                         @if ($orderline->delivery->delivery_status == 1)
                                             @php
                                                 $hasInProgress = true;
+                                            @endphp
+                                        
+                                        @elseif ($orderline->delivery->delivery_status == 2)
+                                            @php
+                                                $completed = true;
                                             @endphp
                                         @endif
                                     @endforeach
@@ -411,8 +422,12 @@
                                         @endif
                                     @endif
                                 </td>
+                                
                                 <td class="px-2 py-4">
-
+                                    {{$orderline->order->payment_type}}
+                                </td>
+                                <td class="px-2 py-4">
+                                    {{$orderline->delivery->special_instruction}}
                                 </td>
                                 <td class="px-2 py-4 ">
                                     <div class="flex flex-col justify-start">
@@ -422,18 +437,16 @@
                                                 <div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div>
                                                 {{ $orderline->delivery->deliverystatus->find(1)->name }}
                                             </div>
-                                        @else
-                                            @if ($orderline->delivery->delivery_status == 2)
+                                        @elseif ($completed)
                                                 <div class="flex items-center">
                                                     <div class="h-2.5 w-2.5 rounded-full bg-blue-500 me-2"></div>
-                                                    {{ $orderline->delivery->deliverystatus->name }}
+                                                    {{ $orderline->delivery->deliverystatus->find(2)->name }}
                                                 </div>
-                                            @else
-                                                <div class="flex items-center">
-                                                    <div class="h-2.5 w-2.5 rounded-full bg-red-500 me-2"></div>
-                                                    {{ $orderline->delivery->deliverystatus->name }}
-                                                </div>
-                                            @endif
+                                        @else
+                                            <div class="flex items-center">
+                                                <div class="h-2.5 w-2.5 rounded-full bg-red-500 me-2"></div>
+                                                {{ $orderline->delivery->deliverystatus->name }}
+                                            </div>
                                         @endif
                                     </div>
                                 </td>
@@ -476,10 +489,11 @@
                                             <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
                                                 Order #{{ $order->id }}</h3>
                                             @foreach ($order->orderline as $orderline)
-                                                <div class="border flex w-full text-gray-900 object-fill">
-                                                    <div class="">
+                                                @if($orderline->is_archived != 1)
+                                                <div class="orderline-item border flex w-full text-gray-900 object-fill"  id="orderline-item-{{$orderline->id}}">
+                                                    <div>
                                                         <img src="{{ asset('assets/image/container1.png') }}"
-                                                            height="100" class="h-full pt-2 " width="100"
+                                                            height="50" class="h-full pt-2 min-w-14 max-w-14"
                                                             alt="" srcset="">
                                                     </div>
 
@@ -501,7 +515,6 @@
                                                                     <path
                                                                         d="M11.5 0c6.347 0 11.5 5.153 11.5 11.5s-5.153 11.5-11.5 11.5-11.5-5.153-11.5-11.5 5.153-11.5 11.5-11.5zm0 1c5.795 0 10.5 4.705 10.5 10.5s-4.705 10.5-10.5 10.5-10.5-4.705-10.5-10.5 4.705-10.5 10.5-10.5zm-6.5 10h13v1h-13v-1z" />
                                                                 </svg>
-
                                                             </button>
                                                             <input name="product_{{ $orderline->water->name }}"
                                                                 id="{{ $orderline->id }}"
@@ -520,27 +533,21 @@
                                                         </div>
                                                     </div>
                                                     <div class="flex items-center gap-4 px-4">
-                                                        @if ($orderline->delivery->delivery_status != 2)
+                                                        @if ($orderline->delivery->delivery_status == 1)
                                                             <button type="button"
                                                                 class="rounded-2xl w-fit h-10 flex items-center bg-green-400 text-white px-3 py-2 gap-2">
                                                                 <!-- Icon -->
                                                                 <svg clip-rule="evenodd" class="fill-white w-7"
                                                                     fill-rule="evenodd" stroke-linejoin="round"
-                                                                    stroke-miterlimit="2" viewBox="0 0 30 30"
+                                                                    stroke-miterlimit="2" viewBox="0 0 23 23"
                                                                     xmlns="http://www.w3.org/2000/svg">
                                                                     <path
                                                                         d="m2.25 12.321 7.27 6.491c.143.127.321.19.499.19.206 0 .41-.084.559-.249l11.23-12.501c.129-.143.192-.321.192-.5 0-.419-.338-.75-.749-.75-.206 0-.411.084-.559.249l-10.731 11.945-6.711-5.994c-.144-.127-.322-.19-.5-.19-.417 0-.75.336-.75.749 0 .206.084.412.25.56"
                                                                         fill-rule="nonzero" />
                                                                 </svg>
-
-                                                                <!-- Text -->
-                                                                <h1>Complete</h1>
+                                                                <h1 class="ml-2 complete-btn" id="complete-btn-{{$orderline->id}}" data-id="{{$orderline->id}}">Complete</h1>
                                                             </button>
-                                                        @endif
-
-
-
-                                                        <button type="button"
+                                                        {{-- <button type="button"
                                                             class="rounded-2xl w-fit h-10 bg-red-500 flex items-center justify-center text-white px-3 py-2 gap-2">
                                                             <div class="flex items-center w-full">
                                                                 <!-- Icon -->
@@ -552,37 +559,57 @@
                                                                         d="m4.015 5.494h-.253c-.413 0-.747-.335-.747-.747s.334-.747.747-.747h5.253v-1c0-.535.474-1 1-1h4c.526 0 1 .465 1 1v1h5.254c.412 0 .746.335.746.747s-.334.747-.746.747h-.254v15.435c0 .591-.448 1.071-1 1.071-2.873 0-11.127 0-14 0-.552 0-1-.48-1-1.071zm14.5 0h-13v15.006h13zm-4.25 2.506c-.414 0-.75.336-.75.75v8.5c0 .414.336.75.75.75s.75-.336.75-.75v-8.5c0-.414-.336-.75-.75-.75zm-4.5 0c-.414 0-.75.336-.75.75v8.5c0 .414.336.75.75.75s.75-.336.75-.75v-8.5c0-.414-.336-.75-.75-.75zm3.75-4v-.5h-3v.5z"
                                                                         fill-rule="nonzero" />
                                                                 </svg>
-
-                                                                <!-- Text -->
-                                                                <p class="ml-2">Remove</p>
+                                                                <p class="ml-2 cancel-btn"  data-id="{{$orderline->id}}">Cancel</p>
+                                                            </div>
+                                                        </button> --}}
+                                                        <button type="button"
+                                                            class="rounded-2xl w-fit h-10 bg-red-500 flex items-center justify-center text-white px-3 py-2 gap-2">
+                                                            <div class="flex items-center w-full">
+                                                                <!-- Icon -->
+                                                                <svg clip-rule="evenodd" fill-rule="evenodd"
+                                                                    class="fill-white w-7" stroke-linejoin="round"
+                                                                    stroke-miterlimit="2" viewBox="0 0 23 23"
+                                                                    xmlns="http://www.w3.org/2000/svg">
+                                                                    <path
+                                                                        d="m4.015 5.494h-.253c-.413 0-.747-.335-.747-.747s.334-.747.747-.747h5.253v-1c0-.535.474-1 1-1h4c.526 0 1 .465 1 1v1h5.254c.412 0 .746.335.746.747s-.334.747-.746.747h-.254v15.435c0 .591-.448 1.071-1 1.071-2.873 0-11.127 0-14 0-.552 0-1-.48-1-1.071zm14.5 0h-13v15.006h13zm-4.25 2.506c-.414 0-.75.336-.75.75v8.5c0 .414.336.75.75.75s.75-.336.75-.75v-8.5c0-.414-.336-.75-.75-.75zm-4.5 0c-.414 0-.75.336-.75.75v8.5c0 .414.336.75.75.75s.75-.336.75-.75v-8.5c0-.414-.336-.75-.75-.75zm3.75-4v-.5h-3v.5z"
+                                                                        fill-rule="nonzero" />
+                                                                </svg>
+                                                                <h1 class="ml-2 remove-btn"  data-id="{{$orderline->id}}">Remove</h1>
                                                             </div>
                                                         </button>
-
-
+                                                        @elseif ($orderline->delivery->delivery_status == 2)
+                                                        
+                                                        <div class="rounded-2xl w-fit h-10 flex items-center bg-blue-500 text-white px-3 py-2 gap-2">
+                                                            <h1>{{$orderline->delivery->deliverystatus->name}}</h1>
+                                                        </div>
+                                                        @else 
+                                                        <div class="rounded-2xl w-fit h-10 flex items-center bg-red-500 text-white px-3 py-2 gap-2">
+                                                            <h1>{{$orderline->delivery->deliverystatus->name}}</h1>
+                                                        </div>
+                                                        @endif
                                                     </div>
                                                 </div>
+                                                @endif
                                             @endforeach
-
-                                            <button id="save-btn" data-modal-hide="edit-order-modal-{{ $order->id }}"
-                                                class="text-white bg-green-600 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
-                                                Save Changes
-                                            </button>
-                                            <button data-modal-hide="edit-order-modal-{{ $order->id }}" type="button"
-                                                class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">No,
-                                                cancel</button>
+                                            
+                                            <div class="mt-4">
+                                                 <button id="save-btn" type="button" data-modal-hide="edit-order-modal-{{ $order->id }}"
+                                                    class="text-white bg-green-600 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
+                                                    Save Changes
+                                                </button>
+                                                <button id="cancel-btn" data-modal-hide="edit-order-modal-{{ $order->id }}" type="button"
+                                                    class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
+                                                    Cancel</button>
+                                            </div>
+                           
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         @endforeach
                     </form>
-
-
-
                 </tbody>
-
             </table>
-
         </div>
 
         <nav class="flex items-center flex-column flex-wrap md:flex-row justify-between pt-4"

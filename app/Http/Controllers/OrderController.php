@@ -112,9 +112,31 @@ class OrderController extends Controller
         } catch (\Exception $e) {
             DB::rollback();
             $errorMessage = $e->getMessage();
-            return back()->withError($errorMessage);
+            return back()->withError("Something occured. Please try again later.");
         }
     }
+
+        public function update($id)
+    {
+        $orderline = Orderline::with('order.customer')->find($id);
+        if (!$orderline) {
+            abort(404, 'Orderline not found');
+        }
+
+        $authenticatedUserId = Auth::id();
+        $orderCustomerId = $orderline->order->customer->registeredcustomer->user_id;
+
+
+        if ($authenticatedUserId !== $orderCustomerId) {
+            abort(403, 'Unauthorized action');
+        }
+
+
+        $orderline->delivery->update(['delivery_status' => 3]);
+
+        return redirect()->back()->with('success', 'Order canceled successfully');
+    }
+
 
     public function cancelOrder($id)
     {
@@ -137,17 +159,41 @@ class OrderController extends Controller
         return redirect()->back()->with('success', 'Order canceled successfully');
     }
 
-    public function updateOrderStatus($id, $status)
+    public function updateOrderStatus($id, $status, $cancelled)
     {
         $order = Order::findOrFail($id);
         foreach ($order->orderline as $orderline) {
             $delivery = $orderline->delivery;
+
+            if($cancelled){
+                if ($delivery->delivery_status == 1) {
+                    $delivery->delivery_status = $status;
+                }
+            }
+            else{
+            $delivery->delivery_status = $status;
+            }
+            $delivery->save();
+        }
+    }
+    
+
+    public function updateOrderlineStatus($orderlineId, $status)
+    {
+        $orderline = Orderline::findOrFail($orderlineId);
+        $delivery = $orderline->delivery;
             if ($delivery) {
                 $delivery->delivery_status = $status;
                 $delivery->save();
             }
-        }
     }
+
+    public function removeOrderline($orderlineId)
+    {
+        $orderline = Orderline::findOrFail($orderlineId);
+        $orderline->delete();
+    }
+
 
     public function updateOrderArchiveStatus($id, $status)
     {
@@ -157,8 +203,8 @@ class OrderController extends Controller
         $order->save();
 
         foreach ($order->orderline as $orderline) {
-            if ($orderline) {
-                $orderline->is_archived = $status;
+            if ($orderline ) {
+                 $orderline->is_archived = $status;   
             }
         }
     }
@@ -175,22 +221,22 @@ class OrderController extends Controller
                 throw new \Exception('Invalid action');
             }
 
-            if ($individualOrderId) {
-                // Handle individual order
-                if ($action === 'complete') {
-                    $this->updateOrderStatus($individualOrderId, $status);
+            if($individualOrderId){
+                if ($action === 'complete') {   
+                    $this->updateOrderStatus($individualOrderId, $status, true);
                 } elseif ($action === 'archive') {
                     $this->updateOrderArchiveStatus($individualOrderId, $status);
                 }
-            } elseif (!empty($selectedOrderIds)) {
+            }elseif (!empty($selectedOrderIds)){
                 foreach ($selectedOrderIds as $orderId) {
                     if ($action === 'complete') {
-                        $this->updateOrderStatus($orderId, $status);
+                        $this->updateOrderStatus($orderId, $status, true);
                     } elseif ($action === 'archive') {
                         $this->updateOrderArchiveStatus($orderId, $status);
                     }
                 }
-            } else {
+            }
+            else{
                 throw new \Exception('No order selected');
             }
 
