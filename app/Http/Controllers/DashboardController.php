@@ -6,6 +6,7 @@ use App\Models\Delivery;
 use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\Orderline;
+use Illuminate\Support\Facades\Date;
 
 class DashboardController extends Controller
 {
@@ -88,7 +89,7 @@ class DashboardController extends Controller
                 $query->whereIn('status', $request->status);
             });
         }
-        $paginatedData = $data->paginate($rowSize);
+        $paginatedData = $data->whereDate('created_at', now()->toDateString())->paginate($rowSize);
 
 
         return view('admin/dashboard', compact('paginatedData', 'totalorder', 'totalearning', 'data', 'watersold', 'deliveries', 'request'));
