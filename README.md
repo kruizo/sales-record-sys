@@ -14,7 +14,7 @@ Before starting, make sure you have the following installed:
     First, clone the project to your local machine:
 
     ```bash
-    git clone <your-project-repository-url>
+    git clone https://github.com/kruizo/sales-record-sys
     ```
 
 2. **Navigate to the project directory**
@@ -22,7 +22,7 @@ Before starting, make sure you have the following installed:
     Change your current directory to the project folder:
 
     ```bash
-    cd <project-directory>
+    cd sales-record-sys
     ```
 
 3. **Install PHP dependencies**
@@ -62,10 +62,6 @@ Before starting, make sure you have the following installed:
 7. **Run initial SQL queries**
 
     Execute the initial SQL queries stored in the `initquery.txt` file to fill the tables with initial values:
-
-    ```bash
-    mysql -u <username> -p <database-name> < initquery.txt
-    ```
 
 8. **Start the development server**
 
