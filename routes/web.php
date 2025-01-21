@@ -9,34 +9,25 @@ Route::get('/', function () {
 })->name('/');
 
 
-
-
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('/home'); //->middleware('verified')
 
 Route::post('/save-profile', 'App\Http\Controllers\ProfileController@saveProfile')->name('save-profile');
 
-
+//need reworks
 Route::get('/verified/setup', 'App\Http\Controllers\Auth\VerificationController@setupProfile')->name('verified.setup');
 Route::post('/place-order', [App\Http\Controllers\OrderController::class, 'placeOrder'])->name('place-order');
 Route::post('/update-orders', [App\Http\Controllers\OrderController::class, 'updateOrArchiveOrders'])->name('update-orders');
 Route::post('/update-orderline/{orderlineid}/{status}', [App\Http\Controllers\OrderController::class, 'updateOrderlineStatus'])->name('update-orderline');
 Route::post('/remove-orderline/{orderlineid}', [App\Http\Controllers\OrderController::class, 'removeOrderline'])->name('remove-orderline');
 
-
-//Route::post('/initiate-registration', [App\Http\Controllers\Auth\RegisterController::class, 'initiateRegistration'])->name('initiate.registration');
-
-
+//profile
 Route::middleware(['auth'])->group(function () {
     Route::GET('/verification', function () {
         return view('auth.verify');
     })->name('verification');
+
     Route::get('/order', [App\Http\Controllers\OrderController::class, 'index'])->name('order')->middleware('verified');
-
     Route::prefix('profile')->group(function () {
-        // Route::get('/verification', function () {
-        //     return view('auth.verify');
-        // })->name('verification');
-
         Route::get('/', [App\Http\Controllers\ProfileController::class, 'index'])->name('profile');
         Route::post('/verify', [App\Http\Controllers\ProfileController::class, 'verifyUser'])->name('profile.verify');
 
@@ -45,16 +36,16 @@ Route::middleware(['auth'])->group(function () {
     });
 });
 
-// Route::get('email/verify/{id}/{hash}', 'Auth\VerificationController@verify')
-//     ->name('verification.verify');
 
 Route::group(['middleware' => 'web'], function () {
     Auth::routes(['verify' => true]);
 });
 
 
+//should be api.php
 Route::POST('/profile-registration', [App\Http\Controllers\Auth\RegisterController::class, 'profileRegistration'])->name('profile.registration');
 
+//admin
 Route::middleware(['auth', 'is_admin'])->prefix('admin')->group(function () {
     Route::get('/', [App\Http\Controllers\DashboardController::class, 'show'])->name('admin');
     Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'show'])->name('admin.dashboard');
@@ -65,6 +56,7 @@ Route::middleware(['auth', 'is_admin'])->prefix('admin')->group(function () {
     Route::get('/analytics', [App\Http\Controllers\AnalyticsController::class, 'show'])->name('admin.analytics');
 });
 
+//map
 Route::get('/view/map', function () {
     return view('modals/map');
 })->name('modal.map');
