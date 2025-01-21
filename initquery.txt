@@ -1,0 +1,38 @@
+INSERT INTO users (
+    email, 
+    email_verified_at, 
+    is_admin, 
+    password, 
+    is_archived, 
+    remember_token, 
+    created_at, 
+    updated_at
+) 
+VALUES (
+    'newuser@example.com',      -- email
+    NOW(),                      -- email_verified_at (current timestamp)
+    1,                          -- is_admin (0 = false, 1 = true)
+    '$2y$10$O2XZmT9TXGOhgbU2FL44yV1lVCPoSH4l2hTfGL9yT2RuIcD3V0US6', -- password (hashed)
+    0,                          -- is_archived (0 = false, 1 = true)
+    NULL,                       -- remember_token (NULL by default)
+    NOW(),                      -- created_at (current timestamp)
+    NOW()                       -- updated_at (current timestamp)
+);
+
+INSERT INTO employees (user_id, address_id, firstname, lastname, contactnum, email, created_at, updated_at)
+VALUES
+(1, 1, 'John', 'Doe', '123456789', 'newuser@example.com', NOW(), NOW());
+
+ALTER TABLE deliveries
+MODIFY delivery_status bigint(20) UNSIGNED NOT NULL DEFAULT 1;
+
+INSERT INTO delivery_statuses (id, status, name, description, created_at, updated_at) VALUES ('1', 'inprogress', 'In progress', 'delivery is In progress', '2024-02-01 00:27:05', '2024-02-01 00:27:05'), ('2', 'completed', 'Completed', 'delivery is completed', '2024-02-02 13:39:13', '2024-02-02 13:39:13'), ('3', 'cancelled', 'Cancelled', 'the delivery is cancelled', '2024-02-01 00:27:05', '2024-02-01 00:27:05');
+
+INSERT INTO waters (name, type, description, cost, created_at, updated_at) VALUES
+    ('Alkaline', 'Alkaline', 'Pure alkaline water', 2.99, NOW(), NOW()),
+    ('Distilled', 'Distilled', 'Pure distilled water', 1.99, NOW(), NOW()),
+    ('Mineral', 'Mineral', 'Natural mineral-infused water', 3.49, NOW(), NOW());
+
+INSERT INTO delivery_employees (id, employee_id, isAvailable, total_deliveries, is_archived, created_at, updated_at) VALUES ('1', '1', '1', '9', '0', '2024-02-01 00:27:05', '2024-02-01 00:27:05');
+
+INSERT INTO delivery_fees (id, fee, distance_km, description, created_at, updated_at) VALUES ('1', '10', '5', '10 pesos is applied to first 5 kilometers', '2024-02-01 00:28:43', '2024-02-01 00:28:43');
