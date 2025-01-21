@@ -51,24 +51,14 @@ class RegisterController extends Controller
             'email' => ['required', 'string', 'email', 'max:255' ,'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed']
         ]);
-
-        // $tempUser = User::create([
-        //     'email' => $request->email,
-        //     'password' => Hash::make($request->password),
-        //     'email_verified_at' => null,
-        // ]);
-
       
-        // Create a temporary user instance
         $tempUser = new User([
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
 
-        // Generate a unique verification token
         $tempUser->verification_token = sha1(time());
 
-        // Send the email verification notification
         $tempUser->notify(new VerifyEmailNotification($tempUser->verification_token));
 
         return redirect()->route('verification', ['token' => $tempUser->verification_token]);
