@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Order;
 
 class Orderline extends Model
 {
@@ -34,5 +35,16 @@ class Orderline extends Model
     public function water()
     {
         return $this->belongsTo(Water::class);
+    }
+
+    public function showReceipt($id)
+    {
+        $order = Order::with('orderline.water')->find($id);
+
+        if (!$order) {
+            return back()->with('error', 'Order not found.');
+        }
+
+        return view('receipt', compact('order'));
     }
 }
