@@ -1,10 +1,9 @@
 @extends('layouts.admin')
 
 @section('content')
-<div class="container mx-auto  w-full">
-    <h2 class="text-2xl font-bold mb-4 top-4 left-6 ml-6 mt-6 text-center">Sales Report</h2>
-    
-    <div class="relative w-full" style="height: 500px; min-width: 800px; padding-top: 20px;">
+<div class="flex justify-center items-center w-full">
+    <div class="relative mt-10" style="height: 500px; min-width: 800px; padding-top: 20px; margin-left: 50px;">
+        <h2 class="text-4xl font-extrabold text-gray-900 tracking-wide text-center">📊 Sales Report</h2>
         <canvas id="salesChart"></canvas>
     </div>
 </div>
@@ -21,36 +20,47 @@
                 datasets: [{
                     label: 'Total Sales',
                     data: @json($sales), // Sales data on y-axis
-                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                    backgroundColor: '#4F46E5',
                     borderColor: 'rgb(176, 9, 0)',
                     borderWidth: 1
                 }]
             },
             options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                layout: {
-                    padding: {
-                        top: 30,
-                        bottom: 0,
-                        left: 200,
-                        right: 0, // Adds space above the chart
+                elements: {
+                    line: {
+                        borderColor: '#4F46E5', // Cool blue for the line
+                        borderWidth: 3,  // Thicker line
+                        tension: 0.4     // Smooth curves
+                    },
+                    point: {
+                        radius: 5, 
+                        backgroundColor: '#6366F1', // Purple shade
+                        borderColor: '#4F46E5',
+                        borderWidth: 2,
+                        hoverRadius: 8, // Bigger hover effect
+                        hoverBackgroundColor: '#F59E0B' // Orange hover
                     }
                 },
-            plugins: {
-                legend: {
-                    position: 'left',
-                    labels: {
-                    font: {
-                        size: 14
+                plugins: {
+                    legend: {
+                        position: 'top', // Move legend inside
+                        labels: {
+                            boxWidth: 15, 
+                            padding: 15, 
+                            color: '#1F2937' // Darker text
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: '#1E40AF', // Dark blue
+                        titleFont: { size: 14, weight: 'bold' },
+                        bodyFont: { size: 12 },
+                        displayColors: false // Removes color box
                     }
-                    }
+                },
+                scales: {
+                    y: { beginAtZero: true }
                 }
-            },
-            scales: {
-                y: { beginAtZero: true }
             }
-        }
         });
         setTimeout(() => {
             salesChart.resize();
