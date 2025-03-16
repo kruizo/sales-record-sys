@@ -24,6 +24,7 @@ Route::post('/remove-orderline/{orderlineid}', [App\Http\Controllers\OrderContro
 Route::get('/receipt/{id}', [OrderController::class, 'showReceipt'])->name('receipt.show');
 Route::get('/orders', [OrderController::class, 'index']);
 
+
 //report
 Route::get('/admin/report', [App\Http\Controllers\ReportsController::class, 'index'])->name('admin.reports');
 
