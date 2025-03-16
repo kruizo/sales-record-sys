@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
+use App\Http\Controllers\ReportsController;
+use App\Http\Controllers\OrderController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -19,6 +21,17 @@ Route::post('/place-order', [App\Http\Controllers\OrderController::class, 'place
 Route::post('/update-orders', [App\Http\Controllers\OrderController::class, 'updateOrArchiveOrders'])->name('update-orders');
 Route::post('/update-orderline/{orderlineid}/{status}', [App\Http\Controllers\OrderController::class, 'updateOrderlineStatus'])->name('update-orderline');
 Route::post('/remove-orderline/{orderlineid}', [App\Http\Controllers\OrderController::class, 'removeOrderline'])->name('remove-orderline');
+Route::get('/receipt/{id}', [OrderController::class, 'showReceipt'])->name('receipt.show');
+Route::get('/orders', [OrderController::class, 'index']);
+
+//report
+Route::get('/admin/report', [App\Http\Controllers\ReportsController::class, 'index'])->name('admin.reports');
+
+// Route::get('/admin/report/{id}', [ReportsController::class, 'show'])->name('admin.report.show');
+
+Route::get('/admin/orders', [ReportsController::class, 'order'])->name('admin.report.order');
+
+
 
 //profile
 Route::middleware(['auth'])->group(function () {
@@ -52,7 +65,7 @@ Route::middleware(['auth', 'is_admin'])->prefix('admin')->group(function () {
     Route::get('/orders', [App\Http\Controllers\OrderTableController::class, 'show'])->name('admin.orders');
     Route::get('/customers', [App\Http\Controllers\CustomerTableController::class, 'show'])->name('admin.customers');
     Route::get('/delivery', [App\Http\Controllers\DeliveryTableController::class, 'show'])->name('admin.delivery');
-    Route::get('/report', [App\Http\Controllers\ReportsController::class, 'show'])->name('admin.reports');
+    Route::get('/report', [App\Http\Controllers\ReportsController::class, 'index'])->name('admin.reports');
     Route::get('/analytics', [App\Http\Controllers\AnalyticsController::class, 'show'])->name('admin.analytics');
 });
 

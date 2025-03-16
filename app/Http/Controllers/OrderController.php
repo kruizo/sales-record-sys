@@ -18,7 +18,13 @@ use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
-
+    
+    public function showReceipt($id)
+    {
+        $order = Order::with(['orderline.water'])->findOrFail($id);
+    
+        return view('receipt', compact('order'));
+    }
 
     public function index()
     {
@@ -158,6 +164,7 @@ class OrderController extends Controller
 
         return redirect()->back()->with('success', 'Order canceled successfully');
     }
+
 
     public function updateOrderStatus($id, $status, $cancelled)
     {

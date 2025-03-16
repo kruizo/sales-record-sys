@@ -86,7 +86,7 @@
                             </ul>
                         </div>
                     </div>
-                @endauth
+                @endAuth
             @endif
         </div>
         <div class="absolute top-24 md:top-0 items-center justify-between bg-gray-900 sm:bg-transparent hidden w-1/2 rounded-lg md:relative md:flex md:w-auto md:order-1"

@@ -31,7 +31,7 @@
                     <span class="ms-3">Overview</span>
                 </a>
             </li>
-            <li>
+            <!-- <li>
                 <button type="button"
                     class="flex items-center w-full p-2 text-base text-gray-600 transition duration-75 rounded-lg group hover:border-l-2 hover:border-blue-700 "
                     aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
@@ -55,7 +55,7 @@
                     </li>
 
                 </ul>
-            </li>
+            </li> -->
             <li>
                 <a data-section="orders" href="{{ route('admin.orders') }}"
                     class="sidebar-link hover:cursor-pointer flex items-center p-2 text-gray-600 rounded-lg hover:border-l-2 hover:border-blue-700  group">

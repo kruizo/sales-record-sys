@@ -26,12 +26,19 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/';
 
     /**
      *
      * @return void
      */
+    protected function redirectTo()
+    {
+        if (auth()->user()->is_admin) {
+            return '/admin'; 
+        }
+        return '/'; 
+    }
+    
     public function __construct()
     {
         $this->middleware('guest')->except('logout');

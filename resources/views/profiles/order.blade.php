@@ -1,5 +1,8 @@
 @extends('layouts.app')
 
+@include('receipt', ['order' => $recent])
+
+
 @section('title')
 <title>Adelflor</title>
 @endsection
@@ -19,13 +22,12 @@
             <li>
                 <a href="{{route('profile/myorders', ['filter&status=inprogress'])}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">In progress</a>
             </li>
-             <li>
+            <li>
                 <a href="{{route('profile/myorders', ['filter&status=completed'])}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Completed</a>
             </li>
             <li>
                 <a href="{{route('profile/myorders', ['filter&status=cancelled'])}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Cancelled</a>
             </li>
-           
     
             </ul>
         </div>
@@ -140,11 +142,14 @@
                 </div>
 
 
-                <button data-modal-target="receipt-modal" data-modal-toggle="receipt-modal" class="w-full my-4 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                    Generate Receipt
-                </button>
+                
+                    <button id="generate-receipt" class="w-full my-4 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                        Generate Receipt
+                    </button>
+
+
                 <a href="{{$recent->orderline->first()->id}}" >
-                    <x-button-primary text="Cancel Order" class="rounded-lg text-gray-300 py-2 bg-transparent p-0 w-full border border-gray-300 hover:bg-transparent" />
+                    <x-button-primary text="Cancel Order" id="cancel-order-btn" class="rounded-lg text-gray-300 py-2 bg-transparent p-0 w-full border border-gray-300 hover:bg-transparent" />
                 </a>
                 @else
             </div>
@@ -175,7 +180,7 @@
             <!-- Modal body -->
             <div class="p-4 md:p-5 space-y-4">
                 <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                    ASDSAD
+                    <div id="receipt-modal"></div>
                 </p>
             </div>
             <!-- Modal footer -->
@@ -187,4 +192,5 @@
 </div>
 
 <script src="{{ asset('assets/js/myorders.js') }}"></script>
+<script src="../js/app.js"></script>
 @endsection

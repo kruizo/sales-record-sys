@@ -663,6 +663,6 @@
             receipt.focus();
 
 
-        }
+        };
     </script>
 @endsection
