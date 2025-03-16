@@ -16,11 +16,11 @@ class Admin
      */
     public function handle(Request $request, Closure $next)
     {
-        if (!auth()->check() || !auth()->user()->is_admin === true) {
+        if (!auth()->check() || auth()->user()->is_admin !== true) {
             abort(403);
-        } else if (auth()->user()->is_admin === true) {
-            redirect('admin/dashboard');
         }
-        return $next($request);
+
+        return $next($request); 
+
     }
 }
