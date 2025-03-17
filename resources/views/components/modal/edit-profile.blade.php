@@ -10,22 +10,24 @@
             <div class="p-5">
                 <div class="w-full py-1">
                     <div class="w-full sm:max-w-xl sm:rounded-lg">
-                    <form action="{{ route('save-profile') }}" method="post">
+                    <form action="{{ route('customer.update', $customer->id) }}" method="POST">
+
                         @csrf
+                        @method('PUT')  {{-- Spoofing PUT method --}}
                         <div class="items-center text-gray-400 space-y-4" >
                             <div>
-                                <x-input-label for="firstname-edit" text="First Name" class="text-gray-300 w-1/3" />
-                                <x-input-text id="firstname-edit" name="firstname_edit" class="" value="{{$customer->firstname ?? ''}}" />
+                                <x-input-label for="first_name" text="First Name" class="text-gray-300 w-1/3" />
+                                <x-input-text id="first_name" name="first_name" class="" value="{{$customer->firstname ?? ''}}" />
                             </div>
                             <div>
-                                <x-input-label for="lastname-edit" text="Last Name" class="text-gray-300 w-1/3" />
-                                <x-input-text id="lastname-edit" name="lastname_edit" class="" value="{{$customer->lastname ?? ''}}" />
+                                <x-input-label for="last_name" text="Last Name" class="text-gray-300 w-1/3" />
+                                <x-input-text id="last_name" name="last_name" class="" value="{{$customer->lastname ?? ''}}" />
                             </div>
                             
                                
                             <div>
-                                <x-input-label for="contact-edit" text="Contact Number" class="text-gray-300 w-1/3" />
-                                <x-input-text id="contact-edit" name="contact_edit" value="{{$customer->contactnum ?? ''}}" />
+                                <x-input-label for="contact-number" text="Contact Number" class="text-gray-300 w-1/3" />
+                                <x-input-text id="contact_number" name="contact_number" value="{{$customer->contactnum ?? ''}}" />
                             </div>
                             {{-- <div>
                                 <x-input-label for="emailaccount" text="Email" class="text-gray-300 w-1/3" />
@@ -39,29 +41,31 @@
                                 </div>
                             </div> --}}
                             <div>
-                                <x-input-label for="streetaddress-edit" text="Street address" class="text-gray-300 w-1/3" />
-                                <x-input-text id="streetaddress-edit" name="street_address_edit" value="{{$customer->address->streetaddress ?? ''}}" />
+                                <x-input-label for="street_address" text="Street address" class="text-gray-300 w-1/3" />
+                                <x-input-text id="street_address" name="street_address" value="{{$customer->address->streetaddress ?? ''}}" />
                             </div>
                             <div>
-                                <x-input-label for="province-edit" text="Province" class="text-gray-300 w-1/3" />
-                                <x-input-text id="province-edit" name="province_edit" value="{{$customer->address->province ?? ''}}" />
+                                <x-input-label for="province" text="Province" class="text-gray-300 w-1/3" />
+                                <x-input-text id="province" name="province" value="{{$customer->address->province ?? ''}}" />
                             </div>
                             <div>
-                                <x-input-label for="barangay-edit" text="Barangay" class="text-gray-300 w-1/3" />
-                                <x-input-text id="barangay-edit" name="barangay_edit" value="{{$customer->address->barangay ?? ''}}" />
+                                <x-input-label for="barangay" text="Barangay" class="text-gray-300 w-1/3" />
+                                <x-input-text id="barangay" name="barangay" value="{{$customer->address->barangay ?? ''}}" />
                             </div>
                             <div>
-                                <x-input-label for="city-edit" text="City" class="text-gray-300 w-1/3" />
-                                <x-input-text id="city-edit" name="city_edit" value="{{$customer->address->city ?? ''}}" />
+                                <x-input-label for="city" text="City" class="text-gray-300 w-1/3" />
+                                <x-input-text id="city" name="city" value="{{$customer->address->city ?? ''}}" />
                             </div>
                             <div>
-                                <x-input-label for="zip-edit" text="Postal / Zip" class="text-gray-300 w-1/3" />
-                                <x-input-text id="zip-edit" name="zip_edit" value="{{$customer->address->zip ?? ''}}" />
+                                <x-input-label for="zip" text="Postal / Zip" class="text-gray-300 w-1/3" />
+                                <x-input-text id="zip" name="zip" value="{{$customer->address->zip ?? ''}}" />
                             </div>
+
                             <div class="flex justify-end">
                                 <button type="submit" class="text-white bg-blue-700  hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800">Save</button>
                             </div>
                         </div>
+                        <input type="hidden" name="redirect_to" value="{{ route('/') }}">
                     </form>
                     </div>
                 </div>

@@ -43,24 +43,24 @@
                         <div class="w-full flex items-center">
                             <x-input-label for="name" text="Name" class="text-gray-300 w-1/3 mt-2" />
                             <div class="w-full h-fit items-center flex relative">
-                                <x-input-text id="name" name="name" class="border-none hover:cursor-default"
-                                    readonly value="{{ $customer->firstname ?? '' }} {{ $customer->lastname ?? '' }}" />
+                                <x-bordered-text id="name"  class="border-none hover:cursor-default"
+                                 text="{{ $customer->firstname ?? '' }} {{ $customer->lastname ?? '' }}" />
                             </div>
                         </div>
                         <div class="w-full flex items-center">
                             <x-input-label for="contact" text="Contact Number" class="text-gray-300 w-1/3 mt-2" />
                             <div class="w-full h-fit items-center flex relative">
-                                <x-input-text id="contact" name="contact" class="border-none hover:cursor-default"
-                                    readonly value="{{ $customer->contactnum ?? '' }}" />
+                                <x-bordered-text id="contact"  class="border-none hover:cursor-default"
+                                 text="{{ $customer->contactnum ?? '' }}" />
                             </div>
                         </div>
 
                         <div class="w-full flex items-center">
                             <x-input-label for="emailaccount" text="Email" class="text-gray-300 w-1/3 mt-2" />
                             <div class="w-full h-fit items-center flex relative">
-                                <x-input-text id="emailaccount" name="email"
-                                    class="pr-24 border-none hover:cursor-default" readonly
-                                    value="{{ Auth::user()->email }}" />
+                                <x-bordered-text id="emailaccount" name="email"
+                                    class="pr-24 border-none hover:cursor-default"
+                                    text="{{ Auth::user()->email }}" />
                                 @if (!Auth::user()->isVerified())
                                     <x-input-label text="Not verified" class="absolute right-5 mt-1 text-blue-500" />
                                 @else
@@ -71,37 +71,37 @@
                         <div class="w-full flex items-center">
                             <x-input-label for="streetaddress" text="Street address" class="text-gray-300 w-1/3 mt-2" />
                             <div class="w-full h-fit items-center flex relative">
-                                <x-input-text id="streetaddress" name="street_address"
-                                    class="border-none hover:cursor-default" readonly
-                                    value="{{ $customer->address->streetaddress ?? '' }}" />
+                                <x-bordered-text id="streetaddress" 
+                                    class="border-none hover:cursor-default"
+                                    text="{{ $customer->address->streetaddress ?? '' }}" />
                             </div>
                         </div>
                         <div class="w-full flex items-center">
                             <x-input-label for="province" text="Province" class="text-gray-300 w-1/3 mt-2" />
                             <div class="w-full h-fit items-center flex relative">
-                                <x-input-text id="province" name="province" class="border-none hover:cursor-default"
-                                    readonly value="{{ $customer->address->province ?? '' }}" />
+                                <x-bordered-text id="province"  class="border-none hover:cursor-default"
+                                 text="{{ $customer->address->province ?? '' }}" />
                             </div>
                         </div>
                         <div class="w-full flex items-center">
                             <x-input-label for="barangay" text="Barangay" class="text-gray-300 w-1/3 mt-2" />
                             <div class="w-full h-fit items-center flex relative">
-                                <x-input-text id="barangay" name="barangay" class="border-none hover:cursor-default"
-                                    readonly value="{{ $customer->address->barangay ?? '' }}" />
+                                <x-bordered-text id="barangay"  class="border-none hover:cursor-default"
+                                 text="{{ $customer->address->barangay ?? '' }}" />
                             </div>
                         </div>
                         <div class="w-full flex items-center">
                             <x-input-label for="city" text="City" class="text-gray-300 w-1/3 mt-2" />
                             <div class="w-full h-fit items-center flex relative">
-                                <x-input-text id="city" name="city" class="border-none hover:cursor-default"
-                                    readonly value="{{ $customer->address->city ?? '' }}" />
+                                <x-bordered-text id="city"  class="border-none hover:cursor-default"
+                                 text="{{ $customer->address->city ?? '' }}" />
                             </div>
                         </div>
                         <div class="w-full flex items-center">
                             <x-input-label for="zip" text="Postal / Zip" class="text-gray-300 w-1/3 mt-2" />
                             <div class="w-full h-fit items-center flex relative">
-                                <x-input-text id="zip" name="zip" class="border-none hover:cursor-default"
-                                    readonly value="{{ $customer->address->zip ?? '' }}" />
+                                <x-bordered-text id="zip"  class="border-none hover:cursor-default"
+                                 text="{{ $customer->address->zip ?? '' }}" />
                             </div>
                         </div>
                         <div class="flex justify-end">
@@ -112,7 +112,7 @@
                     <div class="items-center mt-8 sm:mt-14 text-gray-400 hidden" id="accountsetting" role="tabpanel"
                         aria-labelledby="accountsetting-tab">
                         <div class=" w-full mb-2 space-y-7 sm:mb-6">
-                            <form action="{{ route('profile.verify') }}" method="POST">
+                            <form action="{{ route('verify.email') }}" method="POST">
                                 @csrf
                                 <x-error.error-container />
                                 <div class="w-full flex items-center ">
@@ -143,7 +143,7 @@
             </div>
         </div>
     </div>
-    <x-modal.edit-profile />
+    <x-modal.edit-profile :customer="$customer"/>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             setInitialUIState();

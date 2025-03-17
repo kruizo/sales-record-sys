@@ -5,7 +5,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-
+    <link rel="preload" as="style" href="{{ Vite::asset('resources/css/app.css') }}" onload="this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="{{ Vite::asset('resources/css/app.css') }}"></noscript>
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -35,7 +36,6 @@
         <header>
             <x-navbar />
             <x-alert.alert-toast />
-
         </header>
 
 
@@ -48,9 +48,9 @@
 
     <script type="text/javascript" src="{{ asset('assets/js/navbar.js') }}"></script>
     <script src="{{ asset('assets/js/alert.js') }}"></script>
-    @if (!auth()->check())
+    @guest
         @include('modals.authentication')
-    @endif
+    @endguest
 
 </body>
 
