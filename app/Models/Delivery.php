@@ -10,7 +10,7 @@ class Delivery extends Model
     use HasFactory;
 
     protected $fillable = [
-        'orderline_id',
+        'order_id',
         'employee_id',
         'delivery_date',
         'delivery_time',
@@ -18,7 +18,6 @@ class Delivery extends Model
         'delivery_address',
         'map_reference',
         'special_instruction',
-        // 'delivery_fee',
         'date_delivered',
         'is_archived'
     ];
@@ -31,12 +30,22 @@ class Delivery extends Model
 
     public function getStatusText()
     {
-        return $this->deliverystatus->status ?? 'Unknown';
+        return $this->deliverystatus->name ?? 'N/A';
     }
 
-    public function orderline()
+    public function getStatus()
     {
-        return $this->belongsTo(Orderline::class);
+        return $this->deliverystatus->status ?? 'N/A';
+    }
+
+    public function getFormattedDeliveryDate()
+    {
+        return $this->delivery_date->format('F j, Y');
+    }
+
+    public function order()
+    {
+        return $this->belongsTo(Order::class);
     }
 
     public function employee()

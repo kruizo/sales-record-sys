@@ -27,24 +27,11 @@ class Orderline extends Model
         return $this->belongsTo(Order::class);
     }
 
-    public function delivery()
-    {
-        return $this->hasOne(Delivery::class);
-    }
 
     public function water()
     {
         return $this->belongsTo(Water::class);
     }
 
-    public function showReceipt($id)
-    {
-        $order = Order::with('orderline.water')->find($id);
 
-        if (!$order) {
-            return back()->with('error', 'Order not found.');
-        }
-
-        return view('receipt', compact('order'));
-    }
 }
