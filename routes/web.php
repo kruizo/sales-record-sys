@@ -25,6 +25,16 @@ Route::post('/update-orderline/{orderlineid}/{status}', [OrderController::class,
 Route::post('/remove-orderline/{orderlineid}', [OrderController::class, 'removeOrderline'])->name('remove-orderline');
 Route::get('/orders', [OrderController::class, 'index']);
 
+
+//report
+Route::get('/admin/report', [App\Http\Controllers\ReportsController::class, 'index'])->name('admin.reports');
+
+// Route::get('/admin/report/{id}', [ReportsController::class, 'show'])->name('admin.report.show');
+
+Route::get('/admin/orders', [ReportsController::class, 'order'])->name('admin.report.order');
+
+
+
 //profile
 Route::middleware(['auth'])->group(function () {
     Route::prefix('/verify')->group(function () {
