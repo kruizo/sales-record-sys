@@ -18,8 +18,7 @@ return new class extends Migration
             $table->string('firstname');
             $table->string('lastname');
             $table->string('contactnum');
-            $table->string('email');
-            $table->foreignId('address_id')->constrained('addresses');
+            $table->string('email')->unique();
             $table->boolean('is_archived')->default(0);
             $table->timestamps();
         });
