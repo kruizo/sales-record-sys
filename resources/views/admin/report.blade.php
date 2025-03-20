@@ -7,8 +7,9 @@
         <canvas id="salesChart"></canvas>
     </div>
 </div>
-<div class="flex justify-center my-4">
-    <button id="downloadChart" class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">
+<div class="flex justify-center my-4 gap-4">
+    <p id="total-sales" class="text-lg font-semibold text-gray-700 mt-4">Total Sales: <span class="text-blue-600">₱{{ number_format($totalSales, 2) }}</span></p>
+    <button id="downloadChart" class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 h-10 mt-2">
         Download Report
     </button>
 </div>
@@ -89,30 +90,37 @@
     });
 
     // Event listener for download button
+    
     document.getElementById("downloadChart").addEventListener("click", function () {
-        const canvas = document.getElementById("salesChart");
-        const ctx = canvas.getContext("2d");
+    const canvas = document.getElementById("salesChart");
+    const ctx = canvas.getContext("2d");
 
-        // Create a temporary canvas with a white background
-        const tempCanvas = document.createElement("canvas");
-        tempCanvas.width = canvas.width;
-        tempCanvas.height = canvas.height;
-        const tempCtx = tempCanvas.getContext("2d");
+    // Create a temporary canvas with a white background
+    const tempCanvas = document.createElement("canvas");
+    tempCanvas.width = canvas.width;
+    tempCanvas.height = canvas.height;
+    const tempCtx = tempCanvas.getContext("2d");
 
-        // Fill with white background
-        tempCtx.fillStyle = "#ffffff"; // White background
-        tempCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
+    // Fill with white background
+    tempCtx.fillStyle = "#ffffff"; // White background
+    tempCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
 
-        // Copy the chart onto the white background
-        tempCtx.drawImage(canvas, 0, 0);
+    // Copy the chart onto the white background
+    tempCtx.drawImage(canvas, 0, 0);
 
-        // Convert to PNG and download
-        const link = document.createElement("a");
-        link.href = tempCanvas.toDataURL("image/png"); // Convert to PNG
-        link.download = "Adelflor_sales_report.png";
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    });
+    // ✅ Add Total Sales text on the image
+    tempCtx.fillStyle = "#000000"; // Text color
+    tempCtx.font = "bold 16px Arial"; // Font style
+    tempCtx.fillText("Total Sales: ₱{{ number_format($totalSales, 2) }}", 20, 30); // Position text
+
+    // Convert to PNG and download
+    const link = document.createElement("a");
+    link.href = tempCanvas.toDataURL("image/png"); // Convert to PNG
+    link.download = "Adelflor_sales_report.png";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+});
+
 </script>
 @endsection

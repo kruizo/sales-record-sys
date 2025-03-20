@@ -14,29 +14,40 @@ class ReportsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        // Fetch sales data, grouped by date
-        $salesData = Order::selectRaw('DATE(created_at) as date, SUM(total) as total_sales')
-            ->groupBy('date')
-            ->orderBy('date', 'ASC')
-            ->get();
-
-        // Convert data for Chart.js
-        $labels = $salesData->pluck('date'); // Dates for x-axis
-        $sales = $salesData->pluck('total_sales'); // Total sales for y-axis
-
-        return view('admin.report', compact('labels', 'sales'));
-
-        
-    }
     // public function index()
     // {
-    //     $salesData = Report::all();
-    //     return view('admin.report', compact("salesData"));
+    //     // Fetch sales data, grouped by date
+    //     $salesData = Order::selectRaw('DATE(created_at) as date, SUM(total) as total_sales')
+    //         ->groupBy('date')
+    //         ->orderBy('date', 'ASC')
+    //         ->get();
+
+    //     // Convert data for Chart.js
+    //     $labels = $salesData->pluck('date'); // Dates for x-axis
+    //     $sales = $salesData->pluck('total_sales'); // Total sales for y-axis
+
+    //     return view('admin.report', compact('labels', 'sales'));
+
         
-    //     // return view('admin/report', compact("salesData"));
     // }
+    public function index()
+{
+    // Fetch total sales grouped by date
+    $salesData = Order::selectRaw('DATE(created_at) as date, SUM(total) as total_sales')
+        ->groupBy('date')
+        ->orderBy('date', 'ASC')
+        ->get();
+
+    // Fetch overall total sales (sum of all orders)
+    $totalSales = Order::sum('total');
+
+    // Extract data for Chart.js
+    $labels = $salesData->pluck('date'); // Dates for x-axis
+    $sales = $salesData->pluck('total_sales'); // Sales totals for y-axis
+
+    return view('admin.report', compact('labels', 'sales', 'totalSales'));
+}
+
 
     /**
      * Display the specified resource.
