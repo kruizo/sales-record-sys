@@ -25,6 +25,7 @@ Route::get('/receipt/{id}', [OrderController::class, 'showReceipt'])->name('rece
 Route::get('/orders', [OrderController::class, 'index']);
 
 
+
 //report
 Route::get('/admin/report', [App\Http\Controllers\ReportsController::class, 'index'])->name('admin.reports');
 
