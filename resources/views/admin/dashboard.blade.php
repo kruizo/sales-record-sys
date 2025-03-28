@@ -457,9 +457,14 @@
                                             data-id="{{ $order->id }}" data-action="complete" data-status="2">
                                             <i class="fas fa-check text-xl text-green-400" aria-hidden="true"></i>
                                         </button>
-                                        <button type="button" class="print-btn" onclick="PrintReceiptContent('print')">
+
+                                        <!-- <button type="button" class="print-btn" onclick="PrintReceiptContent('print')">
+                                            <i class="fas fa-download text-xl text-blue-500" aria-hidden="true"></i>
+                                        </button> -->
+                                        <button type="button" class="print-btn" onclick="generateAndPrintReceipt({{ $order->id }})">
                                             <i class="fas fa-download text-xl text-blue-500" aria-hidden="true"></i>
                                         </button>
+
                                         <button type="button" data-modal-target="edit-order-modal-{{ $order->id }}"
                                             data-modal-toggle="edit-order-modal-{{ $order->id }}" class="edit-btn"
                                             data-id="{{ $order->id }}">
@@ -485,6 +490,7 @@
                                             </svg>
                                             <span class="sr-only">Close modal</span>
                                         </button>
+                                        
                                         <div class="p-4 md:p-5 text-center">
                                             <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
                                                 Order #{{ $order->id }}</h3>
@@ -646,23 +652,133 @@
     <div id="print" class="hidden">
         @include('reports.receipt')
     </div>
-
+    <div id="print-receipt" class="hidden">
+        <div id="receipt-content" class="p-4">
+            <!-- Receipt content will be populated dynamically -->
+        </div>
+    </div>
     @include('modals/map')
 
     <script>
-        function PrintReceiptContent(el) {
-            var data =
-                '<input onClick="window.print()" type="button" id="printPageButton" style="width: 100%; background: blue; border: none; color:white; bottom: 0; position: absolute; padding: 10px; font-size: 1rem; text-alignment:center; z-index: 10;" value="Print Receipt">';
-            data += document.getElementById(el).innerHTML;
+        function generateAndPrintReceipt(orderId) {
+    // Fetch the order data (e.g., via an API or DOM dataset)
+    const orderData = fetchOrderData(orderId); // Replace with your actual fetching logic.
 
+    // Populate receipt content
+    const receiptContent = `
+        <div class="receipt-header">
+            <h2>Order Receipt</h2>
+            <p>Order ID: ${orderData.id}</p>
+            <p>Date: ${orderData.date}</p>
+        </div>
+        <hr>
+        <div class="receipt-body">
+            <h3>Customer Details</h3>
+            <p>Name: ${orderData.customer.firstname} ${orderData.customer.lastname}</p>
+            <p>Email: ${orderData.customer.email}</p>
+            <p>Contact: ${orderData.customer.contactnum}</p>
+        </div>
+        <hr>
+        <div class="receipt-items">
+            <h3>Order Items</h3>
+            <ul>
+                ${orderData.items.map(item => `
+                    <li>${item.quantity} x ${item.name} - ${item.price} PHP</li>
+                `).join('')}
+            </ul>
+        </div>
+        <hr>
+        <div class="receipt-footer">
+            <p>Total: ${orderData.total} PHP</p>
+            <p>Payment Type: ${orderData.payment_type}</p>
+        </div>
+    `;
 
-            document.getElementById(el).innerHTML;
-            receipt = window.open("", "win", "left=150", "top=130", "width=100", "height=100%");
-            receipt.document.write(data);
-            receipt.document.title = "Print Receipt";
-            receipt.focus();
+    // Insert the receipt content into the container
+    document.getElementById('receipt-content').innerHTML = receiptContent;
 
+    // Print the receipt
+    printReceipt();
+}
 
+async function fetchOrderData(orderId) {
+    try {
+        // Use the fetch API to call the backend endpoint
+        const response = await fetch(`/orders/${orderId}`);
+        
+        // Check if the response is successful
+        if (!response.ok) {
+            throw new Error(`Error fetching order data: ${response.statusText}`);
+        }
+
+        // Parse the JSON data
+        const orderData = await response.json();
+
+        // Format the data appropriately for use in the receipt
+        return {
+            id: orderData.id,
+            date: new Date(orderData.created_at).toLocaleDateString(), // Assuming `created_at` field exists
+            customer: {
+                firstname: orderData.customer.firstname || "N/A",
+                lastname: orderData.customer.lastname || "N/A",
+                email: orderData.customer.email || "N/A",
+                contactnum: orderData.customer.contactnum || "N/A"
+            },
+            items: orderData.items.map(item => ({
+                name: item.name,
+                quantity: item.quantity,
+                price: item.price
+            })),
+            total: orderData.total || 0,
+            payment_type: orderData.payment_type || "Unknown"
         };
+    } catch (error) {
+        alert("Failed to fetch order data:", error);
+        return null; // Return null in case of an error
+    }
+}
+
+function printReceipt() {
+    const receiptContent = document.getElementById('print-receipt').innerHTML;
+    const printWindow = window.open('', '_blank', 'width=800,height=600');
+    printWindow.document.open();
+    printWindow.document.write(`
+        <html>
+        <head>
+            <title>Order Receipt</title>
+            <style>
+                body { font-family: Arial, sans-serif; line-height: 1.6; margin: 20px; }
+                .receipt-header, .receipt-body, .receipt-footer { margin-bottom: 20px; }
+                h2, h3 { margin: 0 0 10px; }
+                hr { border: 0; border-top: 1px solid #ccc; margin: 20px 0; }
+            </style>
+        </head>
+        <body>
+            ${receiptContent}
+        </body>
+        </html>
+    `);
+    printWindow.document.close();
+    printWindow.focus();
+    printWindow.print();
+    printWindow.close();
+}
+
+        
+        // function PrintReceiptContent(el) {
+        //     var data =
+        //         '<input onClick="window.print()" type="button" id="printPageButton" style="width: 100%; background: blue; border: none; color:white; bottom: 0; position: absolute; padding: 10px; font-size: 1rem; text-alignment:center; z-index: 10;" value="Print Receipt">';
+        //     data += document.getElementById(el).innerHTML;
+
+
+        //     document.getElementById(el).innerHTML;
+        //     receipt = window.open("", "win", "left=150", "top=130", "width=100", "height=100%");
+        //     receipt.document.write(data);
+        //     receipt.document.title = "Print Receipt";
+        //     receipt.focus();
+
+
+        // };
+        
     </script>
 @endsection

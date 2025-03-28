@@ -18,7 +18,33 @@ use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
-    
+    public function customer()
+{
+    return $this->belongsTo(Customer::class);
+}
+
+public function items()
+{
+    return $this->hasMany(OrderItem::class);
+}
+
+    public function getReceipt($id)
+    {
+        // Fetch the order along with customer and items
+        $order = Order::with('customer', 'items')->find($id);
+
+        // Check if the order exists
+        if (!$order) {
+            return response()->json(['message' => 'Order not found'], 404);
+        }
+
+        // Return the order details as a JSON response
+        return response()->json([
+            'customer' => $order->customer,
+            'order' => $order,
+            'items' => $order->items,
+        ]);
+    }
     public function showReceipt($id)
     {
         $order = Order::with(['orderline.water'])->findOrFail($id);
