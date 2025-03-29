@@ -188,7 +188,10 @@
                                     <div class="mt-4">
                                         <div class="relative pt-1">
                                             <div class="overflow-hidden h-2 text-xs flex rounded {{ ['bg-gray-700', 'bg-gray-700', 'bg-gray-700'][$index] }}">
-                                                <div style="width: {{ ($product['total_quantity'] / $watersSold) * 100 }}%" class="{{ ['bg-blue-500', 'bg-green-500', 'bg-purple-500'][$index] }} shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center"></div>
+                                                <div style="width: {{ $watersSold != 0 ? ($product['total_quantity'] / $watersSold) * 100 : 0 }}%" 
+                                                    class="{{ ['bg-blue-500', 'bg-green-500', 'bg-purple-500'][$index] }} shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center">
+                                                </div>
+
                                             </div>
                                         </div>
                                     </div>
