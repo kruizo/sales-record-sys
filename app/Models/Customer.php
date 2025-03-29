@@ -22,6 +22,11 @@ class Customer extends Model
         return $this->hasOne(Address::class);
     }
 
+    public function getFullName()
+    {
+        return $this->firstname . ' ' . $this->lastname;
+    }
+
     public function getFullAddress()
     {
         return "{$this->address->streetaddress}, {$this->address->barangay}, {$this->address->city}, {$this->address->province}, {$this->address->zip}";

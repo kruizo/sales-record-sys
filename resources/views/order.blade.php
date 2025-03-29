@@ -19,7 +19,7 @@
         @csrf
 
         <div class="justify-between w-full gap-4 mt-8 md:flex md:space-y-0 space-y-7" id="product-data" data-products='@json($waters)'>
-            @foreach ($waters as $water)
+            @foreach ($waters as $water)    
             <x-product-card name="{{$water->id}}" id="{{$water->type}}" price="{{$water->cost}}" productName="{{$water->name}}" size="5gal." />
             @endforeach
         </div>

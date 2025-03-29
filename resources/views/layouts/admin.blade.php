@@ -27,15 +27,17 @@
 
 </head>
 
-<body>
-    <x-sidebar />
-    <header>
-        <x-navbar-admin header="Dashboard" class="sm:pl-64" />
-        <x-alert.alert-modal />
-    </header>
-    <main id="main-content" class="h-full bg-white">
+<body class="flex relative overflow-visible">
 
-        @yield('content')
+    <x-sidebar />
+    <main class="flex flex-col w-full">
+        <header>
+            <x-alert.alert-modal />
+        </header>
+        <div id="main-content">
+            @yield('content')
+            @stack('scripts')
+        </div>
     </main>
 
     <script type="text/javascript" src="{{ asset('assets/js/admin.js') }}"></script>

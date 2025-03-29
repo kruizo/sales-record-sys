@@ -160,6 +160,7 @@
                             <td class="tableitem"><p class="itemtext">{{ $item->subtotal }}</p></td>
                         </tr>
                         @endforeach
+                        @if ($order->delivery)
                         <tr class="tabletitle">
                             <td></td>
                             <td></td>
@@ -167,9 +168,10 @@
                                 <p class="itemtext">DeliveryFee</p>
                             </td>
                             <td class="Payment">
-                                <p class="itemtext">P 10</p>
+                                <p class="itemtext">{{$order->delivery_fee}}</p>
                             </td>
                         </tr>
+                        @endif
                         <tr class="tabletitle">
                             <td></td>
                             <td></td>

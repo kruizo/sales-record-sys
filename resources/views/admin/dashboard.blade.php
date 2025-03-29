@@ -1,668 +1,1061 @@
 @extends('layouts.admin')
+
 @section('title')
     <title>
         Dashboard</title>
 @endsection
+
 @section('content')
-    <div class="overflow-hidden sm:ml-64 p-4 shadow-md sm:rounded-lg">
-        <div class="flex gap-4 mb-10 justify-around flex-wrap">
-            <x-sales-card id="order-card" title="Total Order" countId="order-text" count="{{ $totalorder }}">
-                <slot name="icon">
-                    <svg class="fill-green-500" clip-rule="evenodd" fill-rule="evenodd" width="28" height="28"
-                        stroke-linejoin="round" stroke-miterlimit="2" viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path
-                            d="m2.394 15.759s7.554 4.246 9.09 5.109c.165.093.333.132.492.132.178 0 .344-.049.484-.127 1.546-.863 9.155-5.113 9.155-5.113.246-.138.385-.393.385-.656 0-.566-.614-.934-1.116-.654 0 0-7.052 3.958-8.539 4.77-.211.115-.444.161-.722.006-1.649-.928-8.494-4.775-8.494-4.775-.502-.282-1.117.085-1.117.653 0 .262.137.517.382.655zm0-3.113s7.554 4.246 9.09 5.109c.165.093.333.132.492.132.178 0 .344-.049.484-.127 1.546-.863 9.155-5.113 9.155-5.113.246-.138.385-.393.385-.656 0-.566-.614-.934-1.116-.654 0 0-7.052 3.958-8.539 4.77-.211.115-.444.161-.722.006-1.649-.928-8.494-4.775-8.494-4.775-.502-.282-1.117.085-1.117.653 0 .262.137.517.382.655zm10.271-9.455c-.246-.128-.471-.191-.692-.191-.223 0-.443.065-.675.191l-8.884 5.005c-.276.183-.414.444-.414.698 0 .256.139.505.414.664l8.884 5.006c.221.133.447.203.678.203.223 0 .452-.065.689-.203l8.884-5.006c.295-.166.451-.421.451-.68 0-.25-.145-.503-.451-.682zm-8.404 5.686 7.721-4.349 7.72 4.349-7.72 4.35z"
-                            fill-rule="nonzero" />
-                    </svg>
-                </slot>
-            </x-sales-card>
-            <x-sales-card id="proft-card" title="Total Earnings" countId="profit-text" count="₱ {{ $totalearning }}">
-                <slot name="icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="fill-yellow-500" width="24" height="24"
-                        viewBox="0 0 24 24">
-                        <path
-                            d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm4 14.083c0-2.145-2.232-2.742-3.943-3.546-1.039-.54-.908-1.829.581-1.916.826-.05 1.675.195 2.443.465l.362-1.647c-.907-.276-1.719-.402-2.443-.421v-1.018h-1v1.067c-1.945.267-2.984 1.487-2.984 2.85 0 2.438 2.847 2.81 3.778 3.243 1.27.568 1.035 1.75-.114 2.011-.997.226-2.269-.168-3.225-.54l-.455 1.644c.894.462 1.965.708 3 .727v.998h1v-1.053c1.657-.232 3.002-1.146 3-2.864z" />
-                    </svg>
-                </slot>
-            </x-sales-card>
-            <x-sales-card id="water-card" title="Waters Sold" countId="water-text" count="{{ $watersold }}">
-                <slot name="icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="fill-blue-500" width="24" height="24"
-                        viewBox="0 0 24 24">
-                        <path
-                            d="M15.613 21.719c-1.443 1.409-3.424 2.281-5.613 2.281-4.421 0-8-3.547-8-7.925 0-4.376 3.13-8.878 8-16.075 2.473 3.653 4.493 6.61 5.887 9.211-.665.171-1.289.442-1.854.801-1.021-1.886-2.384-3.989-4.033-6.441-3.658 5.437-6 9.223-6 12.503 0 3.268 2.691 5.926 6 5.926 1.387 0 2.661-.471 3.678-1.254.581.424 1.231.759 1.935.973zm6.387-6.219c0 2.485-2.017 4.5-4.5 4.5s-4.5-2.015-4.5-4.5 2.017-4.5 4.5-4.5 4.5 2.015 4.5 4.5zm-2-.5h-2v-2h-1v2h-2v1h2v2h1v-2h2v-1z" />
-                    </svg>
-                </slot>
-            </x-sales-card>
-            <x-sales-card id="deliveries-card" title="Pending Deliveries Today" countId="deliveries-text"
-                count="{{ $deliveries->count() }}">
-                <slot name="icon">
-                    <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" class="fill-pink-500"
-                        fill-rule="evenodd" clip-rule="evenodd">
-                        <path
-                            d="M5 11v1h8v-7h-10v-1c0-.552.448-1 1-1h10c.552 0 1 .448 1 1v2h4.667c1.117 0 1.6.576 1.936 1.107.594.94 1.536 2.432 2.109 3.378.188.312.288.67.288 1.035v4.48c0 1.089-.743 2-2 2h-1c0 1.656-1.344 3-3 3s-3-1.344-3-3h-4c0 1.656-1.344 3-3 3s-3-1.344-3-3h-1c-.552 0-1-.448-1-1v-6h-2v-2h7v2h-3zm3 5.8c.662 0 1.2.538 1.2 1.2 0 .662-.538 1.2-1.2 1.2-.662 0-1.2-.538-1.2-1.2 0-.662.538-1.2 1.2-1.2zm10 0c.662 0 1.2.538 1.2 1.2 0 .662-.538 1.2-1.2 1.2-.662 0-1.2-.538-1.2-1.2 0-.662.538-1.2 1.2-1.2zm-3-2.8h-10v2h.765c.549-.614 1.347-1 2.235-1 .888 0 1.686.386 2.235 1h5.53c.549-.614 1.347-1 2.235-1 .888 0 1.686.386 2.235 1h1.765v-4.575l-1.711-2.929c-.179-.307-.508-.496-.863-.496h-4.426v6zm1-5v3h5l-1.427-2.496c-.178-.312-.509-.504-.868-.504h-2.705zm-16-3h8v2h-8v-2z" />
-                    </svg>
-                </slot>
-            </x-sales-card>
+<div class="bg-gray-900 min-h-screen text-gray-200 ">
 
+    <!-- Header -->
+    <div class="border-b border-gray-800  ">
+        <div class="mx-auto max-w-screen-2xl py-5 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-white">Dashboard</h1>
+            <div class="flex items-center space-x-4">
+                <span class="text-sm text-gray-400">{{ now()->format('F d, Y') }}</span>
+                <div class="relative">
+                    <button class="p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
+                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+                        </svg>
+                    </button>
+                    <span class="absolute top-0 right-0 block h-2 w-2 rounded-full bg-blue-500 ring-2 ring-gray-900"></span>
+                </div>
+            </div>
         </div>
-        <div>
-            <h1 class="text-xl text-black font-bold">You have <span class="text-green-600"
-                    id="order-count">{{ $data->count() }} </span>
-                @if (!$request->has('delivery') && !$request->has('status'))
-                    order(s) today
-                @else
-                    filtered order(s)
-                @endif
-            </h1>
-        </div>
-        <div
-            class="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 bg-white dark:bg-gray-900">
-            <div class="flex gap-10 justify-center items-center ">
-                <div class="flex">
-                    <div class="flex items-center justify-center p-4">
-                        <button id="dropdownActionButton" data-dropdown-toggle="dropdownAction"
-                            class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-200 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
-                            type="button">
-                            <span class="sr-only">Action button</span>
-                            Action
-                            <svg class="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                fill="none" viewBox="0 0 10 6">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="m1 1 4 4 4-4" />
+    </div>
+
+    <!-- Main Content -->
+    <div class="mx-auto max-w-screen-2xl  px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Key Metrics -->
+        <div  class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            
+            <!-- Total Orders -->
+            <div class="bg-gray-800 rounded-lg shadow-lg border border-gray-700 overflow-hidden ">
+                <div class="p-5">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0 bg-blue-500 bg-opacity-20 rounded-md p-3">
+                            <svg class="h-6 w-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
                             </svg>
-                        </button>
-
-                    </div>
-                    <form action="{{ route('admin.dashboard') }}" method="GET">
-                        <div class="flex  ">
-                            <div class="flex items-center justify-center p-4">
-                                <button id="dropdownDefault" data-dropdown-toggle="dropdown"
-                                    class="text-gray-600 border focus:outline-none hover:bg-gray-200 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-                                    type="button">
-                                    Filter by category
-                                    <svg class="w-4 h-4 ml-2" aria-hidden="true" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M19 9l-7 7-7-7"></path>
-                                    </svg>
-                                </button>
-
-                                <!-- Dropdown menu -->
-                                <div id="dropdown"
-                                    class="z-10 hidden absolute w-56 p-4 border bg-white rounded-lg shadow dark:bg-gray-700">
-                                    <h6 class="mb-3 text-sm font-bold text-gray-900 dark:text-white">
-                                        Delivery
-                                    </h6>
-                                    <ul class="space-y-2 text-sm" aria-labelledby="dropdownDefault">
-                                        <li class="flex items-center">
-                                            <input id="today" name="delivery[]" type="checkbox" value="today"
-                                                class="category-checkbox w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
-
-                                            <label for="today"
-                                                class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">
-                                                Today
-                                            </label>
-                                        </li>
-                                        <li class="flex items-center">
-                                            <input id="tomorrow" type="checkbox" name="delivery[]" value="tomorrow"
-                                                class="category-checkbox w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
-
-                                            <label for="tomorrow"
-                                                class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">
-                                                Tomorrow
-                                            </label>
-                                        </li>
-
-                                        <li class="flex items-center">
-                                            <input id="week" type="checkbox" name="delivery[]" value="week"
-                                                class="category-checkbox w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
-
-                                            <label for="ThisWeek"
-                                                class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">
-                                                This week
-                                            </label>
-                                        </li>
-
-                                        <li class="flex items-center">
-                                            <input id="month" type="checkbox" name="delivery[]" value="month"
-                                                class="category-checkbox w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
-
-                                            <label for="ThisMonth"
-                                                class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">
-                                                This month
-                                            </label>
-                                        </li>
-                                    </ul>
-                                    <h6 class="mb-3  pt-4 text-sm font-bold text-gray-900 dark:text-white">
-                                        Status
-                                    </h6>
-                                    <ul class="space-y-2 text-sm" aria-labelledby="dropdownDefault">
-                                        <li class="flex items-center">
-                                            <input id="inprogress" type="checkbox" name="status[]" value="inprogress"
-                                                class="category-checkbox w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
-
-                                            <label for="inprogress"
-                                                class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">
-                                                In progress
-                                            </label>
-                                        </li>
-
-                                        <li class="flex items-center">
-                                            <input id="completed" type="checkbox" name="status[]" value="completed"
-                                                class="category-checkbox w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
-
-                                            <label for="completed"
-                                                class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">
-                                                Completed
-                                            </label>
-                                        </li>
-
-                                        <li class="flex items-center">
-                                            <input id="cancelled" type="checkbox" name="status[]" value="cancelled"
-                                                class="category-checkbox w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
-
-                                            <label for="cancelled"
-                                                class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">
-                                                Cancelled
-                                            </label>
-                                        </li>
-                                    </ul>
-                                    <x-button-primary text="Filter" class="w-full text-white mt-4" type="submit" />
-                                </div>
-                            </div>
-                            <div id="dropdownAction"
-                                class="z-10 w-fit hidden bg-white divide-y p-4 border divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600">
-                                <ul class="py-1 text-sm text-gray-700 dark:text-gray-200"
-                                    aria-labelledby="dropdownActionButton">
-                                    <li>
-                                        <button data-modal-target="confirm-modal" data-modal-toggle="confirm-modal"
-                                            type="button" data-action="archive" data-status="1"
-                                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                                            id="markAllArchive">Move to archive</button>
-                                    </li>
-                                    <li>
-                                        <button data-modal-target="confirm-modal" data-modal-toggle="confirm-modal"
-                                            type="button" data-action="complete" data-status="2"
-                                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                                            id="markAllCompleteBtn">Mark as complete</button>
-
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="flex items-center justify-center p-4">
-                                <button id="dropdownHelperRadioButton" data-dropdown-toggle="dropdownHelperRadio"
-                                    class="text-gray-600 border focus:outline-none hover:bg-gray-200 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center "
-                                    type="button">Table Size <svg class="w-2.5 h-2.5 ms-2.5" aria-hidden="true"
-                                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                            stroke-width="2" d="m1 1 4 4 4-4" />
-                                    </svg></button>
-                                <!-- Dropdown menu -->
-                                <div id="dropdownHelperRadio"
-                                    class="z-10 hidden border p-4 text-gray-600 divide-y bg-white divide-gray-100 rounded-lg shadow w-60 dark:bg-gray-700 dark:divide-gray-600"
-                                    data-popper-reference-hidden="" data-popper-escaped="" data-popper-placement="top"
-                                    style="position: absolute; inset: auto auto 0px 0px; margin: 0px; transform: translate3d(522.5px, 6119.5px, 0px);">
-                                    <div class="flex justify-between">
-                                        <label for="minmax-range"
-                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Rows</label>
-                                        <p id="maxrow">10</p>
-                                    </div>
-                                    <input id="minmax-range" type="range" name="rowSize" min="5"
-                                        max="20" value="10"
-                                        class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700">
-                                    <x-button-primary class="w-full text-white mt-4" type="button" id="rowrange"
-                                        text="Apply" />
-                                </div>
-
-                            </div>
                         </div>
-                    </form>
+                        <div class="ml-5">
+                            <p class="text-sm font-medium text-gray-400">Orders This Month</p>
+                            <p class="text-2xl font-bold text-white">{{ $currentMonthOrders }}</p>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <div class="flex items-center text-sm">
+                            <span class="{{ $orderGrowth >= 0 ? 'text-green-400' : 'text-red-400' }} flex items-center">
+                                <svg class="h-4 w-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="{{ $orderGrowth >= 0 ? 'M5 10l7-7m0 0l7 7m-7-7v18' : 'M19 14l-7 7m0 0l-7-7m7 7V3' }}"></path>
+                                </svg>
+                                {{ number_format($orderGrowth, 2) }}%
+                            </span>
+                            <span class="text-gray-500 ml-2">from last month</span>
+                        </div>
+                    </div>
                 </div>
             </div>
+            
+            <!-- Total Earnings -->
+            <div class="bg-gray-800 rounded-lg shadow-lg overflow-hidden border border-gray-700">
+                <div class="p-5">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0 bg-green-500 bg-opacity-20 rounded-md p-3">
+                            <svg class="h-6 w-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <div class="ml-5">
 
-            <label for="table-search" class="sr-only">Search</label>
-            <div class="relative">
-                <div class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
-                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
-                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
-                    </svg>
+                            <p class="text-sm font-medium text-gray-400">Earnings This Month</p>
+                            <p class="text-2xl font-bold text-white">₱{{ $currentMonthEarnings }}</p>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <div class="flex items-center text-sm">
+                            <span class="{{ $earningsGrowth >= 0 ? 'text-green-400' : 'text-red-400' }} flex items-center">
+                                <svg class="h-4 w-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="{{ $earningsGrowth >= 0 ? 'M5 10l7-7m0 0l7 7m-7-7v18' : 'M19 14l-7 7m0 0l-7-7m7 7V3' }}"></path>
+                                </svg>
+                                {{ number_format($earningsGrowth, 2) }}%
+                            </span>
+                            <span class="text-gray-500 ml-2">from last month</span>
+                        </div>
+                    </div>
                 </div>
-                <input type="text" id="table-search"
-                    class="block pt-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Search for items">
+            </div>
+            
+            <!-- Waters Sold -->
+            <div class="bg-gray-800 rounded-lg shadow-lg overflow-hidden border border-gray-700">
+                <div class="p-5">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0 bg-purple-500 bg-opacity-20 rounded-md p-3">
+                            <svg class="h-6 w-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                            </svg>
+                        </div>
+                        <div class="ml-5">
+                            <p class="text-sm font-medium text-gray-400">Products Sold This Month</p>
+                            <p class="text-2xl font-bold text-white">{{ $currentMonthWatersSold }}</p>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <div class="flex items-center text-sm">
+                            <span class="{{ $watersSoldGrowth >= 0 ? 'text-green-400' : 'text-red-400' }} flex items-center">
+                                <svg class="h-4 w-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="{{ $watersSoldGrowth >= 0 ? 'M5 10l7-7m0 0l7 7m-7-7v18' : 'M19 14l-7 7m0 0l-7-7m7 7V3' }}"></path>
+                                </svg>
+                                {{ number_format($watersSoldGrowth, 2) }}%
+                            </span>
+                            <span class="text-gray-500 ml-2">from last month</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Pending Deliveries -->
+            <div class="bg-gray-800 rounded-lg shadow-lg overflow-hidden border border-gray-700">
+                <div class="p-5">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0 bg-yellow-500 bg-opacity-20 rounded-md p-3">
+                            <svg class="h-6 w-6 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <div class="ml-5">
+                            <p class="text-sm font-medium text-gray-400">Pending Deliveries</p>
+                            <p class="text-2xl font-bold text-white">{{ $pendingDeliveries }}</p>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <div class="flex items-center text-sm">
+                        <div class="flex items-center text-sm">
+                            <span class="text-yellow-400">
+                                Estimated:
+                                <strong class="text-white">{{ now()->addDays(1)->format('M d') }} - {{ now()->addDays(3)->format('M d, Y') }}</strong>
+                            </span>
+                        </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="overflow-x-auto">
+        
+        <!-- Charts Section -->
 
-
-            <table id="dataTable"
-                class="w-full overflow-x-scroll text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                    <tr>
-                        <th scope="col" class="p-4">
-                            <div class="flex items-center">
-                                <input id="checkbox-all-search" type="checkbox"
-                                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                <label for="checkbox-all-search" class="sr-only">checkbox</label>
-                            </div>
-                        </th>
-                        <th scope="col" class="pl-2 pr-10 py-3">
-                            <div class="flex items-center">
-                                #
-                            </div>
-                        </th>
-                        <th scope="col" class="px-2 py-3">
-                            <div class="flex items-center">
-                                Name
-
-                            </div>
-                        </th>
-                        <th scope="col" class="px-2 py-3">
-                            <div class="flex items-center">
-                                Contact Number
-                            </div>
-                        </th>
-                        <th scope="col" class="px-2 py-3">
-                            <div class="flex items-center">
-                                Alkaline Qty.
-                            </div>
-                        </th>
-                        <th scope="col" class="px-2 py-3">
-                            <div class="flex items-center">
-                                Mineral Qty.
-                            </div>
-                        </th>
-                        <th scope="col" class="px-2 py-3">
-                            <div class="flex items-center">
-                                Distilled Qty.
-                            </div>
-                        </th>
-                        <th scope="col" class="px-2 py-3">
-                            <div class="flex items-center">
-                                Total
-                            </div>
-                        </th>
-                        <th scope="col" class="px-2 py-3">
-                            <div class="flex items-center">
-                                Delivery Address
-                            </div>
-                        </th>
-                        <th scope="col" class="px-2 py-3 text-ellipsis w-fit">
-                            <div class="flex items-center text-ellipsis w-20">
-                                Map Reference
-                            </div>
-                        </th>
-
-                        <th scope="col" class="px-2 py-3">
-                            <div class="flex items-center">
-                                Delivery Date
-                            </div>
-                        </th>
-                        <th scope="col" class="px-2 py-3">
-                            <div class="flex items-center">
-                                Payment Method
-                            </div>
-                        </th>
-                        <th scope="col" class="px-2 py-3">
-                            <div class="flex items-center">
-                                Special Instruction
-                            </div>
-                        </th>
-
-                        <th scope="col" class="px-2 py-3">
-                            <div class="flex items-center">
-                                Status
-                            </div>
-                        </th>
-
-                        <th scope="col" class="px-2 py-3">
-                            Action
-                        </th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    <form id="mark-orders-form" action="{{ route('update-orders') }}" method="POST">
-                        @csrf
-                        <input type="hidden" name="action" id="actionInput">
-                        <!-- Add a hidden input field for the action -->
-                        <input type="hidden" name="status" id="statusInput">
-                        <input type="hidden" name="orderId" id="orderIdInput">
-                        @foreach ($paginatedData as $order)
-                            <tr
-                                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                <td class="w-4 p-4 ">
+        <div class="mt-8 grid grid-cols-1 gap-5 lg:grid-cols-2">
+            <!-- Monthly Sales Chart -->
+            <div class="grid grid-rows-1 lg:grid-rows-1 grid-cols-1">
+                <div class="bg-gray-800 rounded-lg shadow-lg overflow-hidden border border-gray-700 row-span-1">
+                    <div class="p-5">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-lg font-medium text-white">Yearly Sales</h3>
+                       
+                        </div>
+                        <div class="mt-6 h-72">
+                            <canvas id="yearlySalesChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <!-- Top Selling Products -->
+                <div class="mt-8">
+                    <div class="bg-gray-800 border border-gray-700 lg:col-span-2 rounded-xl shadow-lg overflow-hidden">
+                        <div class="px-6 py-5">
+                            <h3 class="text-lg font-semibold text-white">Top Selling Products</h3>
+                            <div class="mt-6 grid grid-cols-1 gap-6 xl:grid-cols-3">
+                                @foreach($topSellingProducts as $index => $product)
+                                <div class="rounded-lg p-4">
                                     <div class="flex items-center">
-                                        <input id="checkbox-table-search-{{ $order->id }}"
-                                            data-order-id="{{ $order->id }}" value="{{ $order->id }}"
-                                            name="selectedOrders[]" type="checkbox"
-                                            class="checkbox w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                        <label for="checkbox-table-search-{{ $order->id }}"
-                                            class="sr-only">checkbox</label>
-                                    </div>
-                                </td>
-
-                                <td class="px-2 py-4">
-                                    {{ $order->id }}
-                                </td>
-                                <th scope="row" class="px-2 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                                    <div class="text-base font-semibold">{{ $order->customer->firstname }}</div>
-                                    <div class="font-normal text-gray-500">{{ $order->customer->email }}</div>
-                                </th>
-                                <td class="px-2 py-4">
-                                    {{ $order->customer->contactnum }}
-                                </td>
-                                <td class="px-2 py-4">
-                                    {{ $order->orderline->where('water_id', 1)->sum('quantity') ?? 0}}
-                                </td>
-                                <td class="px-2 py-4">
-                                    {{ $order->orderline->where('water_id', 2)->sum('quantity') ?? 0}}
-                                </td>
-                                <td class="px-2 py-4 ">
-                                    {{ $order->orderline->where('water_id', 3)->sum('quantity') ?? 0}}
-                                </td>
-
-                                <td class="px-2 py-4">
-                                    {{ $order->total }} PHP
-                                </td>
-                                <td class="px-2 py-4">
-                                    {{ $order->orderline->first()->delivery->delivery_address }}
-                                </td>
-                                <td class="px-2 py-4 text-ellipsis overflow-hidden max-w-14">
-                                    @if ($order->orderline->first()->delivery->map_reference != null)
-                                        <button class="text-blue-600" id="table-map-{{ $order->orderline->first()->id }}"
-                                            type="button"data-modal-target="mapmodal" data-modal-toggle="mapmodal"
-                                            id="openModal"
-                                            data-loc="{{ $order->orderline->first()->delivery->map_reference }}">Show
-                                            map</button>
-                                    @endif
-                                </td>
-                                <td class="px-2 py-4 text-center ">
-                                    {{ \Carbon\Carbon::parse($order->orderline->first()->delivery->delivery_date)->format('Y-m-d') }}
-
-                                    @php
-                                        $hasInProgress = false;
-                                        $completed = false;
-                                        $deliveryDate = \Carbon\Carbon::parse(
-                                            $order->orderline->first()->delivery->delivery_date,
-                                        )->startOfDay();
-                                        $now = \Carbon\Carbon::now()->startOfDay();
-                                        $daysUntilDelivery = $now->diffInDays($deliveryDate, false);
-                                    @endphp
-
-                                    @foreach ($order->orderline as $orderline)
-                                        @if ($orderline->delivery->delivery_status == 1)
-                                            @php
-                                                $hasInProgress = true;
-                                            @endphp
-                                        
-                                        @elseif ($orderline->delivery->delivery_status == 2)
-                                            @php
-                                                $completed = true;
-                                            @endphp
-                                        @endif
-                                    @endforeach
-                                    @if ($hasInProgress)
-                                        @if ($daysUntilDelivery == 1)
-                                            <div
-                                                class="mx-auto badge bg-blue-500 rounded-full p-1 text-xs w-fit text-white">
-                                                Tomorrow</div>
-                                        @elseif ($daysUntilDelivery == 0)
-                                            <div
-                                                class="mx-auto badge bg-green-500 rounded-full p-1 text-xs w-fit text-white">
-                                                Today</div>
-                                        @elseif ($daysUntilDelivery < 0)
-                                            <div
-                                                class="mx-auto badge bg-red-500 rounded-full p-1 text-xs w-fit text-white">
-                                                Overdue</div>
-                                        @endif
-                                    @endif
-                                </td>
-                                
-                                <td class="px-2 py-4">
-                                    {{$orderline->order->payment_type}}
-                                </td>
-                                <td class="px-2 py-4">
-                                    {{$orderline->delivery->special_instruction}}
-                                </td>
-                                <td class="px-2 py-4 ">
-                                    <div class="flex flex-col justify-start">
-
-                                        @if ($hasInProgress)
-                                            <div class="flex items-center w-28">
-                                                <div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div>
-                                                {{ $orderline->delivery->deliverystatus->find(1)->name }}
-                                            </div>
-                                        @elseif ($completed)
-                                                <div class="flex items-center">
-                                                    <div class="h-2.5 w-2.5 rounded-full bg-blue-500 me-2"></div>
-                                                    {{ $orderline->delivery->deliverystatus->find(2)->name }}
-                                                </div>
-                                        @else
-                                            <div class="flex items-center">
-                                                <div class="h-2.5 w-2.5 rounded-full bg-red-500 me-2"></div>
-                                                {{ $orderline->delivery->deliverystatus->name }}
-                                            </div>
-                                        @endif
-                                    </div>
-                                </td>
-                                <td class="px-2 py-4 ">
-                                    <div class="flex gap-4 items-center justify-center">
-                                        <button type="button" data-modal-target="confirm-modal"
-                                            data-modal-toggle="confirm-modal" class="order-mark-btn"
-                                            data-id="{{ $order->id }}" data-action="complete" data-status="2">
-                                            <i class="fas fa-check text-xl text-green-400" aria-hidden="true"></i>
-                                        </button>
-                                        <button type="button" class="print-btn" onclick="PrintReceiptContent('print')">
-                                            <i class="fas fa-download text-xl text-blue-500" aria-hidden="true"></i>
-                                        </button>
-                                        <button type="button" data-modal-target="edit-order-modal-{{ $order->id }}"
-                                            data-modal-toggle="edit-order-modal-{{ $order->id }}" class="edit-btn"
-                                            data-id="{{ $order->id }}">
-                                            <i class="fas fa-edit text-xl text-sky-300"></i>
-                                        </button>
-                                    </div>
-                                </td>
-
-                            </tr>
-                            {{-- Modal --}}
-                            <div id="edit-order-modal-{{ $order->id }}" tabindex="-1"
-                                class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-                                <div class="relative p-4 w-full max-w-screen-md max-h-full">
-                                    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-                                        <button type="button"
-                                            class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                                            data-modal-hide="edit-order-modal-{{ $order->id }}">
-                                            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                                fill="none" viewBox="0 0 14 14">
-                                                <path stroke="currentColor" stroke-linecap="round"
-                                                    stroke-linejoin="round" stroke-width="2"
-                                                    d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                                        <div class="flex-shrink-0 rounded-lg  p-3 {{ ['bg-blue-100', 'bg-green-100', 'bg-purple-100'][$index] }}">
+                                            <svg class="h-6 w-6 {{ ['text-blue-600', 'text-green-600', 'text-purple-600'][$index] }}" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
                                             </svg>
-                                            <span class="sr-only">Close modal</span>
-                                        </button>
-                                        <div class="p-4 md:p-5 text-center">
-                                            <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-                                                Order #{{ $order->id }}</h3>
-                                            @foreach ($order->orderline as $orderline)
-                                                @if($orderline->is_archived != 1)
-                                                <div class="orderline-item border flex w-full text-gray-900 object-fill"  id="orderline-item-{{$orderline->id}}">
-                                                    <div>
-                                                        <img src="{{ asset('assets/image/container1.png') }}"
-                                                            height="50" class="h-full pt-2 min-w-14 max-w-14"
-                                                            alt="" srcset="">
-                                                    </div>
-
-                                                    <div class="flex flex-col justify-between w-full p-1 py-3">
-                                                        <h1 class="text-start text-xl font-bold">
-                                                            {{ $orderline->water->name }}
-                                                            <span>
-                                                                P
-                                                                {{ $orderline->water->cost }}
-                                                            </span>
-                                                        </h1>
-                                                        <div class="flex gap-2 justify-start items-center">
-                                                            <h1>QTY. </h1>
-                                                            <button type="button" class="rounded-lg w-fit"
-                                                                aria-label="Decrease quantity of Alkaline">
-                                                                <svg width="24" height="24"
-                                                                    xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd"
-                                                                    class="fill-blue-800" clip-rule="evenodd">
-                                                                    <path
-                                                                        d="M11.5 0c6.347 0 11.5 5.153 11.5 11.5s-5.153 11.5-11.5 11.5-11.5-5.153-11.5-11.5 5.153-11.5 11.5-11.5zm0 1c5.795 0 10.5 4.705 10.5 10.5s-4.705 10.5-10.5 10.5-10.5-4.705-10.5-10.5 4.705-10.5 10.5-10.5zm-6.5 10h13v1h-13v-1z" />
-                                                                </svg>
-                                                            </button>
-                                                            <input name="product_{{ $orderline->water->name }}"
-                                                                id="{{ $orderline->id }}"
-                                                                value="{{ $orderline->quantity }}"
-                                                                class="bg-transparent min-w-6 w-auto max-w-10 text-center word-wrap"></input>
-                                                            <button type="button" class="rounded-lg w-8"
-                                                                aria-label="Decrease quantity of Alkaline">
-                                                                <svg width="24" height="24" class="fill-blue-800"
-                                                                    xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd"
-                                                                    clip-rule="evenodd">
-                                                                    <path
-                                                                        d="M11.5 0c6.347 0 11.5 5.153 11.5 11.5s-5.153 11.5-11.5 11.5-11.5-5.153-11.5-11.5 5.153-11.5 11.5-11.5zm0 1c5.795 0 10.5 4.705 10.5 10.5s-4.705 10.5-10.5 10.5-10.5-4.705-10.5-10.5 4.705-10.5 10.5-10.5zm.5 10h6v1h-6v6h-1v-6h-6v-1h6v-6h1v6z" />
-                                                                </svg>
-                                                            </button>
-
-                                                        </div>
-                                                    </div>
-                                                    <div class="flex items-center gap-4 px-4">
-                                                        @if ($orderline->delivery->delivery_status == 1)
-                                                            <button type="button"
-                                                                class="rounded-2xl w-fit h-10 flex items-center bg-green-400 text-white px-3 py-2 gap-2">
-                                                                <!-- Icon -->
-                                                                <svg clip-rule="evenodd" class="fill-white w-7"
-                                                                    fill-rule="evenodd" stroke-linejoin="round"
-                                                                    stroke-miterlimit="2" viewBox="0 0 23 23"
-                                                                    xmlns="http://www.w3.org/2000/svg">
-                                                                    <path
-                                                                        d="m2.25 12.321 7.27 6.491c.143.127.321.19.499.19.206 0 .41-.084.559-.249l11.23-12.501c.129-.143.192-.321.192-.5 0-.419-.338-.75-.749-.75-.206 0-.411.084-.559.249l-10.731 11.945-6.711-5.994c-.144-.127-.322-.19-.5-.19-.417 0-.75.336-.75.749 0 .206.084.412.25.56"
-                                                                        fill-rule="nonzero" />
-                                                                </svg>
-                                                                <h1 class="ml-2 complete-btn" id="complete-btn-{{$orderline->id}}" data-id="{{$orderline->id}}">Complete</h1>
-                                                            </button>
-                                                        {{-- <button type="button"
-                                                            class="rounded-2xl w-fit h-10 bg-red-500 flex items-center justify-center text-white px-3 py-2 gap-2">
-                                                            <div class="flex items-center w-full">
-                                                                <!-- Icon -->
-                                                                <svg clip-rule="evenodd" fill-rule="evenodd"
-                                                                    class="fill-white w-7" stroke-linejoin="round"
-                                                                    stroke-miterlimit="2" viewBox="0 0 30 30"
-                                                                    xmlns="http://www.w3.org/2000/svg">
-                                                                    <path
-                                                                        d="m4.015 5.494h-.253c-.413 0-.747-.335-.747-.747s.334-.747.747-.747h5.253v-1c0-.535.474-1 1-1h4c.526 0 1 .465 1 1v1h5.254c.412 0 .746.335.746.747s-.334.747-.746.747h-.254v15.435c0 .591-.448 1.071-1 1.071-2.873 0-11.127 0-14 0-.552 0-1-.48-1-1.071zm14.5 0h-13v15.006h13zm-4.25 2.506c-.414 0-.75.336-.75.75v8.5c0 .414.336.75.75.75s.75-.336.75-.75v-8.5c0-.414-.336-.75-.75-.75zm-4.5 0c-.414 0-.75.336-.75.75v8.5c0 .414.336.75.75.75s.75-.336.75-.75v-8.5c0-.414-.336-.75-.75-.75zm3.75-4v-.5h-3v.5z"
-                                                                        fill-rule="nonzero" />
-                                                                </svg>
-                                                                <p class="ml-2 cancel-btn"  data-id="{{$orderline->id}}">Cancel</p>
-                                                            </div>
-                                                        </button> --}}
-                                                        <button type="button"
-                                                            class="rounded-2xl w-fit h-10 bg-red-500 flex items-center justify-center text-white px-3 py-2 gap-2">
-                                                            <div class="flex items-center w-full">
-                                                                <!-- Icon -->
-                                                                <svg clip-rule="evenodd" fill-rule="evenodd"
-                                                                    class="fill-white w-7" stroke-linejoin="round"
-                                                                    stroke-miterlimit="2" viewBox="0 0 23 23"
-                                                                    xmlns="http://www.w3.org/2000/svg">
-                                                                    <path
-                                                                        d="m4.015 5.494h-.253c-.413 0-.747-.335-.747-.747s.334-.747.747-.747h5.253v-1c0-.535.474-1 1-1h4c.526 0 1 .465 1 1v1h5.254c.412 0 .746.335.746.747s-.334.747-.746.747h-.254v15.435c0 .591-.448 1.071-1 1.071-2.873 0-11.127 0-14 0-.552 0-1-.48-1-1.071zm14.5 0h-13v15.006h13zm-4.25 2.506c-.414 0-.75.336-.75.75v8.5c0 .414.336.75.75.75s.75-.336.75-.75v-8.5c0-.414-.336-.75-.75-.75zm-4.5 0c-.414 0-.75.336-.75.75v8.5c0 .414.336.75.75.75s.75-.336.75-.75v-8.5c0-.414-.336-.75-.75-.75zm3.75-4v-.5h-3v.5z"
-                                                                        fill-rule="nonzero" />
-                                                                </svg>
-                                                                <h1 class="ml-2 remove-btn"  data-id="{{$orderline->id}}">Remove</h1>
-                                                            </div>
-                                                        </button>
-                                                        @elseif ($orderline->delivery->delivery_status == 2)
-                                                        
-                                                        <div class="rounded-2xl w-fit h-10 flex items-center bg-blue-500 text-white px-3 py-2 gap-2">
-                                                            <h1>{{$orderline->delivery->deliverystatus->name}}</h1>
-                                                        </div>
-                                                        @else 
-                                                        <div class="rounded-2xl w-fit h-10 flex items-center bg-red-500 text-white px-3 py-2 gap-2">
-                                                            <h1>{{$orderline->delivery->deliverystatus->name}}</h1>
-                                                        </div>
-                                                        @endif
-                                                    </div>
-                                                </div>
-                                                @endif
-                                            @endforeach
-                                            
-                                            <div class="mt-4">
-                                                 <button id="save-btn" type="button" data-modal-hide="edit-order-modal-{{ $order->id }}"
-                                                    class="text-white bg-green-600 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
-                                                    Save Changes
-                                                </button>
-                                                <button id="cancel-btn" data-modal-hide="edit-order-modal-{{ $order->id }}" type="button"
-                                                    class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
-                                                    Cancel</button>
+                                        </div>
+                                        <div class="ml-4">
+                                            <p class="text-lg font-medium text-white">{{ $product['product_name'] }}</p>
+                                            <p class="text-sm text-gray-300">{{ $product['total_quantity'] }} units sold</p>
+                                        </div>
+                                    </div>
+                                    <div class="mt-4">
+                                        <div class="relative pt-1">
+                                            <div class="overflow-hidden h-2 text-xs flex rounded {{ ['bg-gray-700', 'bg-gray-700', 'bg-gray-700'][$index] }}">
+                                                <div style="width: {{ ($product['total_quantity'] / $watersSold) * 100 }}%" class="{{ ['bg-blue-500', 'bg-green-500', 'bg-purple-500'][$index] }} shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center"></div>
                                             </div>
-                           
                                         </div>
                                     </div>
                                 </div>
+                                @endforeach
                             </div>
-                        @endforeach
-                    </form>
-                </tbody>
-            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Orders by Hour Chart -->
+            <div class="grid lg:grid-cols-2 gap-6">
+                <!-- Orders By Hour Chart -->
+                <div class="bg-gray-800 rounded-lg shadow-lg overflow-hidden border border-gray-700 col-span-2">
+                    <div class="px-4 py-5 sm:p-6">
+                        <h3 class="text-lg leading-6 font-medium text-white">Orders By Hour</h3>
+                        <div class="mt-4 h-30">
+                            <canvas id="ordersByHourChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid lg:grid-rows-3 gap-5 col-span-2 xl:col-span-1">
+                <!-- Average Delivery Time -->
+                    <div class="bg-gray-800 rounded-lg shadow-lg overflow-hidden border border-gray-700 col-span-1">
+                        <div class="px-4 py-5 sm:p-6">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 bg-purple-500 bg-opacity-30 rounded-md p-3">
+                                    <svg class="h-6 w-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                </div>
+                                <div class="ml-5 w-0 flex-1">
+                                    <dl>
+                                        <dt class="text-sm font-medium text-gray-500 truncate">Average Delivery Time</dt>
+                                        <dd class="flex items-baseline">
+                                            <div class="text-2xl font-semibold text-white">
+                                                {{ $averageDeliveryTime ? round($averageDeliveryTime, 2) : 0 }} min
+                                            </div>
+                                        </dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {{-- Orders Completed Today --}}
+                    <div class="bg-gray-800 rounded-lg shadow-lg overflow-hidden border border-gray-700 col-span-1">
+                        <div class="px-4 py-5 sm:p-6">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 bg-green-500 bg-opacity-30 rounded-md p-3">
+                                    <svg class="h-6 w-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+                                    </svg>
+                                </div>
+                                <div class="ml-5 w-0 flex-1">
+                                    <dl>
+                                        <dt class="text-sm font-medium text-gray-500 truncate">Orders Completed Today</dt>
+                                        <dd class="flex items-baseline">
+                                            <div class="text-2xl font-semibold text-white">
+                                                {{ $ordersCompletedToday ?? 0 }} 
+                                            </div>
+                                        </dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {{-- New Customers This Month --}}
+                    <div class="bg-gray-800 rounded-lg shadow-lg overflow-hidden border border-gray-700 col-span-1">
+                        <div class="px-4 py-5 sm:p-6">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 bg-cyan-500 bg-opacity-30 rounded-md p-3">
+                                    <svg class="h-6 w-6 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M5.121 17.804A4.002 4.002 0 018 15h8a4.002 4.002 0 012.879 2.804M12 14a5 5 0 100-10 5 5 0 000 10z" />
+                                    </svg>
+                                </div>
+                                <div class="ml-5 w-0 flex-1">
+                                    <dl>
+                                        <dt class="text-sm font-medium text-gray-500 truncate">New Customers This Month</dt>
+                                        <dd class="flex items-baseline">
+                                            <div class="text-2xl font-semibold text-white">
+                                                {{ $newCustomersThisMonth }} 
+                                            </div>
+                                        </dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Order Status Chart -->
+                <div class="bg-gray-800 rounded-lg shadow-lg overflow-hidden border border-gray-700 col-span-2 xl:col-span-1">
+                    <div class="p-5">
+                        <h3 class="text-lg font-medium text-white">Order Status</h3>
+                    <div class="mt-6 h-full">
+                        <canvas id="orderStatusChart"></canvas>
+                    </div>
+
+                </div>
+            </div>
+            </div>
         </div>
+        
+        <!-- Order Details and Recent Orders -->
+        <div x-data="orderState()" x-init="initOrder(); initProducts()" class="grid grid-cols-4 gap-5 mt-8 grid-rows-3">
+                @csrf
+                <!-- Recent Orders Table -->
+                <div class="bg-gray-800 rounded-lg shadow-lg overflow-hidden border border-gray-700 col-span-4 xl:col-span-2 row-span-1">
+                    <div class="p-5">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-lg font-medium text-white">Recent Orders</h3>
+                            <button type="button" class="text-sm font-medium text-white hover:text-gray-200 bg-blue-600 px-2 py-2 rounded-lg hover:bg-blue-500 ">Add Order</button>
+                        </div>
 
-        <nav class="flex items-center flex-column flex-wrap md:flex-row justify-between pt-4"
-            aria-label="Table navigation">
-            <span
-                class="text-sm font-normal text-gray-500 dark:text-gray-400 mb-4 md:mb-0 block w-full md:inline md:w-auto">
-                Showing <span class="font-semibold text-gray-900 dark:text-white">{{ $paginatedData->firstItem() }}</span>
-                to <span class="font-semibold text-gray-900 dark:text-white">{{ $paginatedData->lastItem() }}</span>
-                of <span class="font-semibold text-gray-900 dark:text-white">{{ $paginatedData->total() }}</span>
-            </span>
-            <ul class="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8">
-                <li>
-                    <a href="{{ $paginatedData->previousPageUrl() }}"
-                        class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Previous</a>
-                </li>
-                @for ($i = 1; $i <= $paginatedData->lastPage(); $i++)
-                    <li>
-                        <a href="{{ $paginatedData->url($i) }}"
-                            class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white {{ $paginatedData->currentPage() == $i ? 'text-blue-600 border-blue-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700' : '' }}">
-                            {{ $i }}
-                        </a>
-                    </li>
-                @endfor
-                <li>
-                    <a href="{{ $paginatedData->nextPageUrl() }}"
-                        class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Next</a>
-                </li>
-            </ul>
-        </nav>
+                        <div class="mt-6 overflow-hidden">
+                            <table class="min-w-full divide-y divide-gray-700">
+                                <thead>
+                                    <tr>
+                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Order ID</th>
+                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Customer</th>
+                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Order Total</th>
+                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Date</th>
+                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Status</th>
+                                    </tr>
+                                </thead>
+                                
+                                <tbody class="divide-y divide-gray-700">
+                                    @foreach($recentOrders->items() as $order)
+                                    <tr class="hover:bg-gray-700 cursor-pointer"
+                                        :class="selectedOrder.id === {{ $order->id }} ? 'bg-gray-700' : ''"
+                                        @click="
+                                            if (selectedOrder.id !== {{ $order->id }}) {
+                                                selectOrder({{ $order->id }});
+                                            } else {
+                                                revertToDefault();
+                                            }
+                                        "
+                                    >
+                                        <td class="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-300">#{{ $order->id }}</td>
+                                        <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-400">
+                                            {{ $order->customer->firstname }} {{ $order->customer->lastname }}
+                                        </td>
+                                        <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-400">
+                                            ₱{{ number_format($order->total, 2) }}
+                                        </td>
+                                        <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-400">
+                                            {{ \Carbon\Carbon::parse($order->created_at)->format('M d, Y') }}
+                                        </td>
+                                        <td class="px-4 py-4 whitespace-nowrap">
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
+                                                {{ $order->delivery && $order->delivery->delivery_status == 1 ? 'bg-yellow-900 text-yellow-300' : '' }}
+                                                {{ $order->delivery && $order->delivery->delivery_status == 2 ? 'bg-green-900 text-green-300' : '' }}
+                                                {{ $order->delivery && $order->delivery->delivery_status == 3 ? 'bg-red-900 text-red-300' : '' }}"
+                                            >
+                                                {{ $order->delivery && $order->delivery->deliverystatus ? $order->delivery->deliverystatus->name : 'On-site' }}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Pagination Controls -->
+                        <div class="mt-4 flex items-center justify-between text-gray-400 text-sm">
+                            <span>
+                                Page {{ $recentOrders->currentPage() }} of {{ $recentOrders->lastPage() }}
+                            </span>
+                            
+                            <div class="flex space-x-2">
+                                <a 
+                                    href="{{ $recentOrders->url(1) }}" 
+                                    class="px-3 py-1 bg-gray-700 text-white rounded-md hover:bg-gray-600 {{ $recentOrders->onFirstPage() ? 'opacity-50 pointer-events-none' : '' }}"
+                                >
+                                    First
+                                </a>
+                                <a 
+                                    href="{{ $recentOrders->previousPageUrl() }}" 
+                                    class="px-3 py-1 bg-gray-700 text-white rounded-md hover:bg-gray-600 {{ $recentOrders->onFirstPage() ? 'opacity-50 pointer-events-none' : '' }}"
+                                >
+                                    Prev
+                                </a>
+                                <a 
+                                    href="{{ $recentOrders->nextPageUrl() }}" 
+                                    class="px-3 py-1 bg-gray-700 text-white rounded-md hover:bg-gray-600 {{ $recentOrders->hasMorePages() ? '' : 'opacity-50 pointer-events-none' }}"
+                                >
+                                    Next
+                                </a>
+                                <a 
+                                    href="{{ $recentOrders->url($recentOrders->lastPage()) }}" 
+                                    class="px-3 py-1 bg-gray-700 text-white rounded-md hover:bg-gray-600 {{ $recentOrders->currentPage() === $recentOrders->lastPage() ? 'opacity-50 pointer-events-none' : '' }}"
+                                >
+                                    Last
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+    
+                <!-- Order Details Panel -->
+                <div class="bg-gray-800 rounded-lg shadow-lg overflow-hidden border border-gray-700 col-span-4 xl:col-span-2 row-span-2 h-fit">
+                    <div class="px-4 py-5 sm:p-6">
+                        <div class="flex items-center justify-between ">
+                            <h3 class="text-lg leading-6 font-medium text-white">Order ID: <span x-text="selectedOrder.id"></span></h3>
+                            <span class="text-sm font-medium text-blue-400 hover:text-blue-300" x-text="selectedOrder.delivery?.deliverystatus.name"></span>
+                        </div>
+                       
+                        <div class="mt-4 space-y-4">
+                            <div class="grid grid-cols-2 gap-4 mt-4 text-sm text-gray-400">
+    
+                                <div>
+                                    <strong>Purchase Type: </strong>
+                                    <span x-text="selectedOrder.purchase_type"></span>
+                                </div>
+                                <div>
+                                    <strong>Payment Type:</strong>
+                                    <span x-text="selectedOrder.payment_type"></span>
+                                </div>
+    
+                                <div>
+                                    <strong>Contact Number:</strong>
+                                    <span x-text="selectedOrder.customer?.contactnum || 'N/A'"></span>
+                                </div>
+                                <div>
+                                    <strong>Email:</strong>
+                                    <span x-text="selectedOrder.customer?.email || 'N/A'"></span>
+                                </div>
+    
+                                <div class="col-span-2">
+                                    <strong><span x-text="selectedOrder.delivery ? 'Delivery Address' : 'Customer Address'"></span></strong>
+                                    <span x-text="selectedOrder.delivery?.delivery_address || selectedOrder.customer.address?.streetaddress + selectedOrder.customer.address?.barangay + selectedOrder.customer.address?.city"></span>
+                                </div>
+                                <div 
+                                    x-show="selectedOrder.delivery" 
+                                    class="col-span-2"
+                                >
+                                    <strong>Special Instructions:</strong>
+                                    <span x-text="selectedOrder.delivery?.special_instruction || 'N/A'"></span>
+
+                                </div>
+    
+                                <!-- Contact Number -->
+       
+                            </div>
+    
+                            <!-- Order Items / Water Ordered -->
+                            <div class="mt-4">
+                                <div class="flex items-center justify-between">
+                                    <h4 class="text-md font-semibold text-white">Order Items</h4>
+                                    <button type="button" 
+                                        @click="
+                                            if (isEditingItems) { 
+                                                revertOrderItems(); 
+                                            } else {
+                                                isEditingItems = true;
+                                            }
+                                        " 
+                                        class="bg-blue-600 text-white text-sm px-4 py-2 rounded-lg hover:bg-blue-500"
+                                    >
+                                        <span x-text="isEditingItems ? 'Revert Changes' : 'Edit'">Edit</span>
+                                    </button>
+                                </div>
+    
+                                <table class="min-w-full divide-y divide-gray-700 mt-4">
+                                    <thead>
+                                        <tr>
+                                            <th class="px-4 py-2 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Product</th>
+                                            <th class="px-4 py-2 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Unit Cost</th>
+                                            <th class="px-4 py-2 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Subtotal</th>
+                                            <th x-show="isEditingItems" class="px-4 py-2 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Quantity</th>
+                                            <th x-show="isEditingItems" class="px-4 py-2 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-700">
+                                        <template x-for="line in selectedOrder.orderline" :key="line.id">
+                                            <tr>
+                                                <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-300" x-text="line.water.name + ' x' + line.quantity"></td>
+    
+                                                <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-400">
+                                                    ₱<span x-text="Number(line.water.cost).toFixed(2)"></span>
+                                                </td>
+    
+                                                <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-400">
+                                                    ₱<span x-text="Number(line.subtotal).toFixed(2)"></span>
+                                                </td>
+    
+                                                <td x-show="isEditingItems" class="px-4 py-2 whitespace-nowrap text-sm text-gray-300">
+                                                    <div class="flex space-x-2">
+                                                        <button type="button"
+                                                            @click="if (line.quantity > 1) { line.quantity--; updateOrderItems(line); }" 
+                                                            class="bg-red-600 text-white px-2 py-1 text-xs rounded hover:bg-red-700"
+                                                        >
+                                                            -
+                                                        </button>
+                                                        
+                                                        <span x-text="line.quantity" class="text-gray-300 px-2"></span>
+    
+                                                        <button type="button"
+                                                        
+                                                            @click="line.quantity++; updateOrderItems(line)" 
+                                                            class="bg-green-600 text-white px-2 py-1 text-xs rounded hover:bg-green-700"
+                                                        >
+                                                            +
+                                                        </button>
+                                                      
+                                                    </div>
+                                                </td>
+                                                <td x-show="isEditingItems" class="px-4 py-2 whitespace-nowrap text-sm text-gray-400">
+                                                    <button  type="button"
+                                                        @click="selectedOrder.orderline = selectedOrder.orderline.filter(item => item.id !== line.id); updateOrderItems();" 
+                                                        class="bg-red-600 text-white px-2 py-1 text-xs rounded hover:bg-red-700"
+                                                    >
+                                                        Remove
+                                                    </button>
+                                                </td>
+                                                
+                                            </tr>
+                                        </template>
+                                        <tr x-show="isEditingItems" x-cloak>
+                                            <td colspan="5" class="text-center py-4">
+                                                <button 
+                                                    type="button"
+                                                    @click="showAddItemModal = true"
+                                                    class="bg-blue-600 text-white px-4 py-2 text-sm rounded hover:bg-blue-700"
+                                                >
+                                                    + Add Item
+                                                </button>
+                                            </td>
+                                        </tr>
+
+                                        <tr x-show="selectedOrder.delivery">
+                                            <th class="px-4 py-2 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Charges</th>
+                                        </tr>
+                                        <tr x-show="selectedOrder.delivery">
+                                            <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-300">Delivery Fee</td>
+                                            <td ></td>
+                                             <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-400" >₱<span x-text="selectedOrder.delivery_fee"></span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-400">
+                                                TOTAL
+                                            </td>
+                                            <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-400">
+                                            </td>
+                                            <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-400">
+                                                ₱<span x-text="selectedOrder.total"></span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+    
+                            <div class="mt-6 space-y-2" >
+                                <!-- Mark As Button -->
+                                <div class="flex items-center justify-between gap-2">
+                                    <button type="button"
+                                        @click.prevent="showPopup = true"
+                                        class="bg-blue-600 bg-opacity-30 text-blue-400 w-full text-sm px-4 py-2 rounded-lg hover:bg-blue-800 hover:bg-opacity-30 hover:text-blue-500 "
+                                    >
+                                        <span x-text="selectedStatus != null ? `Marked as ${statusText}` : 'Mark as'">Mark as</span>
+                                    </button>
+                                    <button type="button"
+                                    x-cloak
+                                        @click.prevent="showReceipt = true; console.log(selectedOrder.id)"
+                                        x-show="selectedOrder.delivery == null || selectedOrder.delivery.delivery_status == 2"
+                                        class="bg-gray-600 bg-opacity-30 text-gray-300 w-full text-sm px-4 py-2 rounded-lg hover:bg-gray-700 hover:bg-opacity-30 hover:text-gray-200"
+                                    >
+                                        <span > Generate Receipt</span>
+                                    </button>
+    
+                                </div>
+                                
+    
+                                
+                                <!-- Save Changes Button -->
+                                <button 
+                                    @click.prevent="saveOrderChanges()" 
+                                    :disabled="selectedOrder.orderline.length === 0" 
+                                    class="bg-green-600 bg-opacity-30 text-green-400 w-full text-sm px-4 py-2 rounded-lg hover:bg-green-800 hover:bg-opacity-30 hover:text-green-500 disabled:bg-gray-700 disabled:text-gray-300"
+                                >
+                                    Save Changes
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <!-- Add item MOdALS -->
+                <div 
+                    x-show="showAddItemModal" 
+                    x-cloak
+                    class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
+                >
+                    <div class="bg-gray-800 text-white rounded-lg shadow-lg w-1/3 p-6">
+                        <h2 class="text-lg font-semibold mb-4">Add Item</h2>
+                        
+                        <!-- Select Product and Unit Price -->
+                        <!-- Select Product and Unit Price -->
+                        <div class="mb-4 grid grid-cols-2 gap-4">
+                            <!-- Select Product -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-500">Select Product</label>
+                                <select 
+                                    x-model="newItem.water_id" 
+                                    @change="updateNewItemCost()" 
+                                    class="w-full bg-gray-700 text-white text-sm px-4 py-2 rounded-lg"
+                                >
+                                    <option value="" disabled>Select a product</option>
+                                    <template x-for="product in productList" :key="product.id">
+                                        <option :value="product.id" x-text="product.name"></option>
+                                    </template>
+                                </select>
+                            </div>
+
+                            <!-- Unit Price -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-500">Unit Price</label>
+                                    <span 
+                                        class="block text-xl font-medium text-white"
+                                        x-text="newItem.water_id ? `₱${productList.find(p => p.id == newItem.water_id)?.cost || 0}` : 'Select a product'"
+                                    ></span>
+                            </div>
+                        </div>
+
+
+                        <!-- Quantity -->
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-500">Quantity</label>
+                            <input 
+                                type="number" 
+                                x-model.number="newItem.quantity" 
+                                @input="updateNewItemCost()"
+                                min="1"
+                                class="w-full border bg-gray-700 text-white text-sm px-4 py-2 rounded-lg"
+                            />
+                        </div>
+
+                        <!-- Subtotal (Calculated) -->
+                        <div class="mb-4" x-show="newItem.subtotal > 0">
+                            <label class="block text-sm font-medium text-gray-500">Subtotal</label>
+                            <input 
+                                type="text" 
+                                
+                                x-model="newItem.subtotal" 
+                                readonly 
+                                class="w-full border bg-gray-700 text-white text-sm px-4 py-2 rounded-lg"
+                            />
+                        </div>
+
+                        <!-- Modal Actions -->
+                        <div class="flex justify-end space-x-2">
+                            <button 
+                                @click="showAddItemModal = false"
+                                class="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500"
+                            >
+                                Cancel
+                            </button>
+                            <button 
+                                @click="addNewItem()"
+                                class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+                            >
+                                Add Item
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Receipt Modal -->
+                <div x-cloak x-show="showReceipt" id="receiptModal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+                    <div class="w-[90%] max-w-2xl bg-white rounded-lg shadow-lg p-4 ">
+                        <div class="flex justify-between items-center mb-4">
+                            <h2 class="text-lg font-semibold text-gray-900">Receipt</h2>
+                            <button type="button" onclick="closeReceiptModal()" class="text-gray-600 hover:text-gray-900">&times;</button>
+                        </div>
+                        
+                        <iframe id="receiptFrame" class="w-full h-[500px] border" :src="`/receipt/${selectedOrder.id}`"></iframe>
+                        
+                        <div class="flex justify-end space-x-2 mt-4">
+                            <button type="button" @click="window.print()" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg">Print</button>
+                            <button type="button" @click="showReceipt = false" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-lg">Close</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Status Popup/Modal -->
+                <div 
+                    x-show="showPopup" 
+                    x-cloak
+                    @click.away="showPopup = false"
+                    class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center"
+                >
+                    <div class="bg-gray-800 text-white rounded-lg shadow-lg w-1/3 p-6">
+                        <h2 class="text-lg font-semibold mb-4">Select Order Status</h2>
+
+                        <!-- Status Options -->
+                        <select 
+                            x-model="selectedStatus"
+                            @change="
+                                statusText = selectedStatus == 1 ? 'In Progress' : 
+                                            selectedStatus == 2 ? 'Completed' : 
+                                            selectedStatus == 3 ? 'Cancelled' : 'Mark As';
+                                showPopup = false;
+                            "
+                            class="w-full bg-gray-700 text-white text-sm px-4 py-2 rounded-lg"
+                        >
+                            <option 
+                                value="1" 
+                            >
+                                In Progress
+                            </option>
+                            
+                            <option 
+                                value="2" 
+                            >
+                                Completed
+                            </option>
+                            
+                            
+                            <option 
+                                value="3" 
+                            >
+                                Cancelled
+                            </option>
+                        </select>
+
+                        <div class="mt-4 flex justify-end space-x-2">
+                            <button type="button" @click="showPopup = false" class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+        </div>
     </div>
+</div>
 
-    <x-modal.modal-confirm text="Are you sure to mark this order as complete?" variant="confirm" />
-
-    <div id="print" class="hidden">
-        @include('reports.receipt')
-    </div>
-
-    @include('modals/map')
+@push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.10.5/dist/cdn.min.js" defer></script>
 
     <script>
-        function PrintReceiptContent(el) {
-            var data =
-                '<input onClick="window.print()" type="button" id="printPageButton" style="width: 100%; background: blue; border: none; color:white; bottom: 0; position: absolute; padding: 10px; font-size: 1rem; text-alignment:center; z-index: 10;" value="Print Receipt">';
-            data += document.getElementById(el).innerHTML;
+        window.ordersData = @json($recentOrders);
+
+        function orderState() {
+            return {
+                // STATES
+                orders: [], 
+                selectedOrder: {},
+                originalOrder: {},
+                showAddItemModal : false,
+                isEditingItems: false,
+                showReceipt: false,
+                showPopup: false,
+                showAddOrderModal: false,
+                selectedStatus: null,
+                statusText: '',
+                productList: [],
+                showAddItemModal: false,
+                newItem: {},
+                
+                initOrder() {
+                    
+                    this.orders = window.ordersData.data || []; 
+
+                    console.log('order: ', this.order);
+
+                    if (this.orders.length > 0) {
+                        this.selectOrder(this.orders[0].id); 
+
+                    }
+                },
+
+                async initProducts() {    
+                    const response = await fetch('/api/products')
+                        .then(response => response.json())
+                        .then(data => data); 
+
+                    if(response) {
+                        this.productList = response;
+                    }
+                    else {
+                        alert('Error fetching products');
+                    }
+                    newItem = this.productList[0];
+                },
+
+                updateNewItemCost() {
+                    const product = this.productList.find(p => p.id == this.newItem.water_id);
+                    if (product) {
+                        this.newItem.subtotal = this.newItem.quantity * product.cost;
+                    } else {
+                        this.newItem.subtotal = 0;
+                    }
+                },
+
+                addNewItem() {
+                    const product = this.productList.find(p => p.id == this.newItem.water_id);
+                    if (product) {
+                        this.selectedOrder.orderline.push({
+                            id: Date.now(), 
+                            water: product,
+                            quantity: this.newItem.quantity,
+                            subtotal: this.newItem.subtotal,
+                        });
+                        this.updateOrderItems();
+                        this.showAddItemModal = false; 
+                        this.resetNewItem(); 
+                    }
+                },
+
+                resetNewItem() {
+                    this.newItem = {
+                        water_id: null,
+                        quantity: 1,
+                        subtotal: 0,
+                    };
+                },
+
+                selectOrder(orderId) {
+
+                    const order = this.orders.find(o => o.id === orderId);
+
+                    if (order) {
+                        if (this.selectedOrder.id !== orderId) {
+                            this.selectedOrder = JSON.parse(JSON.stringify(order));
+                            this.originalOrder = JSON.parse(JSON.stringify(order));
+                            this.revertToDefault();
+                        } else {
+                            this.revertOrderItems();
+                        }
+                    }
 
 
-            document.getElementById(el).innerHTML;
-            receipt = window.open("", "win", "left=150", "top=130", "width=100", "height=100%");
-            receipt.document.write(data);
-            receipt.document.title = "Print Receipt";
-            receipt.focus();
+                },
+
+                revertOrderItems() {
+                    this.selectedOrder = JSON.parse(JSON.stringify(this.originalOrder));
+                    this.isEditingItems = false;
+                },
+                updateOrderItems() {
+                    this.selectedOrder.orderline.forEach(line => {
+                        line.subtotal = line.quantity * line.water.cost;
+                    });
+                    this.selectedOrder.total = this.selectedOrder.orderline.reduce((acc, line) => acc + line.subtotal, 0) + this.selectedOrder.delivery_fee;
+                },
+                revertToDefault() {
+                    this.revertOrderItems();
+                    this.statusText = '';
+                    this.selectedStatus = null;
+                },
+
+                async saveOrderChanges() {
+                    const payload = {
+                        order_id: this.selectedOrder.id,
+                        purchase_type: this.selectedOrder.purchase_type,
+                        payment_type: this.selectedOrder.payment_type,
+                        delivery_fee: this.selectedOrder.delivery_fee,
+                        total: this.selectedOrder.total,
+                        orderlines: this.selectedOrder.orderline.map(line => ({
+                            id: line.id,
+                            water_id: line.water.id,
+                            quantity: line.quantity,
+                            subtotal: line.subtotal,
+                        })),
+                        delivery: this.selectedOrder.delivery
+                            ? {
+                                id: this.selectedOrder.delivery.id,
+                                delivery_address: this.selectedOrder.delivery.delivery_address,
+                                delivery_status: this.selectedStatus,
+                                special_instruction: this.selectedOrder.delivery.special_instruction,
+                            }
+                            : null,
+                    };
+
+                    console.log(payload);
+
+                    const response = await fetch(`/admin/orders/${this.selectedOrder.id}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        },
+                        body: JSON.stringify(payload),
+                    });
+
+                    if (response.ok) {
+                        window.location.reload(), 5000;
+                    } else {
+                        alert('Error saving changes');
+                    }
+                },
+
+            };
+        }
+
+        function paginationHandler() {
+            return {
+                orders: window.ordersData.data || [],
+                currentPage: initialData.current_page,
+                lastPage: initialData.last_page,
+
+                async fetchPage(page) {
+                    // Fetch data from server without full reload
+                    const response = await fetch(`?page=${page}`);
+                    const data = await response.json();
+
+                    // Update orders and pagination info
+                    this.orders = data.data;
+                    this.currentPage = data.current_page;
+                    this.lastPage = data.last_page;
+
+                    // Scroll to the order table after updating
+                    this.$nextTick(() => {
+                        document.querySelector('#orderTable').scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start',
+                        });
+                    });
+                }
+            }
+        }
 
 
+            // Monthly Sales Chart
+        const yearlySalesCtx = document.getElementById('yearlySalesChart').getContext('2d');
+        const maxMonth = new Date().getMonth() + 1;
+
+        const currentYearData = Array(maxMonth).fill(0);
+        const previousYearData = Array(maxMonth).fill(0);
+
+        @foreach($currentYearSales as $sale)
+            currentYearData[{{ $sale->month }} - 1] = {{ $sale->total }};
+        @endforeach
+
+        @foreach($previousYearSales as $sale)
+            previousYearData[{{ $sale->month }} - 1] = {{ $sale->total }};
+        @endforeach
+
+        const labels = [];
+        for (let i = 1; i <= maxMonth; i++) {
+            labels.push(new Date(2000, i - 1, 1).toLocaleString('default', { month: 'long' }));
+        }
+
+        const yearlySalesChart = new Chart(yearlySalesCtx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'This Year',
+                        data: currentYearData,
+                        backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                        borderColor: 'rgba(59, 130, 246, 1)',
+                        borderWidth: 2,
+                        tension: 0.3
+                    },
+                    {
+                        label: 'Last Year',
+                        data: previousYearData,
+                        backgroundColor: 'rgba(34, 197, 94, 0.2)',
+                        borderColor: 'rgba(34, 197, 94, 1)',
+                        borderWidth: 2,
+                        tension: 0.3
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+
+
+        // Top Selling Products Chart
+        const orderStatusCtx = document.getElementById('orderStatusChart').getContext('2d');
+
+        const statusColors = {
+            'Completed': {
+                bg: 'rgba(16, 185, 129, 0.6)',  
+                border: 'rgba(16, 185, 129, 1)'
+            },
+            'In progress': {
+                bg: 'rgba(59, 130, 246, 0.6)',  
+                border: 'rgba(59, 130, 246, 1)'
+            },
+            'Cancelled': {
+                bg: 'rgba(239, 68, 68, 0.6)',  
+                border: 'rgba(239, 68, 68, 1)'
+            }
         };
+        const orderStatusChart = new Chart(orderStatusCtx, {
+            type: 'doughnut',
+            data: {
+                labels: [
+                    @foreach($orderDeliveryStatusBreakdown as $status)
+                        '{{ $status['status_name'] }}',
+                    @endforeach
+                ],
+                datasets: [{
+                    data: [
+                        @foreach($orderDeliveryStatusBreakdown as $status)
+                            {{ $status['count'] }},
+                        @endforeach
+                    ],
+                    backgroundColor: [
+                        @foreach($orderDeliveryStatusBreakdown as $status)
+                            statusColors['{{ $status['status_name'] }}']?.bg ?? 'rgba(156, 163, 175, 0.6)', 
+                        @endforeach
+                    ],
+                    borderColor: [
+                        @foreach($orderDeliveryStatusBreakdown as $status)
+                            statusColors['{{ $status['status_name'] }}']?.border ?? 'rgba(156, 163, 175, 1)', 
+                        @endforeach
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+
+
+        // Orders By Hour Chart
+        const ordersByHourCtx = document.getElementById('ordersByHourChart').getContext('2d');
+        const ordersByHourChart = new Chart(ordersByHourCtx, {
+            type: 'line',
+            data: {
+                labels: [
+                    @foreach($ordersByHour as $hourData)
+                        '{{ $hourData['hour'] }}:00',
+                    @endforeach
+                ],
+                datasets: [{
+                    label: 'Orders',
+                    data: [
+                        @foreach($ordersByHour as $hourData)
+                            {{ $hourData['count'] }},
+                        @endforeach
+                    ],
+                    backgroundColor: 'rgba(16, 185, 129, 0.2)',
+                    borderColor: 'rgba(16, 185, 129, 1)',
+                    borderWidth: 2,
+                    tension: 0.3,
+                    pointBackgroundColor: 'rgba(16, 185, 129, 1)',
+                    pointBorderColor: '#fff',
+                    pointBorderWidth: 2,
+                    pointRadius: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            precision: 0
+                        }
+                    }
+                }
+            }
+        });
+
     </script>
+@endpush
 @endsection

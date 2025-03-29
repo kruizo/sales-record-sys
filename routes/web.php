@@ -12,28 +12,15 @@ use App\Http\Controllers\OrderTableController;
 use App\Http\Controllers\CustomerTableController;
 use App\Http\Controllers\DeliveryTableController;
 use App\Http\Controllers\AnalyticsController;
+use App\Http\Controllers\ProductsController;
 
 
 Route::get('/', function () {
     return view('welcome');
 })->name('/');
 
-//need reworks
-Route::post('/place-order', [OrderController::class, 'placeOrder'])->name('place-order');
-Route::post('/update-orders', [OrderController::class, 'updateOrArchiveOrders'])->name('update-orders');
-Route::post('/update-orderline/{orderlineid}/{status}', [OrderController::class, 'updateOrderlineStatus'])->name('update-orderline');
-Route::post('/remove-orderline/{orderlineid}', [OrderController::class, 'removeOrderline'])->name('remove-orderline');
-Route::get('/orders', [OrderController::class, 'index']);
-
-
-//report
-Route::get('/admin/report', [App\Http\Controllers\ReportsController::class, 'index'])->name('admin.reports');
-
 // Route::get('/admin/report/{id}', [ReportsController::class, 'show'])->name('admin.report.show');
-
 Route::get('/admin/orders', [ReportsController::class, 'order'])->name('admin.report.order');
-
-
 
 //profile
 Route::middleware(['auth'])->group(function () {
@@ -48,17 +35,18 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/{id}', [CustomerController::class, 'destroy'])->name('customer.destroy'); 
     });
     
-    Route::prefix('/products')->middleware('verified')->group(function () {
-        Route::get('/', [OrderController::class, 'index'])->name('products.show'); 
+    Route::prefix('/store')->middleware('verified')->group(function () {
+        Route::get('/', [OrderController::class, 'index'])->name('store.show'); 
     });
 
     Route::prefix('/orders')->middleware('verified', 'is_allowed')->group(function () {
         Route::post('/', [OrderController::class, 'create'])->name('order.create');
         Route::put('/{id}', [OrderController::class, 'update'])->name('order.update');
         Route::delete('/{id}', [OrderController::class, 'cancelOrder'])->name('order.destroy');
+        Route::get('/{id}', [OrderController::class, 'getOrder']);
     });
 
-    Route::get('/receipt/{id}', [OrderController::class, 'showReceipt'])->middleware('is_allowed')->name('receipt.show');
+    Route::get('/receipt/{id}', [OrderController::class, 'showOrder'])->middleware('is_allowed')->name('receipt.show');
 
     Route::prefix('profile')->group(function () {
         Route::get('/', [ProfileController::class, 'show'])->name('profile.show');
@@ -66,6 +54,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/setup', [ProfileController::class, 'setupProfile'])->name('profile.setup');
         Route::get('/myorders', [ProfileController::class, 'showOrders'])->name('profile.myorders');
     });
+
 });
 
 Route::group(['middleware' => 'web'], function () {
@@ -75,7 +64,8 @@ Route::group(['middleware' => 'web'], function () {
 Route::middleware(['auth', 'is_admin'])->group(function () {
     Route::prefix('/admin')->group(function () {
         Route::get('/report', [ReportsController::class, 'index'])->name('admin.reports');
-        Route::get('/orders', [ReportsController::class, 'order'])->name('admin.report.order');
+        Route::get('/orders', [OrderController::class, 'getOrder'])->name('admin.report.order');
+        Route::post('/orders/{id}', [OrderController::class, 'update'])->name('order.update');
         Route::get('/', [DashboardController::class, 'show'])->name('admin');
         Route::get('/dashboard', [DashboardController::class, 'show'])->name('admin.dashboard');
         Route::get('/orders', [OrderTableController::class, 'show'])->name('admin.orders');
@@ -87,9 +77,6 @@ Route::middleware(['auth', 'is_admin'])->group(function () {
 });
 
 //map
-Route::get('/view/map', function () {
-    return view('modals/map');
-})->name('modal.map');
 Route::get('/view/map', function () {
     return view('map-view');
 })->name('map.show');
