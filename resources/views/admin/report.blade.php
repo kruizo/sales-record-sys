@@ -1,6 +1,10 @@
 @extends('layouts.admin')
 
 @section('content')
+@section('title')
+<link rel="shortcut icon" href="{{ asset('assets/image/logo.png') }}" type="image/x-icon">
+<title>Reports</title>
+@endsection
 <div class="flex justify-center items-center w-full">
     <div class="relative mt-10 mb-10" style="height: 500px; min-width: 800px; padding-top: 20px; margin-left: 50px;">
         <h2 class="text-4xl font-extrabold text-gray-900 tracking-wide text-center">📊 Sales Report</h2>

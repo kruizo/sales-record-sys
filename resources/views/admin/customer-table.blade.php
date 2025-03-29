@@ -1,6 +1,10 @@
 @extends('layouts.admin')
 
 @section('content')
+@section('title')
+<link rel="shortcut icon" href="{{ asset('assets/image/logo.png') }}" type="image/x-icon">
+<title>Customers</title>
+@endsection
 <div class="relative overflow-x-auto sm:ml-64 p-4 shadow-md sm:rounded-lg">
     <div class="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 bg-white dark:bg-gray-900">
         <div>

@@ -1,6 +1,8 @@
 @extends('layouts.admin')
 
 @section('content')
+<title>deliveries</title>
+
     <div class="relative overflow-x-auto sm:ml-64 p-4 shadow-md sm:rounded-lg">
         <div>
             <h1 class="text-xl text-black font-bold">You have <span class="text-green-600"

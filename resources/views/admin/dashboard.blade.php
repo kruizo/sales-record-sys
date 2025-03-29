@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 @section('title')
-    <title>
-        Dashboard</title>
+    <link rel="shortcut icon" href="{{ asset('assets/image/logo.png') }}" type="image/x-icon">
+    <title>Dashboard</title>
 @endsection
 @section('content')
     <div class="overflow-hidden sm:ml-64 p-4 shadow-md sm:rounded-lg">
