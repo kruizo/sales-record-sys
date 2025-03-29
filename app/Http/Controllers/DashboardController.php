@@ -65,18 +65,20 @@ class DashboardController extends Controller
         $pendingDeliveries = Delivery::where('delivery_status', '1')->count();
 
         // Top-Selling Products
-        $topSellingProducts = Orderline::with('water')
-        ->selectRaw('water_id, SUM(quantity) as total_quantity')
-        ->groupBy('water_id')
-        ->orderByDesc('total_quantity')
-        ->take(5)
-        ->get()
-        ->map(function ($orderline) {
-            return [
-                'product_name' => $orderline->water->name ?? 'Unknown Product',
-                'total_quantity' => $orderline->total_quantity,
-            ];
-        });
+        $topSellingProducts = Orderline::whereHas('order', $completedOrderCondition)
+            ->with('water')
+            ->selectRaw('water_id, SUM(quantity) as total_quantity')
+            ->groupBy('water_id')
+            ->orderByDesc('total_quantity')
+            ->take(5)
+            ->get()
+            ->map(function ($orderline) {
+                return [
+                    'product_name' => $orderline->water->name ?? 'Unknown Product',
+                    'total_quantity' => $orderline->total_quantity,
+                ];
+            });
+
 
         // Order Status Breakdown
         $orderDeliveryStatusBreakdown = Delivery::with('deliverystatus')
