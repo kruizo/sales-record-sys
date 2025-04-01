@@ -19,28 +19,44 @@ use Illuminate\Support\Facades\Auth;
 class OrderController extends Controller
 {
     
-    public function showReceipt($id)
-    {
-        $order = Order::with(['orderline.water'])->findOrFail($id);
-    
-        return view('receipt', compact('order'));
-    }
-
     public function index()
     {
+
         $user = auth()->user();
-        $registeredcustomer = RegisteredCustomer::where('user_id', $user->id)->first();
-        if (!$registeredcustomer) {
-            return redirect()->route('verified.setup');
+
+        if (Customer::where('email', $user->email)->doesntExist()) {
+            return redirect()->route('profile.setup');
         }
-        $customer = $registeredcustomer->customer;
+
+        $registeredcustomer = $user->registeredcustomer;
+
+        $customer = $registeredcustomer->customer ?? null;
         $address = $registeredcustomer ? $customer->address : null;
-        //get water data
         $waters = Water::all();
         return view('/order', compact('customer', 'address', 'waters'));
     }
 
-    public function placeOrder(Request $request)
+    public function showOrder($orderId){
+
+        $order = Order::with('orderline.water')->findOrFail($orderId);
+
+        
+        return view('receipt.index', compact('order'));
+    }
+
+    public function getOrder($orderId){
+
+        $order = Order::with([
+            'customer.address',
+            'delivery.deliverystatus',
+            'orderline.water',
+        ])->findOrFail($orderId);
+
+        
+        return response()->json($order);
+    }
+
+    public function create(Request $request)
     {
         $request->validate([
             'email' => ['required', 'string', 'email', 'max:255'],
@@ -53,15 +69,15 @@ class OrderController extends Controller
             'zip' => ['required', 'string', 'max:10'],
             'barangay' => ['required', 'string', 'max:255'],
             'payment_method' => ['required', 'string'],
-            'total_order' => ['required', 'numeric'],
             'delivery_address' => ['required', 'string', 'max:255'],
             'expected_date' => ['not_before_today'],
         ], [
             'expected_date.not_before_today' => 'The :attribute must not be before today.',
 
         ]);
+        $user = Auth::user();
 
-        $customerId = auth()->user()->registeredcustomer->customer->id;
+        $customerId = auth()->user()->registeredcustomer->customer_id;
         $paymentType = $request->input('payment_method');
         $mapReference = $request->input('mapreference');
         $deliveryDate = $request->input('expected_date');
@@ -75,7 +91,8 @@ class OrderController extends Controller
 
         try {
 
-            $deliveryfee = DeliveryFee::find(1)->fee;
+            
+            {$deliveryfee = DeliveryFee::find(1)->fee;
             $order = Order::create([
                 'customer_id' => $customerId,
                 'purchase_type' => 'Delivery',
@@ -97,160 +114,128 @@ class OrderController extends Controller
                         'subtotal' => $subtotal,
                     ]);
 
-                    $delivery = Delivery::create([
-                        'orderline_id' => $orderline->id,
-                        'employee_id' => $employeeId,
-                        'delivery_date' => $deliveryDate ?? Date::now()->toDateString(),
-                        'delivery_time' => $deliveryTime ?? Date::now()->toTimeString(),
-                        'delivery_address' => $deliveryAddress,
-                        'map_reference' => $mapReference,
-                        'special_instruction' => $specialInstructions,
-                    ]);
-
+                    
                     $totalOrder += $subtotal;
                 }
             }
             $totalOrder += $deliveryfee;
+
+            $delivery = Delivery::create([
+                'order_id' => $order->id,
+                'employee_id' => $employeeId,
+                'delivery_date' => $deliveryDate ?? Date::now()->toDateString(),
+                'delivery_time' => $deliveryTime ?? Date::now()->toTimeString(),
+                'delivery_address' => $deliveryAddress,
+                'map_reference' => $mapReference,
+                'special_instruction' => $specialInstructions,
+            ]);
+
             $order->update(['total' => $totalOrder]);
 
             DB::commit();
-            return redirect()->route('profile/myorders');
+            return redirect()->route('profile.myorders');}
         } catch (\Exception $e) {
             DB::rollback();
             $errorMessage = $e->getMessage();
-            return back()->withError("Something occured. Please try again later.");
+            dd($errorMessage);
+            return back()->withError("Something occured. $errorMessage");
         }
     }
 
-        public function update($id)
+    public function update(Request $request, $id)
     {
-        $orderline = Orderline::with('order.customer')->find($id);
-        if (!$orderline) {
-            abort(404, 'Orderline not found');
-        }
-
-        $authenticatedUserId = Auth::id();
-        $orderCustomerId = $orderline->order->customer->registeredcustomer->user_id;
-
-
-        if ($authenticatedUserId !== $orderCustomerId) {
-            abort(403, 'Unauthorized action');
-        }
-
-
-        $orderline->delivery->update(['delivery_status' => 3]);
-
-        return redirect()->back()->with('success', 'Order canceled successfully');
-    }
-
-
-    public function cancelOrder($id)
-    {
-        $orderline = Orderline::with('order.customer')->find($id);
-        if (!$orderline) {
-            abort(404, 'Orderline not found');
-        }
-
-        $authenticatedUserId = Auth::id();
-        $orderCustomerId = $orderline->order->customer->registeredcustomer->user_id;
-
-
-        if ($authenticatedUserId !== $orderCustomerId) {
-            abort(403, 'Unauthorized action');
-        }
-
-
-        $orderline->delivery->update(['delivery_status' => 3]);
-
-        return redirect()->back()->with('success', 'Order canceled successfully');
-    }
-
-
-    public function updateOrderStatus($id, $status, $cancelled)
-    {
-        $order = Order::findOrFail($id);
-        foreach ($order->orderline as $orderline) {
-            $delivery = $orderline->delivery;
-
-            if($cancelled){
-                if ($delivery->delivery_status == 1) {
-                    $delivery->delivery_status = $status;
-                }
+        $validated = $request->validate([
+            'purchase_type' => 'required|string|max:50',
+            'payment_type' => 'required|string|max:50',
+            'delivery_fee' => 'required|numeric',
+            'total' => 'required|numeric',
+            'orderlines' => 'required|array',
+            'orderlines.*.id' => 'nullable|integer',
+            'orderlines.*.water_id' => 'required|integer',
+            'orderlines.*.quantity' => 'required|integer|min:1',
+            'orderlines.*.subtotal' => 'required|numeric',
+            'delivery.id' => 'nullable|integer',
+            'delivery.delivery_address' => 'nullable|string|max:255',
+            'delivery.delivery_status' => 'nullable|integer|in:1,2,3',
+            'delivery.special_instruction' => 'nullable|string|max:255',
+        ]);
+    
+        DB::beginTransaction();
+    
+        try {
+            $order = Order::findOrFail($id);
+            $order->update([
+                'purchase_type' => $validated['purchase_type'],
+                'payment_type' => $validated['payment_type'],
+                'delivery_fee' => $validated['delivery_fee'],
+                'total' => $validated['total'],
+            ]);
+    
+            $this->updateOrderlines($order, $validated['orderlines']);
+            
+            if (!empty($validated['delivery'])) {
+                $this->updateDelivery($order, $validated['delivery']);
             }
-            else{
-            $delivery->delivery_status = $status;
-            }
-            $delivery->save();
+    
+            DB::commit();
+            return response()->json($order->orderline);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json($e->getMessage());
         }
     }
     
 
-    public function updateOrderlineStatus($orderlineId, $status)
+    public function cancelOrder(Request $request, $id)
     {
-        $orderline = Orderline::findOrFail($orderlineId);
-        $delivery = $orderline->delivery;
-            if ($delivery) {
-                $delivery->delivery_status = $status;
-                $delivery->save();
-            }
+        $order = Order::with('delivery')->findOrFail($id);
+        $user = Auth::user();
+    
+        if ($user->isAdmin()) {
+            $order->delivery->update(['delivery_status' => 3]);
+            return back()->with('success', 'Order canceled successfully');
+        }
+    
+        if ($user->id === $order->customer->registeredcustomer->user_id) {
+            $order->delivery->update(['delivery_status' => 3]);
+            return back()->with('success', 'Order canceled successfully');
+        }
+    
+        abort(403, 'Unauthorized action.');
     }
 
-    public function removeOrderline($orderlineId)
+    private function updateOrderlines($order, $orderlines)
     {
-        $orderline = Orderline::findOrFail($orderlineId);
-        $orderline->delete();
-    }
-
-
-    public function updateOrderArchiveStatus($id, $status)
-    {
-        $order = Order::findOrFail($id);
-
-        $order->is_archived = $status;
-        $order->save();
-
-        foreach ($order->orderline as $orderline) {
-            if ($orderline ) {
-                 $orderline->is_archived = $status;   
-            }
+        $existingIds = collect($orderlines)->pluck('id')->filter()->toArray();
+    
+        $order->orderline()->whereNotIn('id', $existingIds)->delete();
+    
+        foreach ($orderlines as $line) {
+            $order->orderline()->updateOrCreate(
+                ['id' => $line['id'] ?? null], 
+                [
+                    'order_id' => $order->id,
+                    'water_id' => $line['water_id'],
+                    'quantity' => $line['quantity'],
+                    'subtotal' => $line['subtotal'],
+                ]
+            );
         }
     }
+    
+    
 
-    public function updateOrArchiveOrders(Request $request)
+    private function updateDelivery($order, $deliveryDetails)
     {
-        $selectedOrderIds = $request->input('selectedOrders');
-        $individualOrderId = $request->input('orderId');
-        $action = $request->input('action');
-        $status = $request->input('status');
-
-        try {
-            if (!in_array($action, ['complete', 'archive'])) {
-                throw new \Exception('Invalid action');
-            }
-
-            if($individualOrderId){
-                if ($action === 'complete') {   
-                    $this->updateOrderStatus($individualOrderId, $status, true);
-                } elseif ($action === 'archive') {
-                    $this->updateOrderArchiveStatus($individualOrderId, $status);
-                }
-            }elseif (!empty($selectedOrderIds)){
-                foreach ($selectedOrderIds as $orderId) {
-                    if ($action === 'complete') {
-                        $this->updateOrderStatus($orderId, $status, true);
-                    } elseif ($action === 'archive') {
-                        $this->updateOrderArchiveStatus($orderId, $status);
-                    }
-                }
-            }
-            else{
-                throw new \Exception('No order selected');
-            }
-
-            $message = $individualOrderId ? 'Order updated successfully' : ($action === 'complete' ? 'Orders set as completed successfully' : 'Orders moved to archive successfully');
-            return back()->withSuccess($message);
-        } catch (\Exception $e) {
-            return back()->withError($e->getMessage());
-        }
+        $order->delivery()->updateOrCreate(
+            ['order_id' => $order->id], 
+            [
+                'delivery_address' => $deliveryDetails['delivery_address'] ?? $order->delivery->delivery_address ?? '',
+                'delivery_status' => $deliveryDetails['delivery_status'] ?? $order->delivery->delivery_status ?? 1,
+                'special_instruction' => $deliveryDetails['special_instruction'] ?? $order->delivery->special_instruction ?? '',
+            ]
+        );
     }
+    
+
 }

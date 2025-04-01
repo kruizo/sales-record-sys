@@ -3,12 +3,11 @@
     <title>Set up profile</title>
 @endsection
 @section('content')
-    <form action="{{ route('profile.registration') }}" method="POST">
-        @csrf
 
+    <form method="POST" action="{{ route('customer.store') }}">
+        @csrf
         <div class="items-center py-4 bg-gray-800 text-gray-400 px-4 " id="profilesetting" role="tabpanel"
             aria-labelledby="profilesetting-tab">
-
             <x-form-header text="Set up your profile" class="text-2xl pb-8" />
             <x-error.error-container />
             <div
@@ -56,7 +55,6 @@
                 <div class="w-full">
                     <x-input-label for="barangay" text="Barangay" class="text-gray-300" />
                     <x-input-text id="barangay" name="barangay" class="border-none hover:cursor-default" />
-
                 </div>
 
             </div>
@@ -80,5 +78,30 @@
             </div>
 
         </div>
-    </form>
+    </form>  
+    <!-- <script>
+        document.getElementById("profileForm").addEventListener("submit", async function(event) {
+            event.preventDefault(); 
+
+            let form = event.target;
+            let formData = new FormData(form);
+
+            let response = await fetch("/customers", {
+                method: "POST",
+                headers: {
+                    "X-CSRF-TOKEN": document.querySelector('input[name="_token"]').value,
+                },
+                body: formData
+            });
+
+            if (response.ok) {
+                window.location.href = "{{ route('/') }}";
+                // console.log(response);
+            } else {
+                console.log('else', response)
+                alert("Failed to save profile.");
+            }
+        });
+        </script> -->
+
 @endsection

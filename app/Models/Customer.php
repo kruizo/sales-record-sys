@@ -19,12 +19,26 @@ class Customer extends Model
 
     public function address()
     {
-        return $this->belongsTo(Address::class);
+        return $this->hasOne(Address::class);
+    }
+
+    public function getFullName()
+    {
+        return $this->firstname . ' ' . $this->lastname;
+    }
+
+    public function getFullAddress()
+    {
+        return "{$this->address->streetaddress}, {$this->address->barangay}, {$this->address->city}, {$this->address->province}, {$this->address->zip}";
     }
 
     public function registeredcustomer()
     {
         return $this->hasOne(registeredcustomer::class);
+    }
+    public function hasProfile()
+    {
+        return $this->registeredcustomer()->exists();
     }
     public function orders()
     {

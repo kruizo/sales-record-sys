@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\VerifiesEmails;
 use Illuminate\Support\Facades\Auth;
@@ -29,7 +30,6 @@ class VerificationController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = 'verified/setup';
 
     /**
      * Create a new controller instance.
@@ -43,23 +43,27 @@ class VerificationController extends Controller
         $this->middleware('throttle:6,1')->only('verify', 'resend');
     }
 
-    public function setupProfile()
-    {
-        $user = User::find(Auth::user()->id);
-        if (!$user) {
-            abort(404);
-        }
-
-        $hasProfile = RegisteredCustomer::where('user_id', $user->id)->exists();
-
-        if ($hasProfile) {
-            return redirect()->route('verification');
-        }
-
-        return view('auth.profile-form', compact('user'));
-    }
     protected function redirectTo()
     {
-        return route('verified.setup');
+        return route('profile.setup');
+    }
+
+    public function show()
+    {
+        return view('auth.verify-email');
+    }
+
+    public function verifyEmail(Request $request)
+    {   
+        $user = Auth::user();
+
+        if ($user->hasVerifiedEmail()) {
+            return back()->withErrors(['Email already verified']);
+        }
+        
+        $user->sendEmailVerificationNotification();
+       
+        return redirect()->route('verification.notice');
+
     }
 }

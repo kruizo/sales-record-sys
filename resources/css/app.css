@@ -49,6 +49,10 @@ input:-webkit-autofill {
     }
 }
 
+[x-cloak] {
+    display: none !important;
+}
+
 select#size-select option {
     background-color: rgba(
         17,

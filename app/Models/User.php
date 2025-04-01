@@ -52,22 +52,26 @@ class User extends Authenticatable implements MustVerifyEmail
     }
      public function lastname()
     {
-        return  optional($this->registeredcustomer)->customer->lastname;
+        return  optional($this->registeredCustomer)->customer->lastname;
     }
     public function fullname()
     {
-        return $this->registeredcustomer->customer->firstname . ' ' . $this->registeredCustomer->customer->lastname;
+        return $this->registeredCustomer->customer->firstname . ' ' . $this->registeredCustomer->customer->lastname;
     }
 
+    public function isAdmin()
+    {
+        return $this->is_admin;
+    }
 
     public function isVerified()
     {
         return $this->email_verified_at !== null;
     }
 
-    public function registeredcustomer()
+    public function registeredCustomer()
     {
-        return $this->hasOne(registeredcustomer::class);
+        return $this->hasOne(RegisteredCustomer::class);
     }
 
     public function order()

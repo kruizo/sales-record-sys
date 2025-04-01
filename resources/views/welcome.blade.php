@@ -43,7 +43,7 @@
                     Optimize your hydration with our premium water refilling service. Enjoy pure and refreshing water that
                     satisfies and revitalizes. Choose excellence in every drop..</p>
                 <div class="flex mb-8 lg:mb-16 gap-2 justify-center sm:flex-row">
-                    <a href="{{ route('order') }}"
+                    <a href="{{ route('store.show') }}"
                         class=" inline-flex justify-center gap-2 items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-blue-600 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900">
                         Order now
                         <i class="fas fa-shopping-cart"></i>
@@ -197,9 +197,6 @@
                 </div>
             </div>
         </div>
-
-
-
     </section>
     <section class="bg-gray-50 pb-28">
         <div class="py-8 px-4 mx-auto max-w-screen-xl sm:py-16 lg:px-6 ">
@@ -216,7 +213,7 @@
         </div>
     </section>
 
-    <section class="py-8 bg-gray-50 lg:py-24 dark:bg-gray-900">
+    <section class="py-8 bg-gray-50 lg:py-24 dark:bg-gray-900" id="contact">
         <div class="px-4 mx-auto max-w-8xl lg:px-4">
             <div class="xl:mx-64 2xl:mx-80">
                 <h1

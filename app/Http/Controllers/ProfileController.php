@@ -13,123 +13,58 @@ use App\Models\Orderline;
 use App\Models\Delivery;
 use App\Models\DeliveryStatus;
 use App\Models\RegisteredCustomer;
+use App\Models\DeliveryFee;
 
 class ProfileController extends Controller
 {
-    public function index()
+    public function show()
     {
-        $customer = $this->AuthenticatedCustomer();
-        return view('profiles.setup', compact('customer'));
-    }
-
-    public function orders(Request $request)
-    {
-        $customer = $this->AuthenticatedCustomer();
-        $orders = $customer->orders()
-            ->latest()
-            ->whereHas('orderline', function ($query) {
-                $query->where('is_archived', 0);
-            })
-            ->with('orderline.delivery.deliverystatus', 'orderline.water')
-            ->get();
-
-
-        if ($status = request('status')) {
-            
-            $orders = $orders->filter(function ($order) use ($status) {
-                $filteredOrderLines = $order->orderline->filter(function ($orderline) use ($status) {
-                    $actualStatus = $orderline->delivery->deliverystatus->status;
-                    
-                    return strcasecmp($actualStatus, $status) === 0;
-                });
-
-                $order->setRelation('orderline', $filteredOrderLines);
-                
-                return $filteredOrderLines->isNotEmpty();
-            });
-                $status = DeliveryStatus::where('status', $status)->first()->name;
-
-        } else {
-            $orders = $orders->filter(function ($order) {
-                $filteredOrderLines = $order->orderline->filter(function ($orderline) {
-                    $actualStatus = $orderline->delivery->delivery_status;
-                    return $actualStatus == 1;
-                });
-
-                $order->setRelation('orderline', $filteredOrderLines);
-
-                return $filteredOrderLines->isNotEmpty();
-            });
+        $user = RegisteredCustomer::where('user_id', Auth::id())->first();
+        if(!$user) {
+            return redirect()->route('profile.setup');
         }
+        
+        $customer = $user->customer;
 
-       
-
-        $recent = $orders->first();
-
-        return view('profiles.order', compact('customer', 'orders', 'recent', 'status'));
+        return view('profile.index', compact('customer'));
     }
 
-    private function AuthenticatedCustomer()
+    public function showOrders(Request $request)
     {
-        return optional(RegisteredCustomer::where('user_id', auth()->id())->first())->customer;
+        $user = Auth::user();
+
+        if (Customer::where('email', $user->email)->doesntExist()) {
+            return redirect()->route('profile.setup');
+        }
+        
+        $customer = $user->registeredCustomer->customer;
+        
+        $statusId = DeliveryStatus::where('status', $request->status)->value('id') ?? DeliveryStatus::first()->id;
+        
+        $orders = $customer->orders()
+        ->whereHas('delivery', fn($query) => $query->where('delivery_status', $statusId)) 
+        ->with(['orderline.water'])
+        ->latest()
+        ->get();
+    
+        $fee = DeliveryFee::first()->fee;
+        
+        session(['filter_order_by' => DeliveryStatus::where('id', $statusId)->value('name')]);
+        session()->save(); 
+
+        return view('profile.order', compact('customer', 'orders',  'fee'));
     }
 
-    public function verifyUser(Request $request)
+    public function setupProfile()
     {
-        $request->validate([
-            'email' => ['required', 'string', 'email', 'max:255'],
-        ]);
-        $user = User::where('email', $request->email)->first();
+        $registeredCustomer = RegisteredCustomer::where('user_id', Auth::id())->first();
+        
+        $customer = $registeredCustomer ? $registeredCustomer->customer : null; 
 
-        $user->sendEmailVerificationNotification();
+        if (!$customer) {
+            return view('profile.setup', compact('customer'));
 
-        return redirect()->route('verification', ['token' => $user->verification_token]);
-    }
-    public function saveProfile(Request $request)
-    {
-        $request->validate([
-            'firstname_edit' => 'required',
-            'lastname_edit' => 'required',
-            'contact_edit' => 'required|numeric',
-            'street_address_edit' => 'required',
-            'province_edit' => 'required',
-            'barangay_edit' => 'required',
-            'city_edit' => 'required',
-            'zip_edit' => 'required|numeric',
-        ]);
-
-        $customer = $this->AuthenticatedCustomer();
-
-        $addressData = [
-            'streetaddress' => $request->input('street_address_edit'),
-            'province' => $request->input('province_edit'),
-            'barangay' => $request->input('barangay_edit'),
-            'city' => $request->input('city_edit'),
-            'zip' => $request->input('zip_edit'),
-        ];
-
-        $address = Address::updateOrCreate(
-            ['id' => $customer->address_id ?? ''],
-            $addressData
-        );
-
-        $customerData = [
-            'firstname' => $request->input('firstname_edit'),
-            'lastname' => $request->input('lastname_edit'),
-            'contactnum' => $request->input('contact_edit'),
-            'email' => Auth::user()->email,
-            'address_id' => $address->id,
-        ];
-        $customer = Customer::updateOrCreate(
-            ['id' => $customer->id ?? ''],
-            $customerData
-        );
-
-        $registeredCustomer = RegisteredCustomer::create([
-            'customer_id' => $customer->id,
-            'user_id' => User::find(auth()->id())->id,
-        ]);
-
-        return redirect()->route('profile')->with('success', 'Profile updated successfully');
+        }
+        return redirect()->route('profile.show');
     }
 }

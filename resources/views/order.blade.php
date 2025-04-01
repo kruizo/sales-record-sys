@@ -11,17 +11,16 @@
 
 @endsection
 @section('content')
-<div class="-z-20 dark:bg-gray-950 max-w-screen-xl mx-auto sm:py-40"">
+<div class="-z-20 dark:bg-gray-950 max-w-screen-xl mx-auto sm:py-40">
     <div class="flex justify-between items-center">
         <x-section-header class="" text="Choose a product" />
     </div>
-    <form method="POST" action="{{ route('place-order') }}" id="orderForm">
+    <form method="POST" action="{{ route('order.create') }}" id="orderForm">
         @csrf
 
         <div class="justify-between w-full gap-4 mt-8 md:flex md:space-y-0 space-y-7" id="product-data" data-products='@json($waters)'>
-            @foreach ($waters as $water)
+            @foreach ($waters as $water)    
             <x-product-card name="{{$water->id}}" id="{{$water->type}}" price="{{$water->cost}}" productName="{{$water->name}}" size="5gal." />
-                
             @endforeach
         </div>
         <div class="justify-center w-full gap-4 mt-5 md:flex md:space-y-0 space-y-7 bg-gray-900 p-2" id="user-form">

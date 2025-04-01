@@ -13,11 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('sales', function (Blueprint $table) {
+        Schema::create('addresses', function (Blueprint $table) {
             $table->id();
-            $table->date('created_at');
-            $table->string('type'); // Alkaline, Mineral, Distilled
-            $table->integer('quantity');
+            $table->foreignId('customer_id')->constrained('customers')->onDelete('cascade');
+            $table->string('streetaddress');
+            $table->string('barangay');
+            $table->string('city');
+            $table->string('province');
+            $table->string('zip');
             $table->timestamps();
         });
     }
@@ -29,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sales');
+        Schema::dropIfExists('addresses');
     }
 };
