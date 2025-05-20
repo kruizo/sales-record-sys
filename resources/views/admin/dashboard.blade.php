@@ -307,7 +307,7 @@
                     <div class="p-5">
                         <div class="flex items-center justify-between">
                             <h3 class="text-lg font-medium text-white">Recent Orders</h3>
-                            <button type="button" class="text-sm font-medium text-white hover:text-gray-200 bg-blue-600 px-2 py-2 rounded-lg hover:bg-blue-500 ">Add Order</button>
+                            <button type="button" class="text-sm font-medium text-white hover:text-gray-200 bg-blue-600 px-2 py-2 rounded-lg hover:bg-blue-500 "></button>
                         </div>
 
                         <div class="mt-6 overflow-hidden">
